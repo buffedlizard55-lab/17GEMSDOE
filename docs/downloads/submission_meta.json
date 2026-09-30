@@ -1,22 +1,39 @@
 {
- "generated_utc": "20260930T014142Z",
- "latest": "17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z",
+ "generated_utc": "20260930T021105Z",
+ "latest": "17GEMSDOE_A-verified-01563-support_c5ea501e_20260930T021105Z",
  "downloads": {
-  "tif": "17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.tif",
-  "zip": "17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.zip",
-  "sidecar": "17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.json",
-  "fallback_tif": "17GEMSDOE_A-verified-01563-support_allfinite_20260930T014142Z.tif",
-  "fallback_sha256": "c5ea501eba0ab840d26f0c017d01074c4bd9040ec5e2c5ac19bde8655d150e64"
+  "tif": "17GEMSDOE_A-verified-01563-support_c5ea501e_20260930T021105Z.tif",
+  "zip": "17GEMSDOE_A-verified-01563-support_c5ea501e_20260930T021105Z.zip",
+  "sidecar": "17GEMSDOE_A-verified-01563-support_c5ea501e_20260930T021105Z.json",
+  "fallback_tif": "17GEMSDOE_A-verified-01563-support_nanfootprint_20260930T021105Z.tif",
+  "fallback_sha256": "7810719248d2aa17b4aefdc838bf7ea5ad90a08ae0882c7f96f158bf01696302",
+  "candidate_tif": "17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.tif",
+  "candidate_zip": "17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.zip",
+  "candidate_sidecar": "17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.json"
  },
- "comment": "A-verified-01563-support: reference ens12 support (public 0.1563), format-verified float32 [0,1], 172,974 px",
- "sha256": "7810719248d2aa17b4aefdc838bf7ea5ad90a08ae0882c7f96f158bf01696302",
- "bytes": 1763547,
+ "comment": "A-verified 0.1563-support rebuild (all-finite [0,1], 172,974 px, c5ea501e, 20260930)",
+ "sha256": "c5ea501eba0ab840d26f0c017d01074c4bd9040ec5e2c5ac19bde8655d150e64",
+ "bytes": 987669,
  "positive_pixels": 172974,
  "value_range": [
   0.0,
   1.0
  ],
  "format_checks_failed": [],
- "holdout_score": 0.0793,
- "reference_anchor_sha256": "7f00890a62878d612fb5eef67a9a364a2df819433dde74b6762ce4fc0fc4fe15"
+ "holdout_score": 0.1253,
+ "reference_anchor_sha256": "7f00890a62878d612fb5eef67a9a364a2df819433dde74b6762ce4fc0fc4fe15",
+ "candidate_comment": "D-supervised-expression: HistGB on 14 bands+2 gradmag, no location features, 0/1 top-k at 3.3% density (170,401 px), hide-and-recover mean dense DTI 0.2795 vs gate 0.1253, 86125863",
+ "candidate_holdout_mean_dense_DTI": 0.2795445334301017,
+ "format_checks_passed": [
+  "file_exists",
+  "readable_geotiff",
+  "single_band",
+  "dtype_float32",
+  "crs_epsg_32611",
+  "shape_matches_sample",
+  "transform_matches_sample",
+  "values_in_0_1",
+  "nan_only_outside_footprint",
+  "non_empty_prediction"
+ ]
 }

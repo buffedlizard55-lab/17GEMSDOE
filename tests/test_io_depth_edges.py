@@ -274,3 +274,51 @@ def test_windowed_source_depth_runs_and_respects_the_valid_mask():
     assert d.shape == field.shape
     assert c.max() > 0
     assert np.all(d[c == 0] == 0.0)           # never estimated => left at zero
+
+
+# ---------------------------------------------------------------------------
+# regression: scripts/validate_submission.py crashed with KeyError 'file' on a
+# perfectly valid raster (the report key is 'path'). The operator-facing gate
+# must run end to end on a good file.
+# ---------------------------------------------------------------------------
+def test_validate_submission_script_runs_on_good_file(tmp_path):
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    import numpy as np
+    import rasterio
+    from rasterio.transform import from_origin
+
+    repo = Path(__file__).resolve().parents[1]
+    sample = tmp_path / "sample.tif"
+    prof = dict(driver="GTiff", height=20, width=30, count=1, dtype="float32",
+                crs="EPSG:32611", transform=from_origin(243350.0, 4508550.0, 100.0, 100.0))
+    arr = np.ones((20, 30), np.float32)
+    arr[0, 0] = np.nan            # outside-footprint NaN, as the real sample has
+    with rasterio.open(sample, "w", **prof) as ds:
+        ds.write(arr, 1)
+
+    cand = tmp_path / "candidate.tif"
+    good = np.zeros((20, 30), np.float32)
+    good[5, 5] = 1.0
+    with rasterio.open(cand, "w", **prof) as ds:
+        ds.write(good, 1)
+
+    r = subprocess.run([sys.executable, str(repo / "scripts" / "validate_submission.py"),
+                        str(cand), "--sample", str(sample)],
+                       capture_output=True, text=True)
+    assert "KeyError" not in r.stderr, r.stderr
+    assert r.returncode == 0, r.stdout + r.stderr
+    assert "RESULT: PASS" in r.stdout
+
+    # and it fails loudly on an out-of-range file
+    bad = np.full((20, 30), 2.0, np.float32)
+    bad_path = tmp_path / "bad.tif"
+    with rasterio.open(bad_path, "w", **prof) as ds:
+        ds.write(bad, 1)
+    r2 = subprocess.run([sys.executable, str(repo / "scripts" / "validate_submission.py"),
+                         str(bad_path), "--sample", str(sample)],
+                        capture_output=True, text=True)
+    assert r2.returncode != 0
+    assert "RESULT: FAIL" in r2.stdout

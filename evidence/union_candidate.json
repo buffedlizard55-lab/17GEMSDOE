@@ -1,0 +1,78 @@
+{
+ "hypothesis": "spread filler adds net credit at the reference operating point because spread-random's holdout marginal hit rate (~3.4 %) exceeds the 0.1563 break-even (3.23 %)",
+ "preregistered_prediction": {
+  "union_mean_fold_DTI": "[0.13, 0.17]",
+  "direction": "up vs base",
+  "leaderboard_caveat": "up if hidden faults are at least catalogue-sparse-spread; down if much sparser"
+ },
+ "budget": 60000,
+ "filler_px": 60000,
+ "union_px": 232974,
+ "folds": [
+  {
+   "fold": 0,
+   "base_dti": 0.11617185544008105,
+   "union_dti": 0.11419637663202221,
+   "delta": -0.001975478808058831,
+   "base_emitted_unmasked_px": 167461,
+   "union_emitted_unmasked_px": 226891,
+   "marginal_tp_w": 1296.10791015625,
+   "marginal_fp_w": 59066.09375,
+   "marginal_precision_per_added_px": 0.021808983849171293,
+   "filler_alone_tp_w": 2729.46484375,
+   "filler_alone_precision": 0.04592739094312637,
+   "break_even_at_base": 0.023787048192816636
+  },
+  {
+   "fold": 1,
+   "base_dti": 0.11823770595700403,
+   "union_dti": 0.11119087216351185,
+   "delta": -0.007046833793492177,
+   "base_emitted_unmasked_px": 167582,
+   "union_emitted_unmasked_px": 227010,
+   "marginal_tp_w": 1049.1630859375,
+   "marginal_fp_w": 59105.09375,
+   "marginal_precision_per_added_px": 0.017654356295643468,
+   "filler_alone_tp_w": 2410.8525390625,
+   "filler_alone_precision": 0.04056762029788147,
+   "break_even_at_base": 0.024220291533097463
+  },
+  {
+   "fold": 2,
+   "base_dti": 0.11991533165799277,
+   "union_dti": 0.1180350803057111,
+   "delta": -0.0018802513522816755,
+   "base_emitted_unmasked_px": 167604,
+   "union_emitted_unmasked_px": 227041,
+   "marginal_tp_w": 1346.69189453125,
+   "marginal_fp_w": 59044.390625,
+   "marginal_precision_per_added_px": 0.02265746747869593,
+   "filler_alone_tp_w": 2690.48486328125,
+   "filler_alone_precision": 0.04526616187360146,
+   "break_even_at_base": 0.02457238753169699
+  },
+  {
+   "fold": 3,
+   "base_dti": 0.15455761428275192,
+   "union_dti": 0.13798058794986012,
+   "delta": -0.016577026332891792,
+   "base_emitted_unmasked_px": 167875,
+   "union_emitted_unmasked_px": 227313,
+   "marginal_tp_w": 953.0654296875,
+   "marginal_fp_w": 59083.09375,
+   "marginal_precision_per_added_px": 0.016034614719329387,
+   "filler_alone_tp_w": 2714.266357421875,
+   "filler_alone_precision": 0.04566550619842315,
+   "break_even_at_base": 0.031897523895513924
+  }
+ ],
+ "mean_base_dti": 0.12722062683445745,
+ "mean_union_dti": 0.12035072926277632,
+ "mean_delta": -0.006869897571681133,
+ "holdout_best": 0.1253,
+ "holdout_null": 0.1188,
+ "gate_cleared": false,
+ "prediction_held": false,
+ "generated_utc": "2026-09-30T03:20:06Z",
+ "runtime_seconds": 68.0
+}

@@ -63,7 +63,9 @@
    "title": "Faulds, J.E. - Structural Inventory of Great Basin Geothermal Systems and Definition of Favorable Structural Settings (dataset), DOE GDR. doi:10.15121/1148722",
    "url": "https://www.osti.gov/dataexplorer/biblio/dataset/1148722",
    "retrieved_utc": "2026-09-30",
-   "used_for": ["confirming the existence and scope of the 426-system structural inventory and its eight structural-setting groups"],
+   "used_for": [
+    "confirming the existence and scope of the 426-system structural inventory and its eight structural-setting groups"
+   ],
    "verbatim": "Structural controls of 426 geothermal systems in the Great Basin region ... were analyzed ... Of the systems analyzed, we were able to determine the structural settings of more than 240 sites.",
    "note": "Dataset landing page. The catalogue spreadsheet itself was not downloaded in this session."
   },
@@ -73,7 +75,9 @@
    "title": "Faulds, J.E. and Hinz, N.H. (2015) - Favorable tectonic and structural settings of geothermal systems in the Great Basin region, western USA: Proxies for discovering blind geothermal systems. Proceedings World Geothermal Congress, Melbourne.",
    "url": "https://www.osti.gov/dataexplorer/biblio/dataset/1148722",
    "retrieved_utc": "2026-09-30",
-   "used_for": ["the 426-system / ~250 categorised figures and the ~32% step-over share quoted on the OSTI record"],
+   "used_for": [
+    "the 426-system / ~250 categorised figures and the ~32% step-over share quoted on the OSTI record"
+   ],
    "verbatim": "We recently completed a comprehensive inventory of the structural settings of known geothermal systems (426 total, >=37C) in the extensional to transtensional terrane of the Great Basin region in the western USA. ... Of the nearly 250 categorized geothermal fields, we found that step-overs or relay ramps in normal fault zones are the most favorable setting, hosting ~32% of the systems."
   },
   {
@@ -82,7 +86,9 @@
    "title": "Faulds, J.E. et al. (2014) - Favorable structural settings of active geothermal systems in the Great Basin region, western USA. GSA Annual Meeting, Vancouver, abstract.",
    "url": "https://gsa.confex.com/gsa/2014AM/webprogram/Paper248671.html",
    "retrieved_utc": "2026-09-30",
-   "used_for": ["the contrast between fault interaction zones and mid-segment displacement maxima"],
+   "used_for": [
+    "the contrast between fault interaction zones and mid-segment displacement maxima"
+   ],
    "verbatim": "Of ~250 categorized fields, step-overs or relay ramps in normal fault zones are the most favorable setting, hosting ~32% of the systems. ... b) fault intersections (22%) ... and c) accommodation zones (9%) ... The primary segments of major faults only host ~1% of the geothermal fields."
   },
   {
@@ -105,9 +111,22 @@
    "title": "Data.gov catalogue record - GeoDAWN: Airborne magnetic and radiometric surveys of the northwestern Great Basin, Nevada and California",
    "url": "https://catalog.data.gov/dataset/geodawn-airborne-magnetic-and-radiometric-surveys-of-the-northwestern-great-basin-nevada-a",
    "retrieved_utc": "2026-09-30",
-   "used_for": ["cross-checking the DOI, the project number EE0008762 and the listing of radiometric data among the dataset's tags"],
+   "used_for": [
+    "cross-checking the DOI, the project number EE0008762 and the listing of radiometric data among the dataset's tags"
+   ],
    "verbatim": "The surveys, referred to as GeoDAWN (Geoscience Data Acquisition for Western Nevada), span areas of major resource potential associated with the Walker Lane and western Great Basin.",
-   "tags_recorded": ["Airborne geophysical survey", "Geophysics", "Geothermal Resources", "Magnetic data", "Mineral Resources", "Radiometric data", "USGS", "Walker Lane", "aeroradiometric surveying", "northwestern Great Basin"]
+   "tags_recorded": [
+    "Airborne geophysical survey",
+    "Geophysics",
+    "Geothermal Resources",
+    "Magnetic data",
+    "Mineral Resources",
+    "Radiometric data",
+    "USGS",
+    "Walker Lane",
+    "aeroradiometric surveying",
+    "northwestern Great Basin"
+   ]
   },
   {
    "id": "usgs-sgmc",
@@ -128,8 +147,94 @@
    "title": "DrivenData community forum thread 11516 - Scoring clarification: are known USGS/INGENIOUS faults masked when scoring, and are they in the final round label set?",
    "url": "https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516",
    "retrieved_utc": "2026-09-30",
-   "used_for": ["the masking behaviour implemented in src/gems/holdout.py mask_mode='pixel_exact'"],
+   "used_for": [
+    "the masking behaviour implemented in src/gems/holdout.py mask_mode='pixel_exact'"
+   ],
    "provenance_note": "The URL is recorded as the citation for pixel-exact masking in the sibling repository's own measurement ledger (5GEMSDOE data/evidence/leaderboard_anchor/leaderboard_anchor.json, key 'sources.known_faults_masked_from_scoring'), which was read directly in this session. The thread text itself was not retrieved here, so the masking rule is treated as an externally supplied premise, not as something verified by this repository."
+  },
+  {
+   "id": "gbcge-fss",
+   "verification": "SEARCH_VERBATIM",
+   "title": "Characterizing Structural Controls of EGS-Candidate and Conventional Geothermal Reservoirs in the Great Basin",
+   "url": "https://gbcge.org/recent-projects/characterizing-structural-controls/",
+   "publisher": "Great Basin Center for Geothermal Energy (UNR)",
+   "retrieved_utc": "2026-09-30",
+   "used_for": [
+    "Faulds-group inventory percentages: step-overs ~32%, terminations 25%, intersections 22% of analysed systems",
+    "the structural-geology grounding for the step-over/termination/intersection hypothesis family"
+   ],
+   "verbatim": {
+    "stats": "Step-overs or relay ramps in normal faults are the most favorable setting, hosting ~32% of the systems analyzed... Normal fault terminations host 25%. Intersections of normal faults and strike-slip or oblique-slip faults host 22%."
+   }
+  },
+  {
+   "id": "faulds-sgw2026",
+   "verification": "SEARCH_VERBATIM",
+   "title": "Favorable Structural Settings for Geothermal Systems in the Great Basin Region (Stanford Geothermal Workshop 2026)",
+   "url": "https://pangea.stanford.edu/ERE/db/GeoConf/papers/SGW/2026/Faulds.pdf",
+   "publisher": "Stanford Geothermal Workshop / Faulds et al.",
+   "retrieved_utc": "2026-09-30",
+   "used_for": [
+    "updated FSS inventory in the INGENIOUS study area: step-overs ~39.6%, intersections 26.1%, terminations 16.7%",
+    "403 known systems: step-overs 27.5%, intersections 22.1%, terminations 16.6%",
+    "'~75% of geothermal resources in the GBR are hidden or blind' (citing Coolbaugh et al. 2006) and 'nearly 40% of the known geothermal systems in Nevada are hidden' (Faulds et al. 2021a)"
+   ]
+  },
+  {
+   "id": "giddens-faulds-2025",
+   "verification": "SEARCH_VERBATIM",
+   "title": "Analysis of Step-Overs (or Relay Ramps) in Normal Faults, Great Basin (Giddens and Faulds, SGW 2025)",
+   "url": "https://pangea.stanford.edu/ERE/pdf/IGAstandard/SGW/2025/Giddens.pdf",
+   "publisher": "Stanford Geothermal Workshop",
+   "retrieved_utc": "2026-09-30",
+   "used_for": [
+    "relay-ramp width statistics (average 2.0-3.2 km by domain; left-stepping average 2.8 km) grounding the 1.6-3.2 km gap window used in H1/H3",
+    "the causal explanation for the Qfaults refusal: the compilation is 'derived primarily from the Quaternary Fault and Fold Database (U.S. Geological Survey, 2020)' -- the same source family as the competition labels",
+    "step-over geometry attributes: ~54% right-stepping, ~51% hard-linked"
+   ],
+   "verbatim": {
+    "qfaults": "derived primarily from the Quaternary Fault and Fold Database (U.S. Geological Survey, 2020).",
+    "widths": "Left-stepping step-overs are more commonly soft linked, underlap, and have an average relay ramp width of 2.8 km"
+   }
+  },
+  {
+   "id": "lyell-geoenergy-2023",
+   "verification": "SEARCH_VERBATIM",
+   "title": "Structural discontinuities and their control on hydrothermal systems in the Great Basin, USA",
+   "url": "https://www.lyellcollection.org/doi/full/10.1144/geoenergy2023-009",
+   "publisher": "Geoenergy: Science and Technology (Lyell Collection)",
+   "retrieved_utc": "2026-09-30",
+   "used_for": [
+    "independent restatement of the FSS percentages (step-overs 25%, terminations 20%, intersections 18%; Faulds and Hinz 2015 vintage)",
+    "numerical modelling support: step-overs and terminations show the largest dilatation and Coulomb shear-traction changes of the modelled settings"
+   ]
+  },
+  {
+   "id": "usgs-qfaults-portal",
+   "verification": "SEARCH_VERBATIM",
+   "title": "USGS Faults - Quaternary Fault and Fold Database for the Nation",
+   "url": "https://www.usgs.gov/programs/earthquake-hazards/faults",
+   "publisher": "U.S. Geological Survey",
+   "retrieved_utc": "2026-09-30",
+   "used_for": [
+    "official citation and DOI for Qfaults (10.5066/P9BCVRCK) used in the cross-catalogue refusal record",
+    "identification of the free official 'slip tendency and dilation tendency calculated for Quaternary faults in the Great Basin' shapefile -- the named source for candidate H-DIL"
+   ],
+   "verbatim": {
+    "citation": "U.S. Geological Survey, 2020, Quaternary Fault and Fold Database for the Nation, accessed [Month, Day, Year], at https://doi.org/10.5066/P9BCVRCK",
+    "slip_dilation": "Shapefile for slip tendency and dilation tendency calculated for Quaternary faults in the Great Basin"
+   }
+  },
+  {
+   "id": "usgs-sgmc-ds1052",
+   "verification": "SEARCH_SUMMARY",
+   "title": "The State Geologic Map Compilation (SGMC) geodatabase of the conterminous United States",
+   "url": "https://pubs.usgs.gov/publication/ds1052",
+   "publisher": "U.S. Geological Survey (Horton, San Juan and Stoeser, 2017, Data Series 1052)",
+   "retrieved_utc": "2026-09-30",
+   "used_for": [
+    "identification of the surrogate catalogue behind evidence/xcat_surrogate.json: SGMC is a ~1:1,000,000-scale compilation of 48 state geologic maps, so its structure lines are bedrock contacts and faults of any age -- the 'necessary-not-sufficient' caveat attached to every surrogate number on this site"
+   ]
   }
  ],
  "unverified_claims_deliberately_not_asserted": [

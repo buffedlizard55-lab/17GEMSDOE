@@ -1,0 +1,42 @@
+{
+ "submission_name": "17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z",
+ "comment": "D-supervised-expression: HistGB on 14 bands+2 gradmag, no location features, 0/1 top-k at 3.3% density (170,401 px), hide-and-recover mean dense DTI 0.2795 vs gate 0.1253, 86125863",
+ "support_equals_anchor": false,
+ "holdout_mean_dense_DTI": 0.2795445334301017,
+ "holdout_gate": 0.1253,
+ "holdout_folds": [
+  0.27998893507181183,
+  0.2538197620107781,
+  0.28854134280868726,
+  0.2958280938291297
+ ],
+ "surrogate_dense_DTI": 0.12249574888206297,
+ "surrogate_caveat": "below the reference support's 0.1854 and uniform random's 0.3719 on the SGMC screen: recovery skill is validated, off-catalogue discovery spread is not",
+ "sha256": "8612586354611df8602a2b0bad8a7916946d1bc0bc32f63e39f1fffbcccced8d",
+ "emitted_px": 170473,
+ "value_range": [
+  0.0,
+  1.0
+ ],
+ "format_checks_failed": [],
+ "how_to_submit": [
+  "Download this .tif.",
+  "Paste the submission_name into the competition's name field.",
+  "Paste the comment into the comment field.",
+  "Upload. Every format check was run against these exact bytes."
+ ],
+ "format_checks_passed": [
+  "file_exists",
+  "readable_geotiff",
+  "single_band",
+  "dtype_float32",
+  "crs_epsg_32611",
+  "shape_matches_sample",
+  "transform_matches_sample",
+  "values_in_0_1",
+  "nan_only_outside_footprint",
+  "non_empty_prediction"
+ ],
+ "positive_pixels": 170401,
+ "note_on_counts": "topk_px 170,473 is the pre-NMS selection; the published raster holds 170,401 positive pixels after 1-per-component collapse (asserted against the written file)"
+}

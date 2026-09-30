@@ -1,0 +1,346 @@
+{
+ "arm": "off-catalogue surrogate (SGMC code-2 beyond the catalogue's credit halo)",
+ "why": "Qfaults cross-catalogue arm REFUSED (same lines as labels, 1 independent px); see GEMSDOE/data/evidence/xcat/transfer_report.json",
+ "surrogate_truth": "SGMC code-2 pixels beyond R=3 px of every competition label",
+ "surrogate_census": {
+  "code1_px": 20491,
+  "code2_px": 61664,
+  "code2_within_halo_px": 2629,
+  "code2_beyond_halo_px": 59035,
+  "label_px": 60988
+ },
+ "surrogate_caveat": "SGMC is pre-Quaternary bedrock structure and contacts (DOI 10.3133/ds1052): beating NULL here is necessary but not sufficient for finding young hidden faults. This arm is a screen.",
+ "masking": "catalogue + 3-px credit halo removed from prediction and truth",
+ "budgets": {
+  "sparse_matched_truth_px": 59002,
+  "dense_competition_like": 151734,
+  "dense_fraction_of_scorable": 0.033
+ },
+ "relay_bridge_geometry": {
+  "n_bridges": 345,
+  "bridge_px": 7981
+ },
+ "hypotheses": {
+  "NULL_random": {
+   "sparse_matched_truth_px": {
+    "dti": 0.245721949311214,
+    "bootstrap": {
+     "mean": 0.2440412410114421,
+     "lo": 0.2251090925049729,
+     "hi": 0.2624774366336819,
+     "note": "block-bootstrap over 4x4 crop sufficient statistics"
+    },
+    "emitted_px": 59002,
+    "tp_w": 15122.6767578125,
+    "fp_w": 56588.61328125,
+    "fn_w": 43879.3232421875,
+    "tp_per_emitted_px": 0.2563078668148961,
+    "break_even": 0.051684387553987195
+   },
+   "dense_competition_like": {
+    "dti": 0.37191427680813505,
+    "bootstrap": {
+     "mean": 0.36891090366738305,
+     "lo": 0.326702495935141,
+     "hi": 0.4128516636923133,
+     "note": "block-bootstrap over 4x4 crop sufficient statistics"
+    },
+    "emitted_px": 151734,
+    "tp_w": 30650.1953125,
+    "fp_w": 145401.75,
+    "fn_w": 28351.8046875,
+    "tp_per_emitted_px": 0.2019995209544334,
+    "break_even": 0.08036028264222296
+   },
+   "field_support_px": 12279160
+  },
+  "BASE_distance_to_catalogue": {
+   "sparse_matched_truth_px": {
+    "dti": 0.08052738319908131,
+    "bootstrap": {
+     "mean": 0.08027794007612499,
+     "lo": 0.07325409579499395,
+     "hi": 0.0882328303008377,
+     "note": "block-bootstrap over 4x4 crop sufficient statistics"
+    },
+    "emitted_px": 59002,
+    "tp_w": 4783.765625,
+    "fp_w": 56235.49609375,
+    "fn_w": 54218.234375,
+    "tp_per_emitted_px": 0.0810780248974611,
+    "break_even": 0.016369108941488006
+   },
+   "dense_competition_like": {
+    "dti": 0.09487716991052714,
+    "bootstrap": {
+     "mean": 0.0946960791869746,
+     "lo": 0.08732437537091255,
+     "hi": 0.10295038181994658,
+     "note": "block-bootstrap over 4x4 crop sufficient statistics"
+    },
+    "emitted_px": 151734,
+    "tp_w": 7362.79296875,
+    "fp_w": 144646.3125,
+    "fn_w": 51639.20703125,
+    "tp_per_emitted_px": 0.04852434502978897,
+    "break_even": 0.019342465662332154
+   },
+   "field_support_px": 12279160
+  },
+  "H2_tilt_lineament": {
+   "sparse_matched_truth_px": {
+    "dti": 0.015536549614281152,
+    "bootstrap": {
+     "mean": 0.015635477553142766,
+     "lo": 0.008171210595295748,
+     "hi": 0.025052211780150893,
+     "note": "block-bootstrap over 4x4 crop sufficient statistics"
+    },
+    "emitted_px": 59002,
+    "tp_w": 912.8516235351562,
+    "fp_w": 56854.6796875,
+    "fn_w": 58089.148376464844,
+    "tp_per_emitted_px": 0.015471536956970209,
+    "break_even": 0.0031169953935721744
+   },
+   "dense_competition_like": {
+    "dti": 0.01895871673947699,
+    "bootstrap": {
+     "mean": 0.018981981472395437,
+     "lo": 0.010515381356735883,
+     "hi": 0.026389772083547612,
+     "note": "block-bootstrap over 4x4 crop sufficient statistics"
+    },
+    "emitted_px": 151734,
+    "tp_w": 1460.575439453125,
+    "fp_w": 147730.34375,
+    "fn_w": 57541.424560546875,
+    "tp_per_emitted_px": 0.009625894258723325,
+    "break_even": 0.0038061753881041657
+   },
+   "field_support_px": 12279160
+  },
+  "H2b_supplied_tmi_hg": {
+   "sparse_matched_truth_px": {
+    "dti": 0.040451080751015105,
+    "bootstrap": {
+     "mean": 0.04099798767870164,
+     "lo": 0.01831260273598863,
+     "hi": 0.06511658124016798,
+     "note": "block-bootstrap over 4x4 crop sufficient statistics"
+    },
+    "emitted_px": 59002,
+    "tp_w": 2384.896728515625,
+    "fp_w": 56394.8671875,
+    "fn_w": 56617.103271484375,
+    "tp_per_emitted_px": 0.040420608259306885,
+    "break_even": 0.008156201583982064
+   },
+   "dense_competition_like": {
+    "dti": 0.07047535203961407,
+    "bootstrap": {
+     "mean": 0.07010425048158375,
+     "lo": 0.03835215118020206,
+     "hi": 0.10011559615673682,
+     "note": "block-bootstrap over 4x4 crop sufficient statistics"
+    },
+    "emitted_px": 151734,
+    "tp_w": 5446.357421875,
+    "fp_w": 144947.21875,
+    "fn_w": 53555.642578125,
+    "tp_per_emitted_px": 0.035894113526796896,
+    "break_even": 0.01429658173405697
+   },
+   "field_support_px": 5165852
+  },
+  "H3_relay_bridge": {
+   "sparse_matched_truth_px": {
+    "dti": 0.01091742358305789,
+    "bootstrap": {
+     "mean": 0.010565156011729733,
+     "lo": 0.005081490810732113,
+     "hi": 0.015984405502819977,
+     "note": "block-bootstrap over 4x4 crop sufficient statistics"
+    },
+    "emitted_px": 59002,
+    "tp_w": 642.6469116210938,
+    "fp_w": 57671.04296875,
+    "fn_w": 58359.353088378906,
+    "tp_per_emitted_px": 0.010891951317262021,
+    "break_even": 0.002188262754892817
+   },
+   "dense_competition_like": {
+    "dti": 0.01402697281901828,
+    "bootstrap": {
+     "mean": 0.013493506275357574,
+     "lo": 0.005352416709533432,
+     "hi": 0.021213155051502525,
+     "note": "block-bootstrap over 4x4 crop sufficient statistics"
+    },
+    "emitted_px": 151734,
+    "tp_w": 1082.784912109375,
+    "fp_w": 148874.5,
+    "fn_w": 57919.215087890625,
+    "tp_per_emitted_px": 0.007136073075970943,
+    "break_even": 0.0028132869437019377
+   },
+   "field_support_px": 12279160
+  },
+  "H4_strain_jog": {
+   "sparse_matched_truth_px": {
+    "dti": 0.04059336083801996,
+    "bootstrap": {
+     "mean": 0.04066641415437727,
+     "lo": 0.02155650649241843,
+     "hi": 0.059864608190723125,
+     "note": "block-bootstrap over 4x4 crop sufficient statistics"
+    },
+    "emitted_px": 59002,
+    "tp_w": 2397.723388671875,
+    "fp_w": 56928.703125,
+    "fn_w": 56604.276611328125,
+    "tp_per_emitted_px": 0.04063800190962806,
+    "break_even": 0.008185124510152944
+   },
+   "dense_competition_like": {
+    "dti": 0.06174575376041004,
+    "bootstrap": {
+     "mean": 0.06148093641786554,
+     "lo": 0.040715155356124966,
+     "hi": 0.0784315695723751,
+     "note": "block-bootstrap over 4x4 crop sufficient statistics"
+    },
+    "emitted_px": 151734,
+    "tp_w": 4780.4716796875,
+    "fp_w": 146320.875,
+    "fn_w": 54221.5283203125,
+    "tp_per_emitted_px": 0.031505606388070574,
+    "break_even": 0.012503559088199752
+   },
+   "field_support_px": 12279160
+  },
+  "CTRL_det_elev_slope": {
+   "sparse_matched_truth_px": {
+    "dti": 0.2068510064456517,
+    "bootstrap": {
+     "mean": 0.205063887938778,
+     "lo": 0.17807419943082556,
+     "hi": 0.22726559362398982,
+     "note": "block-bootstrap over 4x4 crop sufficient statistics"
+    },
+    "emitted_px": 59002,
+    "tp_w": 12478.482421875,
+    "fp_w": 53143.2421875,
+    "fn_w": 46523.517578125,
+    "tp_per_emitted_px": 0.21149253282727704,
+    "break_even": 0.043155555298576655
+   },
+   "dense_competition_like": {
+    "dti": 0.28173327260213576,
+    "bootstrap": {
+     "mean": 0.2789615674154508,
+     "lo": 0.24035459152104827,
+     "hi": 0.31094285916236836,
+     "note": "block-bootstrap over 4x4 crop sufficient statistics"
+    },
+    "emitted_px": 151734,
+    "tp_w": 22242.171875,
+    "fp_w": 136487.9375,
+    "fn_w": 36759.828125,
+    "tp_per_emitted_px": 0.1465866046831956,
+    "break_even": 0.0597111797360198
+   },
+   "field_support_px": 5165852
+  },
+  "REFERENCE_support": {
+   "sparse_matched_truth_px": {
+    "dti": 0.1402264909552016,
+    "bootstrap": {
+     "mean": 0.13783594614659656,
+     "lo": 0.08037452459282063,
+     "hi": 0.18891253006448952,
+     "note": "block-bootstrap over 4x4 crop sufficient statistics"
+    },
+    "emitted_px": 59002,
+    "tp_w": 8393.09765625,
+    "fp_w": 54868.234375,
+    "fn_w": 50608.90234375,
+    "tp_per_emitted_px": 0.14225107040863022,
+    "break_even": 0.028854532149331272
+   },
+   "dense_competition_like": {
+    "dti": 0.18541234030852174,
+    "bootstrap": {
+     "mean": 0.18553564272169637,
+     "lo": 0.15572861822264492,
+     "hi": 0.21117073616111945,
+     "note": "block-bootstrap over 4x4 crop sufficient statistics"
+    },
+    "emitted_px": 151734,
+    "tp_w": 14632.8017578125,
+    "fp_w": 143960.8125,
+    "fn_w": 44369.1982421875,
+    "tp_per_emitted_px": 0.09643719771318557,
+    "break_even": 0.038510533697584205
+   },
+   "field_support_px": 12279160
+  }
+ },
+ "lifts_vs_null": {
+  "CTRL_det_elev_slope": {
+   "dense_lift_vs_null": 0.7575220693866445,
+   "sparse_lift_vs_null": 0.8418092361121101
+  },
+  "REFERENCE_support": {
+   "dense_lift_vs_null": 0.4985351514326866,
+   "sparse_lift_vs_null": 0.5706714086725752
+  },
+  "BASE_distance_to_catalogue": {
+   "dense_lift_vs_null": 0.25510494172148396,
+   "sparse_lift_vs_null": 0.32771750112193293
+  },
+  "H2b_supplied_tmi_hg": {
+   "dense_lift_vs_null": 0.18949353771641103,
+   "sparse_lift_vs_null": 0.16462135704361777
+  },
+  "H4_strain_jog": {
+   "dense_lift_vs_null": 0.16602146680231838,
+   "sparse_lift_vs_null": 0.1652003858499726
+  },
+  "H2_tilt_lineament": {
+   "dense_lift_vs_null": 0.05097603916199621,
+   "sparse_lift_vs_null": 0.06322817175198159
+  },
+  "H3_relay_bridge": {
+   "dense_lift_vs_null": 0.03771560731521631,
+   "sparse_lift_vs_null": 0.044429989317847446
+  }
+ },
+ "ranked_by_dense_DTI": [
+  "CTRL_det_elev_slope",
+  "REFERENCE_support",
+  "BASE_distance_to_catalogue",
+  "H2b_supplied_tmi_hg",
+  "H4_strain_jog",
+  "H2_tilt_lineament",
+  "H3_relay_bridge"
+ ],
+ "preregistered_predictions": {
+  "text": "H2 >= 1.5x NULL; H3 > NULL; reference <= 1.2x NULL (dense)",
+  "direction": "up for H2/H3; flat for reference",
+  "rough_size": "NULL 0.05-0.10; H2/H3 0.10-0.25 dense DTI"
+ },
+ "predictions_held": {
+  "H2_at_least_1.5x_null": false,
+  "H3_above_null": false,
+  "reference_within_1.2x_null": true
+ },
+ "decision": {
+  "best_candidate": "CTRL_det_elev_slope",
+  "best_dense_DTI": 0.28173327260213576,
+  "null_dense_DTI": 0.37191427680813505,
+  "verdict": "No detector beat uniform random on off-catalogue structure. Documented negative result: local signals carry no discovery skill visible to this screen; external data (radiometrics, 1 m lidar) is the redirected path."
+ },
+ "generated_utc": "2026-09-30T02:38:18Z",
+ "runtime_seconds": 130.6
+}
