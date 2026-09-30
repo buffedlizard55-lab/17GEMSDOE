@@ -1,0 +1,152 @@
+{
+ "hypothesis": "H-SUP: catalogue-expression model recovers withheld segments from geophysics alone (no location features)",
+ "preregistered_predictions": {
+  "p1": "mean fold dense DTI >= 0.1253 (current holdout best)",
+  "direction": "up",
+  "rough_size": "0.13-0.20 dense",
+  "p2": "surrogate dense DTI > reference support's 0.1854"
+ },
+ "features": [
+  "tc",
+  "tmi_hg",
+  "tmi_vg",
+  "mag_anom",
+  "rtp",
+  "iso_grav_anom_hg",
+  "iso_grav_anom_slope",
+  "det_elev_slope",
+  "det_elev",
+  "geod_2ndinv",
+  "geod_shearrate",
+  "geod_dilaterate",
+  "cond_surf",
+  "depth_to_base_surf",
+  "gradmag(tc,2)",
+  "gradmag(det_elev,2)"
+ ],
+ "n_features": 16,
+ "leakage_controls": [
+  "no location/distance features",
+  "training positives = visible catalogue only",
+  "corridor features NaN at training and inference",
+  "frozen scoring protocol with pixel-exact catalogue masking"
+ ],
+ "folds": [
+  {
+   "fold": 0,
+   "truth_px": 9837,
+   "sparse_matched_truth_px": {
+    "dti": 0.11998567399114154,
+    "tp_w": 1117.0,
+    "fp_w": 6082.2236328125,
+    "fn_w": 8720.0,
+    "truth_px": 9837,
+    "emitted_px": 9716,
+    "tp_per_emitted_px": 0.11496500617538082,
+    "break_even": 0.024587156097402765
+   },
+   "dense_competition_like": {
+    "dti": 0.27998893507181183,
+    "tp_w": 9837.0,
+    "fp_w": 126482.65625,
+    "fn_w": 0.0,
+    "truth_px": 9837,
+    "emitted_px": 158839,
+    "tp_per_emitted_px": 0.06193063416415364,
+    "break_even": 0.059319550573145044
+   }
+  },
+  {
+   "fold": 1,
+   "truth_px": 8843,
+   "sparse_matched_truth_px": {
+    "dti": 0.1244943759853793,
+    "tp_w": 1042.6666259765625,
+    "fp_w": 5461.38671875,
+    "fn_w": 7800.3333740234375,
+    "truth_px": 8843,
+    "emitted_px": 8808,
+    "tp_per_emitted_px": 0.11837722819897395,
+    "break_even": 0.02553465949709383
+   },
+   "dense_competition_like": {
+    "dti": 0.2538197620107781,
+    "tp_w": 8843.0,
+    "fp_w": 129983.4140625,
+    "fn_w": 0.0,
+    "truth_px": 8843,
+    "emitted_px": 158897,
+    "tp_per_emitted_px": 0.05565240375840953,
+    "break_even": 0.053478744860796096
+   }
+  },
+  {
+   "fold": 2,
+   "truth_px": 10145,
+   "sparse_matched_truth_px": {
+    "dti": 0.10491257842494452,
+    "tp_w": 1011.0,
+    "fp_w": 6591.9736328125,
+    "fn_w": 9134.0,
+    "truth_px": 10145,
+    "emitted_px": 10083,
+    "tp_per_emitted_px": 0.10026777744718833,
+    "break_even": 0.02143221752537927
+   },
+   "dense_competition_like": {
+    "dti": 0.28854134280868726,
+    "tp_w": 10145.0,
+    "fp_w": 125073.03125,
+    "fn_w": 0.0,
+    "truth_px": 10145,
+    "emitted_px": 159964,
+    "tp_per_emitted_px": 0.0634205196169138,
+    "break_even": 0.0612424651903235
+   }
+  },
+  {
+   "fold": 3,
+   "truth_px": 10485,
+   "sparse_matched_truth_px": {
+    "dti": 0.10854890552604629,
+    "tp_w": 1080.0,
+    "fp_w": 6727.162109375,
+    "fn_w": 9405.0,
+    "truth_px": 10485,
+    "emitted_px": 10435,
+    "tp_per_emitted_px": 0.10349784379492094,
+    "break_even": 0.022191554904571746
+   },
+   "dense_competition_like": {
+    "dti": 0.2958280938291297,
+    "tp_w": 10485.0,
+    "fp_w": 124789.40625,
+    "fn_w": 0.0,
+    "truth_px": 10485,
+    "emitted_px": 159599,
+    "tp_per_emitted_px": 0.06569590035025281,
+    "break_even": 0.06288632722819214
+   }
+  }
+ ],
+ "mean_dense_DTI": 0.2795445334301017,
+ "mean_sparse_DTI": 0.11448538348187791,
+ "holdout_best": 0.1253,
+ "gate_cleared": true,
+ "surrogate": {
+  "dense_DTI": 0.12249574888206297,
+  "emitted_px": 151734,
+  "tp_per_emitted_px": 0.06239359977823032,
+  "reference_support_dense_DTI": 0.1854,
+  "null_dense_DTI": 0.3719
+ },
+ "predictions_held": {
+  "p1_holdout_best": true,
+  "p2_surrogate_beats_reference": false
+ },
+ "decision": {
+  "verdict": "Supervised expression model clears the holdout gate; it is the first locally validated candidate and earns union-candidate status under the standing brief.",
+  "generated_utc": "2026-09-30T03:37:29Z",
+  "runtime_seconds": 656.4
+ }
+}

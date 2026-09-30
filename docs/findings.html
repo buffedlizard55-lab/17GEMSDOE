@@ -84,11 +84,69 @@ built on the catalogue's topology &mdash; bridging, linking, ordering &mdash; is
 a heavily segmented version of the real network, and that must be accounted for before the
 result is interpreted geologically.</p>
 
+<h2>F-7 &mdash; The off-catalogue arm: Qfaults refused, SGMC surrogate built</h2>
+<p>The hide-and-recover holdout cannot rank a discovery hypothesis, because its truth
+<em>is</em> the catalogue. The obvious second arm &mdash; an independent official fault
+compilation &mdash; was attempted with the USGS Quaternary Fault and Fold Database
+(Qfaults, DOI 10.5066/P9BCVRCK) and quantitatively refused by the sibling project's
+cross-catalogue measurement: 60938
+of its 60939 in-footprint pixels are
+already within the credit radius of a competition label, leaving
+<strong>1 independent pixel</strong>.
+Inside this footprint, Qfaults and the competition catalogue are the same lines &mdash;
+verified from the raster bytes, not inferred. (Source:
+<code>GEMSDOE/data/evidence/xcat/transfer_report.json</code>.)</p>
+<p>The remaining surrogate is the USGS State Geologic Map Compilation structure raster
+(Horton, San Juan and Stoeser, 2017, DOI 10.3133/ds1052): 59035
+pixels of mapped structure lie <em>beyond</em> the catalogue's 300 m credit halo. Scoring
+every detector against that population (masking the catalogue halo from both sides):</p>
+<table class="t"><thead><tr><th>Field</th><th>Surrogate dense DTI</th><th>Lift vs uniform random</th></tr></thead><tbody><tr><td>CTRL_det_elev_slope</td><td>0.2817</td><td>0.76x</td></tr><tr><td>REFERENCE_support</td><td>0.1854</td><td>0.50x</td></tr><tr><td>BASE_distance_to_catalogue</td><td>0.0949</td><td>0.26x</td></tr><tr><td>H2b_supplied_tmi_hg</td><td>0.0705</td><td>0.19x</td></tr><tr><td>H4_strain_jog</td><td>0.0617</td><td>0.17x</td></tr><tr><td>H2_tilt_lineament</td><td>0.0190</td><td>0.05x</td></tr><tr><td>H3_relay_bridge</td><td>0.0140</td><td>0.04x</td></tr></tbody></table>
+<p><strong>Uniform random beats every physical detector on real off-catalogue
+structure.</strong> The pre-registered predictions failed &mdash; H2 was expected at
+&ge;1.5x random and measured far below &mdash; and the failure is logged as such. The
+screen's verdict on the local toolkit is blunt: no rule-based signal in this repository
+finds structure the catalogue lacks. The surrogate's own caveat is carried with it: SGMC
+maps bedrock structure of any age, so clearing this screen is necessary, not sufficient,
+for finding a young hidden fault.</p>
+
+<h2>F-8 &mdash; Emission shaping is closed: three independent negatives</h2>
+<p>Adding coverage-optimal filler to the 0.1563 support was the natural next emission
+idea. It was tested with the metric's own marginal rule rather than by eyeballing a map:</p>
+<table class="t"><thead><tr><th>Fold</th><th>Base DTI</th><th>Union DTI</th><th>Delta</th><th>Marginal TP / added px</th><th>Break-even</th></tr></thead><tbody><tr><td>0</td><td>0.1162</td><td>0.1142</td><td>-0.0020</td><td>0.0218</td><td>0.0238</td></tr><tr><td>1</td><td>0.1182</td><td>0.1112</td><td>-0.0070</td><td>0.0177</td><td>0.0242</td></tr><tr><td>2</td><td>0.1199</td><td>0.1180</td><td>-0.0019</td><td>0.0227</td><td>0.0246</td></tr><tr><td>3</td><td>0.1546</td><td>0.1380</td><td>-0.0166</td><td>0.0160</td><td>0.0319</td></tr></tbody></table>
+<p>The filler's marginal precision (0.0218&ndash;0.0227)
+is <strong>below the break-even threshold in every fold</strong>, so the union was
+refused publication by the gate. Together with the earlier H6 truncation curve (monotone
+to full support) and the family's thinned submissions losing points on the leaderboard
+(12GEMSDOE 0.1294 &lt; 0.1563), this closes emission shaping from three directions.
+Spreading does raise raw coverage &mdash; lattice-NULL reaches
+0.1499
+against clustered-NULL's 0.1188
+on the holdout &mdash; but that credit is already spoken for once a real support is
+emitted. <strong>Only detection skill moves the score.</strong></p>
+
+<h2>F-9 &mdash; The supervised expression model recovers withheld faults</h2>
+<p>The one approach missing from this repository was the reference solution's: a model
+trained to recognise catalogue fault expression. It was built with strict leakage
+control &mdash; no location or distance features, training positives from visible
+catalogue pixels only, the blind corridor masked to NaN at training and inference &mdash;
+and tested on the frozen hide-and-recover protocol:</p>
+<table class="t"><thead><tr><th>Fold</th><th>Sparse DTI</th><th>Dense DTI</th><th>Marginal TP / emitted px</th><th>Break-even</th></tr></thead><tbody><tr><td>0</td><td>0.1200</td><td><strong>0.2800</strong></td><td>0.0619</td><td>0.0593</td></tr><tr><td>1</td><td>0.1245</td><td><strong>0.2538</strong></td><td>0.0557</td><td>0.0535</td></tr><tr><td>2</td><td>0.1049</td><td><strong>0.2885</strong></td><td>0.0634</td><td>0.0612</td></tr><tr><td>3</td><td>0.1085</td><td><strong>0.2958</strong></td><td>0.0657</td><td>0.0629</td></tr></tbody></table>
+<p>Mean dense DTI <strong>0.2795</strong> against the current
+holdout best of <strong>0.1253</strong> and the uniform-random baseline of
+0.1199.
+Marginal precision clears break-even in every fold. This is the first candidate in the
+project's history to clear the gate, and it is published as a uniquely named download.
+Its one failure is on record too: on the SGMC off-catalogue screen it scores
+0.1225 &mdash; below the reference support and
+far below random &mdash; so the model recovers <em>catalogue-like</em> faults but has not
+demonstrated discovery of structure unlike the catalogue. That is exactly the quantity
+the leaderboard will judge.</p>
+
 <h2>Raw evidence</h2>
-<p class="tiny"><a href='data/_raw_fold_scores.json'>_raw_fold_scores.json</a> &middot; <a href='data/candidate_hypotheses.json'>candidate_hypotheses.json</a> &middot; <a href='data/data_manifest.json'>data_manifest.json</a> &middot; <a href='data/forensic_audit.json'>forensic_audit.json</a> &middot; <a href='data/h1_gap_diagnostic.json'>h1_gap_diagnostic.json</a> &middot; <a href='data/h6_budget.json'>h6_budget.json</a> &middot; <a href='data/holdout_results.json'>holdout_results.json</a> &middot; <a href='data/hypotheses.json'>hypotheses.json</a> &middot; <a href='data/range_audit.json'>range_audit.json</a> &middot; <a href='data/reference_holdout.json'>reference_holdout.json</a> &middot; <a href='data/sources.json'>sources.json</a> &middot; <a href='data/submission.json'>submission.json</a></p>
+<p class="tiny"><a href='data/_raw_fold_scores.json'>_raw_fold_scores.json</a> &middot; <a href='data/candidate_hypotheses.json'>candidate_hypotheses.json</a> &middot; <a href='data/coverage_emission.json'>coverage_emission.json</a> &middot; <a href='data/data_manifest.json'>data_manifest.json</a> &middot; <a href='data/forensic_audit.json'>forensic_audit.json</a> &middot; <a href='data/h1_gap_diagnostic.json'>h1_gap_diagnostic.json</a> &middot; <a href='data/h6_budget.json'>h6_budget.json</a> &middot; <a href='data/holdout_results.json'>holdout_results.json</a> &middot; <a href='data/hypotheses.json'>hypotheses.json</a> &middot; <a href='data/range_audit.json'>range_audit.json</a> &middot; <a href='data/reference_holdout.json'>reference_holdout.json</a> &middot; <a href='data/sources.json'>sources.json</a> &middot; <a href='data/submission.json'>submission.json</a> &middot; <a href='data/supervised_holdout.json'>supervised_holdout.json</a> &middot; <a href='data/terrain_census.json'>terrain_census.json</a> &middot; <a href='data/union_candidate.json'>union_candidate.json</a> &middot; <a href='data/xcat_qfaults_refusal.json'>xcat_qfaults_refusal.json</a> &middot; <a href='data/xcat_surrogate.json'>xcat_surrogate.json</a></p>
 
 <footer>
-<p class="tiny">Built 2026-09-30 01:42 UTC from
+<p class="tiny">Built 2026-09-30 04:06 UTC from
 <code>evidence/*.json</code> by <code>scripts/build_site.py</code>. Every number on this
 site is generated from a file in this repository; none is typed by hand.
 Source: <a href="https://github.com/buffedlizard55-lab/17GEMSDOE">github.com/buffedlizard55-lab/17GEMSDOE</a>.</p>

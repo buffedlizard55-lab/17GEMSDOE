@@ -143,8 +143,17 @@ def main() -> int:
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     # One timestamp for the whole build. An earlier revision read the clock again
     # for the final copy, so a run left two files with different names behind.
-    tmp = build / "candidate.tif"
-    rep = io.write_submission(tmp, field, sample)
+    #
+    # The PRIMARY published file is the all-finite variant. The operator's upload
+    # was rejected with "Predicted values must be in range [0, 1]" -- the exact
+    # text a naive range check prints when it evaluates NaN >= 0 as False on the
+    # out-of-footprint cells the sample submission itself marks NaN. An all-finite
+    # raster in [0, 1] cannot trigger that error under any validator, and the
+    # cells in question lie outside the scored bounds, so 0.0 there costs
+    # nothing. The NaN-footprint twin is kept as the secondary artifact for a
+    # form that requires the sample's convention exactly.
+    tmp = build / "candidate_allfinite.tif"
+    rep = io.write_submission(tmp, field, sample, all_finite=True)
 
     if not rep["ok"]:
         print("BUILD FAILED the format gate; nothing was published:")
@@ -170,13 +179,12 @@ def main() -> int:
         print("published copy failed re-validation; removed")
         return 1
 
-    # A second copy with no non-finite value anywhere. Kept because the operator
-    # was rejected once with "Predicted values must be in range [0, 1]" and a
-    # validator that does not honour nodata would reject a NaN
-    # out-of-footprint cell even though the sample submission uses exactly that.
-    alt_tmp = build / "candidate_allfinite.tif"
-    io.write_submission(alt_tmp, field, sample, all_finite=True)
-    alt_name = f"17GEMSDOE_{provenance}_allfinite_{stamp}"
+    # Secondary: the same prediction with the sample submission's exact NaN
+    # footprint (NaN outside the bounds), for a form that rejects finite values
+    # there. Published so both conventions are one click away.
+    alt_tmp = build / "candidate_nanfootprint.tif"
+    io.write_submission(alt_tmp, field, sample, all_finite=False)
+    alt_name = f"17GEMSDOE_{provenance}_nanfootprint_{stamp}"
     alt_tif = out_dir / f"{alt_name}.tif"
     shutil.copy2(alt_tmp, alt_tif)
     rep_alt = io.validate_submission(alt_tif, sample)
@@ -185,11 +193,16 @@ def main() -> int:
     if not rep_alt["ok"]:
         alt_tif.unlink(missing_ok=True)
         rep_alt = None
-        print("note: the all-finite variant failed the gate and was not published")
+        print("note: the NaN-footprint variant failed the gate and was not published")
 
+    # The rebuilt file is never byte-identical to the anchor (the encoding
+    # differs); what decides whether a re-upload reproduces 0.1563 is whether
+    # the prediction SUPPORT equals the anchor's. In reference mode it does by
+    # construction; a validated union would change it.
+    same_score_as_anchor = (args.source == "reference")
     comment = args.comment or (
-        f"{provenance}: reference ens12 support (public 0.1563), format-verified "
-        f"float32 [0,1], {int(support.sum()):,} px")
+        f"A-verified 0.1563-support rebuild (all-finite [0,1], {int(support.sum()):,} px, "
+        f"{rep2['sha256'][:8]}, {stamp[:8]})")
     sidecar = {
         "submission_name": name,
         "comment": comment,
@@ -206,10 +219,18 @@ def main() -> int:
         "fallback": (None if rep_alt is None else {
             "file": alt_tif.name, "sha256": rep_alt["sha256"],
             "bytes": rep_alt["bytes"], "note":
-                "Identical prediction with no non-finite value anywhere, for a "
-                "form that does not honour nodata. Upload the primary file first; "
-                "use this one only if the primary is rejected."}),
+                "Same prediction with the sample submission's exact NaN "
+                "footprint (NaN outside the scored bounds). Upload the primary "
+                "file first; use this one only if the form objects to finite "
+                "values outside the bounds."}),
         "anchor_sha256": ANCHOR_SHA256,
+        "support_equals_anchor": same_score_as_anchor,
+        "anchor_warning": (None if not same_score_as_anchor else
+            "This file's prediction support equals the reference field that "
+            "already holds 0.1563 on the leaderboard. It is the format-verified "
+            "safe download, NOT a new score attempt: uploading it will reproduce "
+            "0.1563 by construction. Wait for a validated-union build (unique "
+            "hash in the name) before spending a slot on score movement."),
         "built_utc": stamp,
         "how_to_submit": [
             "Download the .tif (or the .zip containing it).",
@@ -239,6 +260,7 @@ def main() -> int:
         "bytes": rep2["bytes"],
         "positive_pixels": sidecar["positive_pixels"],
         "value_range": sidecar["value_range"],
+        "format_checks_passed": sidecar["format_checks_passed"],
         "format_checks_failed": sidecar["format_checks_failed"],
         "holdout_score": args.holdout_score,
         "reference_anchor_sha256": ANCHOR_SHA256,
@@ -258,7 +280,8 @@ def main() -> int:
         print(f"  fallback      {alt_tif.name}")
         print(f"                {rep_alt['bytes']:,} bytes, "
               f"{len([k for k,v in rep_alt['checks'].items() if v['ok']])} checks passed, "
-              f"{len(rep_alt['checks'])} total, no NaN anywhere")
+              f"{len(rep_alt['checks'])} total, NaN footprint matches the sample "
+              f"submission exactly")
     return 0
 
 

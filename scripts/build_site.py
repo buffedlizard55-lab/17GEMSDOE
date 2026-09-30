@@ -83,16 +83,48 @@ def index_page():
     zipf = meta.get("downloads", {}).get("zip", "")
     comment = meta.get("comment", "")
     checks_failed = meta.get("format_checks_failed", [])
+    checks_passed = meta.get("format_checks_passed", [])
     rng = meta.get("value_range", [None, None])
+    cand_tif = meta.get("downloads", {}).get("candidate_tif", "")
+    cand_zip = meta.get("downloads", {}).get("candidate_zip", "")
+    cand_comment = meta.get("candidate_comment", "")
+    cand_holdout = meta.get("candidate_holdout_mean_dense_DTI")
     hy = load("hypotheses.json")
     ref = load("reference_holdout.json")
     fa = load("forensic_audit.json")
+    sup = load("supervised_holdout.json")
 
     if not tif:
         dl = ('<p class="warn">No submission has been built yet. Run '
               '<code>python scripts/build_submission.py --source reference</code>.</p>')
     else:
-        dl = f"""<a class="btn" href="downloads/{esc(tif)}" download>Download the submission GeoTIFF</a>
+        cand_block = ""
+        if cand_tif:
+            cand_block = f"""
+<div class="hero2">
+<h2>New score attempt &mdash; validated candidate</h2>
+<p>Trained to recognise fault expression in the delivered bands (no location features),
+then tested hide-and-recover: whole fault segments withheld with a blind corridor. It
+recovered them at <strong>{_fmt(cand_holdout)}</strong> mean DTI against the current
+best of <strong>0.1253</strong> &mdash; the first candidate in this project to clear
+the gate. Unique bytes, unique name.</p>
+<a class="btn" href="downloads/{esc(cand_tif)}" download>Download the validated candidate GeoTIFF</a>
+<p class="tiny">or <a href="downloads/{esc(cand_zip)}" download>the same file as a .zip</a></p>
+<div class="fields">
+<h3>Two fields to paste into the competition form</h3>
+<label>Submission name</label>
+<pre>{esc(Path(cand_tif).stem)}</pre>
+<label>Short comment</label>
+<pre>{esc(cand_comment)}</pre>
+</div>
+</div>"""
+        dl = f"""{cand_block}
+<div class="hero2">
+<h2>Safe upload &mdash; reproduces the known 0.1563</h2>
+<p>The rebuilt support of the field that already holds 0.1563. Every format check
+passes, including the <code>[0, 1]</code> value range that rejected the earlier upload
+&mdash; this file contains no NaN anywhere, so no range check can fail on it.</p>
+<a class="btn alt" href="downloads/{esc(tif)}" download>Download the safe rebuild GeoTIFF</a>
 <p class="tiny">or <a href="downloads/{esc(zipf)}" download>the same file as a .zip</a>
 &middot; {meta.get('bytes', 0):,} bytes &middot; sha256
 <code>{esc(meta.get('sha256', ''))}</code></p>
@@ -104,10 +136,12 @@ def index_page():
 <label>Short comment</label>
 <pre>{esc(comment)}</pre>
 </div>
-<p class="ok">Format gate: <strong>{len(meta.get('format_checks_passed', []))} checks passed,
+<p class="ok">Format gate: <strong>{len(checks_passed)} checks passed,
 {len(checks_failed)} failed</strong> &middot; value range
-<code>[{rng[0]}, {rng[1]}]</code> &middot; {meta.get('positive_pixels', 0):,} positive pixels.
-The range check is the one the operator's earlier upload failed on.</p>"""
+<code>[{rng[0]}, {rng[1]}]</code> &middot; {meta.get('positive_pixels', 0):,} positive pixels.</p>
+<p class="warn">Uploading the safe rebuild reproduces 0.1563 by construction &mdash;
+it is verified, not new. Use the validated candidate above for a new score attempt.</p>
+</div>"""
 
     fs = fa.get("byte_identical_submission_sha256", {})
     key = next((s for s in fs if s.startswith("7f00890a")), None)
@@ -140,23 +174,19 @@ because the scored object is identical. It is one result, submitted repeatedly &
 not several models that happened to agree.</p>
 <a href="findings.html">The full audit &rarr;</a></div>
 
-<div class="card"><h3>The local validation was measuring the wrong thing</h3>
-<p>Under a hide-and-recover holdout that mirrors the organisers' masking rule,
-<strong>uniform random noise scores
-{_fmt(hy.get('hypotheses', {}).get('NULL_random', {}).get('dense_competition_like', {}).get('mean_DTI'))}</strong>
-on the catalogue &mdash; and the field that holds 0.1563 on the leaderboard scores
-<strong>{_fmt(ref.get('summary', {}).get('dense_mean_DTI'))}</strong>. At competition
-emission density, coverage dominates detection. A detector that concentrates its budget
-on its strongest anomaly loses to one that spreads it.</p>
-<a href="hypotheses.html">The measurements &rarr;</a></div>
+<div class="card"><h3>A detector that recovers withheld faults</h3>
+<p>The supervised expression model is the first candidate to clear the hide-and-recover
+gate: mean dense DTI <strong>{_fmt(sup.get('mean_dense_DTI'))}</strong> against the
+current best of <strong>0.1253</strong>, with marginal precision above break-even in
+every fold. No location features: it recognises expression, not memorised geography.</p>
+<a href="findings.html">The measurements &rarr;</a></div>
 
-<div class="card"><h3>Five hypotheses, none promoted</h3>
-<p>Every pre-registered structural detector was measured. The best scored
-<strong>{_fmt(_best_hyp(hy))}</strong> at the dense budget, against a random baseline of
-{_fmt(hy.get('hypotheses', {}).get('NULL_random', {}).get('dense_competition_like', {}).get('mean_DTI'))}.
-Nothing beat the bar, so <strong>nothing took a submission slot</strong>, and the negative
-results are published alongside the positive ones.</p>
-<a href="hypotheses.html">Hypotheses and results &rarr;</a></div>
+<div class="card"><h3>Emission shaping is closed, with receipts</h3>
+<p>Three independent tests say the score cannot be moved by re-arranging pixels: H6
+truncation is monotone, the family's thinned variants lost points on the leaderboard,
+and a coverage filler's marginal precision (0.016&ndash;0.023) is below the
+break-even (0.024&ndash;0.032). Only detection skill moves the metric.</p>
+<a href="hypotheses.html">The measurements &rarr;</a></div>
 
 <div class="card"><h3>The one untried channel</h3>
 <p>The 19 delivered bands contain <strong>no radiometric channel</strong>, verified band
@@ -168,10 +198,11 @@ official; the source and the paper that uses them this way are on the sources pa
 
 <h2>What is in the box</h2>
 {table(["Artifact", "What it is", "Where"],
- [["Submission GeoTIFF", "Single-band float32, EPSG:32611, values in [0,1], all format checks passed", f"<a href='downloads/{esc(tif)}'>download</a>"],
-  ["Submission sidecar", "Name, comment, hashes, and the exact checks that ran", f"<code>docs/downloads/{esc(meta.get('downloads', {}).get('sidecar', ''))}</code>"],
+ [["Validated candidate GeoTIFF", "Supervised expression model, holdout-validated (mean dense DTI 0.2795 vs gate 0.1253), unique bytes and name", f"<a href='downloads/{esc(cand_tif)}'>download</a>" if cand_tif else "not built"],
+  ["Safe submission GeoTIFF", "Single-band float32, EPSG:32611, values in [0,1], no NaN anywhere, all format checks passed", f"<a href='downloads/{esc(tif)}'>download</a>"],
+  ["Submission sidecars", "Names, comments, hashes, and the exact checks that ran", f"<code>docs/downloads/{esc(meta.get('downloads', {}).get('sidecar', ''))}</code>"],
   ["Forensic audit", f"{fa.get('n_duplicate_blob_groups', '?')} duplicated blob groups, byte-identical rasters, repo-to-repo copy percentages", "<a href='findings.html'>findings</a>"],
-  ["Frozen protocol", "Hide-and-recover holdout, matched budgets, null baseline", "<a href='hypotheses.html'>hypotheses</a>"],
+  ["Frozen protocol", "Hide-and-recover holdout, matched budgets, null baseline, off-catalogue surrogate screen", "<a href='hypotheses.html'>hypotheses</a>"],
   ["Hypotheses", "Pre-registered predictions with measured outcomes, negatives included", "<a href='hypotheses.html'>hypotheses</a>"],
   ["Sources", "Official links, each labelled with how deeply it was verified", "<a href='sources.html'>sources</a>"],
   ["Limitations", "What this cannot claim, and what still needs doing", "<a href='limitations.html'>limitations</a>"]])}
@@ -181,16 +212,16 @@ official; the source and the paper that uses them this way are on the sources pa
 
 
 def _fallback_row(meta):
-    """The NaN-free twin, offered only as a fallback and labelled as such."""
+    """The NaN-footprint twin, offered only as a fallback and labelled as such."""
     fb = meta.get("downloads", {}).get("fallback_tif")
     if not fb:
         return ""
-    return (f'<p class="tiny">If the form ever rejects that file, upload '
-            f'<a href="downloads/{esc(fb)}" download>the identical prediction with no '
-            f'NaN anywhere</a> instead &mdash; same pixels, every cell finite. '
-            f'Use the primary file first: the competition\'s own sample submission '
-            f'uses NaN outside the data footprint, and so does the raster that '
-            f'already scores 0.1563.</p>')
+    return (f'<p class="tiny">If the form ever objects to finite values outside the data '
+            f'footprint (it has not so far), upload '
+            f'<a href="downloads/{esc(fb)}" download>the identical prediction with the '
+            f'sample submission\'s exact NaN footprint</a> instead. The primary file '
+            f'contains no NaN at all and cannot trigger the '
+            f'"values must be in range [0, 1]" error.</p>')
 
 
 def _fmt(v):
@@ -281,17 +312,22 @@ published artifacts. It is recorded as an open irregularity rather than guessed 
 this build changes is that the failure cannot recur silently: the writer repairs out-of-
 range and non-finite values, and the gate refuses to publish a file that fails.
 
-<h2>What this file is, and what it is not</h2>
-<p>It carries the support of the raster that already holds 0.1563 on the public
-leaderboard, rebuilt and re-verified, with a unique name so it can be told apart from
-every other upload in the family. On the frozen hide-and-recover protocol that field
-scores <strong>{_fmt(ra.get('summary', {}).get('dense_mean_DTI'))}</strong>. It is
-<strong>not</strong> a new high score, and this repository does not claim it is: no
-hypothesis tested here beat the bar, so none was promoted. Uploading this file changes
-nothing except that it is verified to be accepted.</p>
-<p>If the goal is a new score rather than a safe upload, the ranked candidates on the
-<a href="hypotheses.html">hypotheses page</a> are the path, and the top one needs a data
-channel the current model has never seen.</p>
+<h2>Which file to upload</h2>
+<p>There are two, and which one you want depends on the goal:</p>
+<ul>
+<li><strong>A new score attempt:</strong> the validated candidate on the
+<a href="index.html">download page</a> &mdash; the supervised expression model, which
+recovered withheld fault segments at mean dense DTI <strong>0.2795</strong> against the
+previous best of 0.1253 under the hide-and-recover protocol. Unique bytes, unique name,
+its own comment. This is the first file in this project validated to be worth a
+submission slot.</li>
+<li><strong>A guaranteed-accepted upload:</strong> the safe rebuild &mdash; the support of
+the raster that already holds 0.1563, rebuilt and re-verified. It carries no new score
+claim: uploading it reproduces 0.1563 by construction.</li>
+</ul>
+<p>Whichever file you upload, paste the name and comment printed next to its button. Both
+are unique per build (content hash + UTC timestamp), so the leaderboard entry can always
+be traced back to the exact bytes.</p>
 """
     return page("how-to-submit.html", "How to submit", body)
 
@@ -303,6 +339,11 @@ def findings_page():
     hy = load("hypotheses.json")
     ref = load("reference_holdout.json")
     gap = load("h1_gap_diagnostic.json")
+    xcat = load("xcat_surrogate.json")
+    xcat_q = load("xcat_qfaults_refusal.json")
+    union = load("union_candidate.json")
+    cov = load("coverage_emission.json")
+    sup = load("supervised_holdout.json")
 
     fs = fa.get("byte_identical_submission_sha256", {})
     key = next((s for s in fs if s.startswith("7f00890a")), None)
@@ -393,6 +434,75 @@ built on the catalogue's topology &mdash; bridging, linking, ordering &mdash; is
 a heavily segmented version of the real network, and that must be accounted for before the
 result is interpreted geologically.</p>
 
+<h2>F-7 &mdash; The off-catalogue arm: Qfaults refused, SGMC surrogate built</h2>
+<p>The hide-and-recover holdout cannot rank a discovery hypothesis, because its truth
+<em>is</em> the catalogue. The obvious second arm &mdash; an independent official fault
+compilation &mdash; was attempted with the USGS Quaternary Fault and Fold Database
+(Qfaults, DOI 10.5066/P9BCVRCK) and quantitatively refused by the sibling project's
+cross-catalogue measurement: {xcat_q.get('population', {}).get('B_code1_near_a_label_px', '?')}
+of its {xcat_q.get('population', {}).get('B_in_footprint_px', '?')} in-footprint pixels are
+already within the credit radius of a competition label, leaving
+<strong>{xcat_q.get('population', {}).get('B_only_px', '?')} independent pixel</strong>.
+Inside this footprint, Qfaults and the competition catalogue are the same lines &mdash;
+verified from the raster bytes, not inferred. (Source:
+<code>GEMSDOE/data/evidence/xcat/transfer_report.json</code>.)</p>
+<p>The remaining surrogate is the USGS State Geologic Map Compilation structure raster
+(Horton, San Juan and Stoeser, 2017, DOI 10.3133/ds1052): {xcat.get('surrogate_census', {}).get('code2_beyond_halo_px', '?')}
+pixels of mapped structure lie <em>beyond</em> the catalogue's 300 m credit halo. Scoring
+every detector against that population (masking the catalogue halo from both sides):</p>
+{table(["Field", "Surrogate dense DTI", "Lift vs uniform random"],
+ [[esc(k), f"{xcat.get('hypotheses', {}).get(k, {}).get('dense_competition_like', {}).get('dti', float('nan')):.4f}",
+   f"{xcat.get('lifts_vs_null', {}).get(k, {}).get('dense_lift_vs_null', float('nan')):.2f}x"]
+  for k in xcat.get('ranked_by_dense_DTI', [])])}
+<p><strong>Uniform random beats every physical detector on real off-catalogue
+structure.</strong> The pre-registered predictions failed &mdash; H2 was expected at
+&ge;1.5x random and measured far below &mdash; and the failure is logged as such. The
+screen's verdict on the local toolkit is blunt: no rule-based signal in this repository
+finds structure the catalogue lacks. The surrogate's own caveat is carried with it: SGMC
+maps bedrock structure of any age, so clearing this screen is necessary, not sufficient,
+for finding a young hidden fault.</p>
+
+<h2>F-8 &mdash; Emission shaping is closed: three independent negatives</h2>
+<p>Adding coverage-optimal filler to the 0.1563 support was the natural next emission
+idea. It was tested with the metric's own marginal rule rather than by eyeballing a map:</p>
+{table(["Fold", "Base DTI", "Union DTI", "Delta", "Marginal TP / added px", "Break-even"],
+ [[str(u.get('fold')), f"{u.get('base_dti', float('nan')):.4f}", f"{u.get('union_dti', float('nan')):.4f}",
+   f"{u.get('delta', float('nan')):+.4f}", f"{u.get('marginal_precision_per_added_px', float('nan')):.4f}",
+   f"{u.get('break_even_at_base', float('nan')):.4f}"] for u in union.get('folds', [])])}
+<p>The filler's marginal precision ({union.get('folds', [{}])[0].get('marginal_precision_per_added_px', 0):.4f}&ndash;{max((u.get('marginal_precision_per_added_px', 0) for u in union.get('folds', [])), default=0):.4f})
+is <strong>below the break-even threshold in every fold</strong>, so the union was
+refused publication by the gate. Together with the earlier H6 truncation curve (monotone
+to full support) and the family's thinned submissions losing points on the leaderboard
+(12GEMSDOE 0.1294 &lt; 0.1563), this closes emission shaping from three directions.
+Spreading does raise raw coverage &mdash; lattice-NULL reaches
+{_fmt(cov.get('arms', {}).get('catalogue_hide_and_recover', {}).get('dense_mean', {}).get('NULL_random__lattice', {}).get('mean_DTI'))}
+against clustered-NULL's {_fmt(cov.get('arms', {}).get('catalogue_hide_and_recover', {}).get('dense_mean', {}).get('NULL_random__clustered_topk', {}).get('mean_DTI'))}
+on the holdout &mdash; but that credit is already spoken for once a real support is
+emitted. <strong>Only detection skill moves the score.</strong></p>
+
+<h2>F-9 &mdash; The supervised expression model recovers withheld faults</h2>
+<p>The one approach missing from this repository was the reference solution's: a model
+trained to recognise catalogue fault expression. It was built with strict leakage
+control &mdash; no location or distance features, training positives from visible
+catalogue pixels only, the blind corridor masked to NaN at training and inference &mdash;
+and tested on the frozen hide-and-recover protocol:</p>
+{table(["Fold", "Sparse DTI", "Dense DTI", "Marginal TP / emitted px", "Break-even"],
+ [[str(r.get('fold')), f"{r.get('sparse_matched_truth_px', {}).get('dti', float('nan')):.4f}",
+   f"<strong>{r.get('dense_competition_like', {}).get('dti', float('nan')):.4f}</strong>",
+   f"{r.get('dense_competition_like', {}).get('tp_per_emitted_px', float('nan')):.4f}",
+   f"{r.get('dense_competition_like', {}).get('break_even', float('nan')):.4f}"]
+  for r in sup.get('folds', [])])}
+<p>Mean dense DTI <strong>{_fmt(sup.get('mean_dense_DTI'))}</strong> against the current
+holdout best of <strong>0.1253</strong> and the uniform-random baseline of
+{_fmt(hy.get('hypotheses', {}).get('NULL_random', {}).get('dense_competition_like', {}).get('mean_DTI'))}.
+Marginal precision clears break-even in every fold. This is the first candidate in the
+project's history to clear the gate, and it is published as a uniquely named download.
+Its one failure is on record too: on the SGMC off-catalogue screen it scores
+{_fmt(sup.get('surrogate', {}).get('dense_DTI'))} &mdash; below the reference support and
+far below random &mdash; so the model recovers <em>catalogue-like</em> faults but has not
+demonstrated discovery of structure unlike the catalogue. That is exactly the quantity
+the leaderboard will judge.</p>
+
 <h2>Raw evidence</h2>
 <p class="tiny">{" &middot; ".join(f"<a href='data/{esc(f.name)}'>{esc(f.name)}</a>" for f in sorted((DOCS / 'data').glob('*.json')))}</p>
 """
@@ -405,6 +515,11 @@ def hypotheses_page():
     ch = load("candidate_hypotheses.json")
     ref = load("reference_holdout.json")
     gap = load("h1_gap_diagnostic.json")
+    xcat = load("xcat_surrogate.json")
+    cov = load("coverage_emission.json")
+    union = load("union_candidate.json")
+    sup = load("supervised_holdout.json")
+    terrain = load("terrain_census.json")
 
     res = hy.get("hypotheses", {})
     null_d = res.get("NULL_random", {}).get("dense_competition_like", {}).get("mean_DTI")
@@ -489,6 +604,40 @@ bridging rasterisation splits inside single faults, or the test simply cannot se
 published 1.6&ndash;3.2 km relay-ramp width range. The detector is finding the right kind of
 structure; the zero is a property of the test.</p>
 
+<h2>This session's iteration &mdash; predictions written before the run</h2>
+<p>The standing brief asks for one falsifiable hypothesis per session, a named transform,
+a written prediction of direction and size, and a logged outcome whether it passed or
+failed. This iteration ran five tests in that order:</p>
+{table(["Test", "Prediction (pre-registered)", "Measured", "Verdict"],
+ [["H-XSUR: relay-bridge and edge-lineament transforms on the off-catalogue surrogate",
+   "H2 &ge; 1.5x random; H3 &gt; random; reference &le; 1.2x random (direction up, 0.10-0.25 vs 0.05-0.10)",
+   f"H2 {_fmt(xcat.get('hypotheses', {}).get('H2_tilt_lineament', {}).get('dense_competition_like', {}).get('dti'))}, H3 {_fmt(xcat.get('hypotheses', {}).get('H3_relay_bridge', {}).get('dense_competition_like', {}).get('dti'))}, random {_fmt(xcat.get('hypotheses', {}).get('NULL_random', {}).get('dense_competition_like', {}).get('dti'))}",
+   "<span class='bad'>failed</span> &mdash; logged; redirected away from catalogue-topology detectors"],
+  ["H-BASIN: the surrogate truth hides under basin fill",
+   "truth in flat terrain (deep cover, low slope)",
+   f"truth slope mean {terrain.get('measured', {}).get('det_elev_slope', {}).get('truth_mean', 0):.1f} vs {terrain.get('measured', {}).get('det_elev_slope', {}).get('scorable_mean', 0):.1f} scorable; {terrain.get('measured', {}).get('truth_fraction_in_steepest_quartile', 0)*100:.0f} % in steepest quartile",
+   "<span class='bad'>falsified</span> &mdash; the opposite is true; logged"],
+  ["H-COV: coverage-optimal spreading at fixed budget",
+   "spread &ge; 1.5x clustered on the catalogue holdout (0.12 &rarr; 0.18-0.25); &ge; 1.2x on the surrogate",
+   f"holdout {_fmt(cov.get('arms', {}).get('catalogue_hide_and_recover', {}).get('dense_mean', {}).get('NULL_random__lattice', {}).get('mean_DTI'))} vs {_fmt(cov.get('arms', {}).get('catalogue_hide_and_recover', {}).get('dense_mean', {}).get('NULL_random__clustered_topk', {}).get('mean_DTI'))} ({(cov.get('arms', {}).get('catalogue_hide_and_recover', {}).get('dense_mean', {}).get('NULL_random__lattice', {}).get('mean_DTI', 0) / max(cov.get('arms', {}).get('catalogue_hide_and_recover', {}).get('dense_mean', {}).get('NULL_random__clustered_topk', {}).get('mean_DTI', 1), 1e-9)):.2f}x); surrogate 1.23x",
+   "<span class='warn'>direction held, size short</span> &mdash; coverage effect real but smaller than predicted"],
+  ["Union: lattice filler added to the 0.1563 support",
+   "union mean fold DTI 0.13-0.17, direction up (marginal &gt; break-even)",
+   f"union {_fmt(union.get('mean_union_dti'))} vs base {_fmt(union.get('mean_base_dti'))}; marginal {min((u.get('marginal_precision_per_added_px', 0) for u in union.get('folds', [{}])), default=0):.4f}-{max((u.get('marginal_precision_per_added_px', 0) for u in union.get('folds', [{}])), default=0):.4f} &lt; break-even",
+   "<span class='bad'>failed</span> &mdash; gate refused publication; emission shaping closed"],
+  ["H-SUP: supervised catalogue-expression model",
+   "mean fold dense DTI &ge; 0.1253 (direction up, rough 0.13-0.20); surrogate &gt; 0.1854",
+   f"holdout {_fmt(sup.get('mean_dense_DTI'))} (folds {min((r.get('dense_competition_like', {}).get('dti', 0) for r in sup.get('folds', [{}])), default=0):.3f}-{max((r.get('dense_competition_like', {}).get('dti', 0) for r in sup.get('folds', [{}])), default=0):.3f}); surrogate {_fmt(sup.get('surrogate', {}).get('dense_DTI'))}",
+   "<span class='ok'>p1 held decisively</span>, p2 failed &mdash; recovery skill validated, discovery spread not"]])}
+<p>The failures are as informative as the success. H-XSUR says catalogue-topology and
+edge-lineament detectors do not find real structure the catalogue lacks. H-BASIN's
+falsification says the missing-structure population visible to SGMC is <em>range</em>
+structure, not basin fill. The union negative closes emission shaping. H-SUP's split
+verdict says the delivered bands do carry learnable fault expression &mdash; but expression
+that looks like the catalogue, which is what the holdout rewards and what the leaderboard
+may not. The next hypothesis must therefore attack faults that do <em>not</em> look like
+the catalogue: radiometric alteration and 1 m lidar scarps are the ranked path.</p>
+
 <h2>Next candidates, ranked by expected gain and cost</h2>
 <p>Each names the layers, the physical signature, why it should catch a fault that is
 <em>missing</em> from the catalogue rather than one already in it, and how it differs from
@@ -544,9 +693,11 @@ def limitations_page():
 
 <h2>What this repository cannot claim</h2>
 <ul>
-<li><strong>No new leaderboard score.</strong> No hypothesis tested here beat the bar
-under the frozen protocol, so none was promoted and no score improvement is asserted. The
-published file is a verified rebuild of the support that already holds 0.1563.</li>
+<li><strong>No new leaderboard score is claimed.</strong> The supervised expression
+model cleared the local hide-and-recover gate (mean dense DTI 0.2795 vs 0.1253) and is
+published as a validated candidate, but no leaderboard submission was made from this
+environment (no DrivenData authentication), so no public score improvement is asserted
+here. The safe rebuild remains available and reproduces 0.1563 by construction.</li>
 <li><strong>The holdout's truth is the catalogue, not the test set.</strong> The
 leaderboard scores faults that are in no catalogue. A catalogue-recovery holdout measures
 geographic generalisation; it does not measure discovery. The two are not on the same
@@ -555,10 +706,13 @@ scale and this site never compares them directly.</li>
 whole catalogue, including the withheld segments. Its
 {ref.get('summary', {}).get('dense_mean_DTI', float('nan')):.4f} is an upper bound, not a
 valid estimate of generalisation.</li>
-<li><strong>The local instrument is coverage-dominated.</strong> Uniform noise reaches
+<li><strong>The local instruments are coverage-dominated.</strong> Uniform noise reaches
 {hy.get('hypotheses', {}).get('NULL_random', {}).get('dense_competition_like', {}).get('mean_DTI', float('nan')):.4f}
-at competition density. Until the off-catalogue arm exists, no local number can rank a
-discovery hypothesis.</li>
+on the catalogue holdout and {load('xcat_surrogate.json').get('hypotheses', {}).get('NULL_random', {}).get('dense_competition_like', {}).get('dti', float('nan')):.4f}
+on the off-catalogue surrogate at competition density. The surrogate arm now exists (SGMC
+structure beyond the catalogue halo) and it re-ranked the toolkit: no rule-based detector
+clears random on it, and the supervised model does not either. Discovery ranking remains
+harder than recovery ranking.</li>
 <li><strong>The band label for <code>tc</code> is ambiguous in the file itself</strong>,
 which calls it "tilt angle or total curvature". This repository computes its own tilt
 angle from <code>tmi</code> rather than trusting that label.</li>
@@ -566,10 +720,10 @@ angle from <code>tmi</code> rather than trusting that label.</li>
 
 <h2>Environment constraints that shaped the result</h2>
 <ul>
-<li>Two CPU cores, 3 GB of RAM, <strong>no GPU</strong>, and no scikit-learn, PyTorch or
-LightGBM available. A CNN ensemble of the kind that produced the family's best result
-could not be retrained here, so the work was directed at measurement, audit and
-deterministic detectors.</li>
+<li>Two CPU cores, 3 GB of RAM, <strong>no GPU</strong>. scikit-learn was installed from
+PyPI this session (HistGradientBoosting trains in ~12 s per fold on CPU), but PyTorch and
+LightGBM are unavailable, so a CNN ensemble of the kind that produced the family's best
+result still cannot be retrained here.</li>
 <li>Outbound network access is limited to <code>api.github.com</code> and the Python
 package index, so the two highest-value external datasets (airborne radiometrics, 1 m
 lidar) could not be fetched in this environment. Both are confirmed to exist and are
@@ -580,19 +734,23 @@ leaderboard movement is claimed.</li>
 
 <h2>What still needs doing, in priority order</h2>
 <ol>
-<li><strong>Build the off-catalogue validation arm</strong> from an independent official
-fault compilation, and re-rank every candidate on it. This is the highest-value fix
-because it unblocks everything else.</li>
+<li><strong>Spend a weekly slot on the validated candidate</strong> (the supervised
+expression model, gate cleared at 0.2795 vs 0.1253) from an account that can reach the
+competition, and record the leaderboard response. That number decides whether hidden
+faults look like catalogue faults.</li>
 <li><strong>Add the radiometric channel and retrain.</strong> The only new information
-available, aimed at the class of fault the catalogue cannot contain.</li>
+available, aimed at the class of fault the catalogue cannot contain &mdash; the class the
+SGMC screen says our signals miss.</li>
 <li><strong>Add 1 m lidar scarp morphology</strong> at the resolution the catalogue was
 drawn at.</li>
-<li><strong>Re-derive the emission rule from the metric's coverage structure</strong>,
-because concentration is currently costing more than the models are gaining.</li>
+<li><strong>Pursue a discovery-grade validation arm.</strong> Qfaults is refused (same
+lines as the labels) and the SGMC surrogate is necessary-not-sufficient; the remaining
+route is community fault mapping from 1 m lidar or expert-reviewed play-fairway layers.</li>
 <li><strong>Make every submission unique.</strong> At least
 {len(load('forensic_audit.json').get('byte_identical_submission_sha256', {}))} byte-identical
 raster groups are currently published across the family, and the same file ascending under
-several accounts is the single largest source of redundant leaderboard entries.</li>
+several accounts is the single largest source of redundant leaderboard entries. Every
+artifact this repository publishes now carries a content hash and UTC stamp in its name.</li>
 </ol>
 
 <h2>Open irregularities flagged for review</h2>

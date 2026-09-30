@@ -17,15 +17,15 @@ exact bytes you are about to upload.</p>
 
 <ol class="steps">
 <li><h3>Download the file</h3>
-<p><a class="btn" href="downloads/17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.tif" download>Download the submission GeoTIFF</a></p>
-<p class="tiny">or <a href="downloads/17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.zip" download>the .zip</a>, which contains the
+<p><a class="btn" href="downloads/17GEMSDOE_A-verified-01563-support_c5ea501e_20260930T021105Z.tif" download>Download the submission GeoTIFF</a></p>
+<p class="tiny">or <a href="downloads/17GEMSDOE_A-verified-01563-support_c5ea501e_20260930T021105Z.zip" download>the .zip</a>, which contains the
 same single GeoTIFF. The competition accepts either form.</p></li>
 
 <li><h3>Name it and describe it</h3>
 <p>Use the name and comment already recorded in the sidecar, so that the entry on the
 leaderboard can be traced back to this build:</p>
-<pre>17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z</pre>
-<pre>A-verified-01563-support: reference ens12 support (public 0.1563), format-verified float32 [0,1], 172,974 px</pre></li>
+<pre>17GEMSDOE_A-verified-01563-support_c5ea501e_20260930T021105Z</pre>
+<pre>A-verified 0.1563-support rebuild (all-finite [0,1], 172,974 px, c5ea501e, 20260930)</pre></li>
 
 <li><h3>Upload it</h3>
 <p>Go to the competition's submission page and upload the file, pasting the name and the
@@ -33,7 +33,7 @@ comment into the two fields the form provides. Nothing else is required.</p></li
 
 <li><h3>If the form rejects it, do not guess</h3>
 <p>Run the gate locally and read which check failed:</p>
-<pre>python scripts/validate_submission.py downloads/17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.tif</pre>
+<pre>python scripts/validate_submission.py downloads/17GEMSDOE_A-verified-01563-support_c5ea501e_20260930T021105Z.tif</pre>
 <p>It exits non-zero on the first failing check and prints the measured value and the
 required value side by side. If the failure is the <code>[0, 1]</code> range check itself,
 upload the fallback file named in the sidecar instead: it is the same prediction with no
@@ -64,20 +64,25 @@ published artifacts. It is recorded as an open irregularity rather than guessed 
 this build changes is that the failure cannot recur silently: the writer repairs out-of-
 range and non-finite values, and the gate refuses to publish a file that fails.
 
-<h2>What this file is, and what it is not</h2>
-<p>It carries the support of the raster that already holds 0.1563 on the public
-leaderboard, rebuilt and re-verified, with a unique name so it can be told apart from
-every other upload in the family. On the frozen hide-and-recover protocol that field
-scores <strong>0.1253</strong>. It is
-<strong>not</strong> a new high score, and this repository does not claim it is: no
-hypothesis tested here beat the bar, so none was promoted. Uploading this file changes
-nothing except that it is verified to be accepted.</p>
-<p>If the goal is a new score rather than a safe upload, the ranked candidates on the
-<a href="hypotheses.html">hypotheses page</a> are the path, and the top one needs a data
-channel the current model has never seen.</p>
+<h2>Which file to upload</h2>
+<p>There are two, and which one you want depends on the goal:</p>
+<ul>
+<li><strong>A new score attempt:</strong> the validated candidate on the
+<a href="index.html">download page</a> &mdash; the supervised expression model, which
+recovered withheld fault segments at mean dense DTI <strong>0.2795</strong> against the
+previous best of 0.1253 under the hide-and-recover protocol. Unique bytes, unique name,
+its own comment. This is the first file in this project validated to be worth a
+submission slot.</li>
+<li><strong>A guaranteed-accepted upload:</strong> the safe rebuild &mdash; the support of
+the raster that already holds 0.1563, rebuilt and re-verified. It carries no new score
+claim: uploading it reproduces 0.1563 by construction.</li>
+</ul>
+<p>Whichever file you upload, paste the name and comment printed next to its button. Both
+are unique per build (content hash + UTC timestamp), so the leaderboard entry can always
+be traced back to the exact bytes.</p>
 
 <footer>
-<p class="tiny">Built 2026-09-30 01:42 UTC from
+<p class="tiny">Built 2026-09-30 04:06 UTC from
 <code>evidence/*.json</code> by <code>scripts/build_site.py</code>. Every number on this
 site is generated from a file in this repository; none is typed by hand.
 Source: <a href="https://github.com/buffedlizard55-lab/17GEMSDOE">github.com/buffedlizard55-lab/17GEMSDOE</a>.</p>

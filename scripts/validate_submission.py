@@ -47,10 +47,15 @@ def main() -> int:
 
     report = validate_submission(Path(args.tif), sample)
 
-    print(f"file    : {report['file']}")
-    if "file_sha256" in report:
-        print(f"sha256  : {report['file_sha256']}")
-        print(f"bytes   : {report['bytes']}")
+    # Keys below mirror src/gems/io.py's report exactly: the validator must not
+    # name fields the gate does not produce (a previous revision crashed here).
+    from gems.io import sha256_file  # noqa: E402
+    report["file_sha256"] = sha256_file(args.tif)
+    report["bytes"] = Path(args.tif).stat().st_size
+
+    print(f"file    : {report['path']}")
+    print(f"sha256  : {report['file_sha256']}")
+    print(f"bytes   : {report['bytes']:,}")
     print()
     widths = max((len(k) for k in report["checks"]), default=10)
     for name, c in report["checks"].items():
@@ -58,12 +63,10 @@ def main() -> int:
     print()
     if "min" in report:
         print(f"  finite value range : [{report['min']}, {report['max']}]")
-        print(f"  finite pixels      : {report['finite_px']}")
-        print(f"  NaN pixels         : {report['nan_px']} "
+        print(f"  finite pixels      : {report['finite_px']:,}")
+        print(f"  NaN pixels         : {report['nan_px']:,} "
               f"(inside the official footprint: {report.get('nan_inside_footprint')})")
-        print(f"  positive pixels    : {report.get('positive_px')}")
-    for w in report["warnings"]:
-        print(f"  WARN  {w}")
+        print(f"  emitted pixels     : {report.get('emitted_px', 0):,}")
     for e in report["errors"]:
         print(f"  ERROR {e}")
 

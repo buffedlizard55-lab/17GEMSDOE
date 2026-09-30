@@ -1,0 +1,30 @@
+{
+ "question": "Can an independent official fault compilation serve as off-catalogue truth inside the competition footprint?",
+ "catalogue_B": {
+  "name": "USGS Quaternary Fault and Fold Database (Qfaults)",
+  "doi": "https://doi.org/10.5066/P9BCVRCK",
+  "sciencebase": "https://www.sciencebase.gov/catalog/item/589097b1e4b072a7ac0cae23",
+  "raster_sha256": "3fb2ca7327b47aa5a3f73c8b2ad3272d8d26ab25df35bc940944758d4c0885f2",
+  "provenance": "USGS Quaternary Fault and Fold Database, DOI 10.5066/P9BCVRCK (scripts/fetch_qfaults.py -> build_proxy_catalogue.py)"
+ },
+ "population": {
+  "B_in_footprint_px": 60939,
+  "B_code1_near_a_label_px": 60938,
+  "B_code1_fraction": 0.999984,
+  "B_only_px": 1,
+  "B_only_km": 0.1,
+  "thresholds": {
+   "min_b_only_px": 100,
+   "min_b_only_fraction": 0.005,
+   "min_b_all_px": 1000
+  },
+  "labels_within_R_of_B_px": 60986,
+  "label_fault_px": 60988
+ },
+ "verdict": "REFUSED - catalogue B is NOT independent of the training labels: 60,938 of its 60,939 in-footprint pixels (100.00 %) are already within R = 3 px of a label, leaving 1 px (0.0016 %) as a 'new fault' population - below the pre-registered minimum of 100 px and 0.50 %. Scoring against 1 pixel(s) would produce a number with no meaning, so none is reported. This is a FINDING about the two catalogues, not a bug: it means the training labels and catalogue B are the same lines in this footprint, and it is recorded with the overlap that establishes it.",
+ "controls_pass": false,
+ "why_refused": "The pre-registered minimum population of independent pixels (100 px, 0.5%) is not met: 1 px. Scoring against 1 pixel would produce a meaningless number, so none is reported.",
+ "redirect": "SGMC structure raster (DOI 10.3133/ds1052) is the remaining surrogate: 59,035 px of code-2 structure beyond the catalogue's credit halo (evidence/xcat_surrogate.json).",
+ "explanation": "Giddens and Faulds (2025, Stanford SGW) derive their Great Basin step-over compilation 'primarily from the Quaternary Fault and Fold Database' -- the same source family as the competition labels. Two compilations of the same Quaternary faults cannot disagree inside a 320x373 km window.",
+ "source_of_this_record": "GEMSDOE/data/evidence/xcat/transfer_report.json (scripts/measure_cross_catalogue_transfer.py, 2026-09-19); re-verified here against data/external/proxy_catalogue.tif and data/labels.tif bytes on 2026-09-30"
+}

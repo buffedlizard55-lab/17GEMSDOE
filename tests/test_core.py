@@ -380,3 +380,35 @@ def test_junction_connector_absent_for_an_l_corner():
     cat[20:60, 60] = True                    # an L: a bend, not an intersection
     field, _ = topology.detect_junctions(cat, arm_len_px=25, min_strand_px=20)
     assert not field.any()
+
+
+# ---------------------------------------------------------------------------
+# regression: spread_select must never emit an ineligible pixel (a previous
+# revision leaked into the -inf tail once suppression covered the grid, which
+# silently let the emitter see through a hide-and-recover blind corridor)
+# ---------------------------------------------------------------------------
+def test_spread_select_respects_eligibility():
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+    from run_coverage_emission import spread_select
+    import numpy as np
+
+    rng = np.random.default_rng(0)
+    score = rng.random((60, 70)).astype(np.float32)
+    eligible = np.zeros((60, 70), bool)
+    eligible[:30, :35] = True                 # only one quadrant is eligible
+    budget = 400                              # larger than the quadrant can pack
+    sel = spread_select(score, budget, eligible, min_dist_px=2)
+    assert not (sel & ~eligible).any(), "spread_select emitted outside eligible"
+    assert sel.sum() > 0
+
+    # min-distance guarantee on the accepted set (Chebyshev > min_dist_px)
+    idx = np.argwhere(sel)
+    for i, (r, c) in enumerate(idx):
+        for r2, c2 in idx[i + 1:]:
+            assert max(abs(int(r) - int(r2)), abs(int(c) - int(c2))) > 2, \
+                "two accepted pixels are closer than min_dist_px"
+    # and determinism
+    sel2 = spread_select(score, budget, eligible, min_dist_px=2)
+    assert (sel == sel2).all()

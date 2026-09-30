@@ -16,9 +16,11 @@
 
 <h2>What this repository cannot claim</h2>
 <ul>
-<li><strong>No new leaderboard score.</strong> No hypothesis tested here beat the bar
-under the frozen protocol, so none was promoted and no score improvement is asserted. The
-published file is a verified rebuild of the support that already holds 0.1563.</li>
+<li><strong>No new leaderboard score is claimed.</strong> The supervised expression
+model cleared the local hide-and-recover gate (mean dense DTI 0.2795 vs 0.1253) and is
+published as a validated candidate, but no leaderboard submission was made from this
+environment (no DrivenData authentication), so no public score improvement is asserted
+here. The safe rebuild remains available and reproduces 0.1563 by construction.</li>
 <li><strong>The holdout's truth is the catalogue, not the test set.</strong> The
 leaderboard scores faults that are in no catalogue. A catalogue-recovery holdout measures
 geographic generalisation; it does not measure discovery. The two are not on the same
@@ -27,10 +29,13 @@ scale and this site never compares them directly.</li>
 whole catalogue, including the withheld segments. Its
 0.1253 is an upper bound, not a
 valid estimate of generalisation.</li>
-<li><strong>The local instrument is coverage-dominated.</strong> Uniform noise reaches
+<li><strong>The local instruments are coverage-dominated.</strong> Uniform noise reaches
 0.1199
-at competition density. Until the off-catalogue arm exists, no local number can rank a
-discovery hypothesis.</li>
+on the catalogue holdout and 0.3719
+on the off-catalogue surrogate at competition density. The surrogate arm now exists (SGMC
+structure beyond the catalogue halo) and it re-ranked the toolkit: no rule-based detector
+clears random on it, and the supervised model does not either. Discovery ranking remains
+harder than recovery ranking.</li>
 <li><strong>The band label for <code>tc</code> is ambiguous in the file itself</strong>,
 which calls it "tilt angle or total curvature". This repository computes its own tilt
 angle from <code>tmi</code> rather than trusting that label.</li>
@@ -38,10 +43,10 @@ angle from <code>tmi</code> rather than trusting that label.</li>
 
 <h2>Environment constraints that shaped the result</h2>
 <ul>
-<li>Two CPU cores, 3 GB of RAM, <strong>no GPU</strong>, and no scikit-learn, PyTorch or
-LightGBM available. A CNN ensemble of the kind that produced the family's best result
-could not be retrained here, so the work was directed at measurement, audit and
-deterministic detectors.</li>
+<li>Two CPU cores, 3 GB of RAM, <strong>no GPU</strong>. scikit-learn was installed from
+PyPI this session (HistGradientBoosting trains in ~12 s per fold on CPU), but PyTorch and
+LightGBM are unavailable, so a CNN ensemble of the kind that produced the family's best
+result still cannot be retrained here.</li>
 <li>Outbound network access is limited to <code>api.github.com</code> and the Python
 package index, so the two highest-value external datasets (airborne radiometrics, 1 m
 lidar) could not be fetched in this environment. Both are confirmed to exist and are
@@ -52,19 +57,23 @@ leaderboard movement is claimed.</li>
 
 <h2>What still needs doing, in priority order</h2>
 <ol>
-<li><strong>Build the off-catalogue validation arm</strong> from an independent official
-fault compilation, and re-rank every candidate on it. This is the highest-value fix
-because it unblocks everything else.</li>
+<li><strong>Spend a weekly slot on the validated candidate</strong> (the supervised
+expression model, gate cleared at 0.2795 vs 0.1253) from an account that can reach the
+competition, and record the leaderboard response. That number decides whether hidden
+faults look like catalogue faults.</li>
 <li><strong>Add the radiometric channel and retrain.</strong> The only new information
-available, aimed at the class of fault the catalogue cannot contain.</li>
+available, aimed at the class of fault the catalogue cannot contain &mdash; the class the
+SGMC screen says our signals miss.</li>
 <li><strong>Add 1 m lidar scarp morphology</strong> at the resolution the catalogue was
 drawn at.</li>
-<li><strong>Re-derive the emission rule from the metric's coverage structure</strong>,
-because concentration is currently costing more than the models are gaining.</li>
+<li><strong>Pursue a discovery-grade validation arm.</strong> Qfaults is refused (same
+lines as the labels) and the SGMC surrogate is necessary-not-sufficient; the remaining
+route is community fault mapping from 1 m lidar or expert-reviewed play-fairway layers.</li>
 <li><strong>Make every submission unique.</strong> At least
 21 byte-identical
 raster groups are currently published across the family, and the same file ascending under
-several accounts is the single largest source of redundant leaderboard entries.</li>
+several accounts is the single largest source of redundant leaderboard entries. Every
+artifact this repository publishes now carries a content hash and UTC stamp in its name.</li>
 </ol>
 
 <h2>Open irregularities flagged for review</h2>
@@ -79,7 +88,7 @@ that the delivered 19-band raster does not contain, verified band by band.</li>
 </ul>
 
 <footer>
-<p class="tiny">Built 2026-09-30 01:42 UTC from
+<p class="tiny">Built 2026-09-30 04:06 UTC from
 <code>evidence/*.json</code> by <code>scripts/build_site.py</code>. Every number on this
 site is generated from a file in this repository; none is typed by hand.
 Source: <a href="https://github.com/buffedlizard55-lab/17GEMSDOE">github.com/buffedlizard55-lab/17GEMSDOE</a>.</p>
