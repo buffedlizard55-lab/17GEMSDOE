@@ -144,18 +144,28 @@ def validate_submission(path: str | Path, sample_path: str | Path) -> dict:
 
 # ---------------------------------------------------------------------------
 def write_submission(path: str | Path, field: np.ndarray,
-                     sample_path: str | Path, compress: str = "deflate") -> dict:
+                     sample_path: str | Path, compress: str | None = None,
+                     all_finite: bool = False) -> dict:
     """Write ``field`` as a competition-legal single-band float32 GeoTIFF.
 
     The array is made safe rather than trusted:
 
     * non-finite values are replaced by the value the sample submission uses at
-      that cell (NaN outside the footprint, 0.0 inside it if the field is
-      missing there), so a hole in the detector output cannot become a hole in
-      the submission;
+      that cell (NaN outside the footprint, 0.0 inside it), so a hole in the
+      detector output cannot become a hole in the submission;
     * values are clipped into ``[0, 1]``, which is what the upload form checks;
-    * the profile is copied from the sample so the CRS, transform and size cannot
-      drift.
+    * the profile is copied from the sample so the CRS, transform, size and
+      compression cannot drift, and the finite footprint matches the sample's
+      exactly rather than approximating it.
+
+    ``all_finite=True`` writes 0.0 everywhere the sample is NaN as well, so the
+    file contains no non-finite value at all. That variant exists because the
+    operator's upload was rejected with *"Predicted values must be in range
+    [0, 1]"*, and a validator that reads every cell without honouring nodata
+    would reject a file whose out-of-footprint cells are NaN. The primary
+    artifact keeps NaN outside the footprint because that is what the sample
+    submission does and what the already-scored 0.1563 raster does; the variant
+    is the fallback if the form ever complains again.
 
     Returns the validation report for the file that was just written, so a
     caller can refuse to publish a failing artifact.
@@ -169,13 +179,24 @@ def write_submission(path: str | Path, field: np.ndarray,
         raise ValueError(f"field shape {field.shape} != sample shape {ref.shape}")
 
     n_bad = int((~np.isfinite(field)).sum())
-    fixed = np.where(np.isfinite(field), field, np.where(sample_finite, 0.0, np.nan))
+    # Build the output from the SAMPLE's footprint, not from a validity mask
+    # computed elsewhere: the finite region of the published file must match the
+    # sample's cell for cell.
+    inside = sample_finite & np.isfinite(field)
+    if all_finite:
+        fixed = np.where(inside, field, 0.0)
+    else:
+        fixed = np.where(inside, field, np.where(sample_finite, 0.0, np.nan))
     n_clip = int(((fixed > 1.0) | (fixed < 0.0)).sum())
-    fixed = np.clip(fixed, 0.0, 1.0).astype(np.float32)
+    with np.errstate(invalid="ignore"):
+        fixed = np.where(np.isfinite(fixed), np.clip(fixed, 0.0, 1.0), fixed)
+    fixed = fixed.astype(np.float32)
 
-    profile.update(driver="GTiff", count=1, dtype="float32", nodata=float("nan"),
-                   compress=compress)
-    profile.pop("tiled", None)
+    profile.update(driver="GTiff", count=1, dtype="float32", nodata=float("nan"))
+    if compress is not None:
+        profile["compress"] = compress
+    elif not profile.get("compress"):
+        profile["compress"] = "lzw"
     out = Path(path)
     out.parent.mkdir(parents=True, exist_ok=True)
     with rasterio.open(out, "w", **profile) as ds:

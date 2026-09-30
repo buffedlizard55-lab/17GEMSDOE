@@ -89,6 +89,13 @@ published 1.6–3.2 km relay-ramp width range. The detector is finding the right
 the test cannot see it. **Two arms are required: this catalogue-recovery arm, and an
 off-catalogue arm built from an independent official compilation.**
 
+Bridge geometry, measured: 1,063 candidate step-overs with a **median gap of 31.0 px
+(3.1 km)**, of which **32.3 %** fall inside the published 1.6–3.2 km relay-ramp width range
+and only **11.4 %** are short enough to be a rasterisation split. The detector is therefore
+selecting the population the literature describes — **which rules out the "it is only
+bridging rasterisation breaks" explanation for the zero** and leaves the test-design
+explanation standing.
+
 Context: the supplied labels raster has **3,199 components** with a **median size of 12
 pixels (1.2 km)** and a largest of 360 pixels. Most mapped "faults" in it are 1–2 km
 segments, which any structural inference over its topology must account for.

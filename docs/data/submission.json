@@ -1,14 +1,16 @@
 {
- "generated_utc": "20260930T013440Z",
- "latest": "17GEMSDOE_A-verified-01563-support_e88f7ceb_20260930T013440Z",
+ "generated_utc": "20260930T014142Z",
+ "latest": "17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z",
  "downloads": {
-  "tif": "17GEMSDOE_A-verified-01563-support_e88f7ceb_20260930T013440Z.tif",
-  "zip": "17GEMSDOE_A-verified-01563-support_e88f7ceb_20260930T013440Z.zip",
-  "sidecar": "17GEMSDOE_A-verified-01563-support_e88f7ceb_20260930T013440Z.json"
+  "tif": "17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.tif",
+  "zip": "17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.zip",
+  "sidecar": "17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.json",
+  "fallback_tif": "17GEMSDOE_A-verified-01563-support_allfinite_20260930T014142Z.tif",
+  "fallback_sha256": "c5ea501eba0ab840d26f0c017d01074c4bd9040ec5e2c5ac19bde8655d150e64"
  },
  "comment": "A-verified-01563-support: reference ens12 support (public 0.1563), format-verified float32 [0,1], 172,974 px",
- "sha256": "e88f7ceba8075fbb164f6b13edc091bfdfb7fad384bbd1ad592f5baaeae77f8e",
- "bytes": 558806,
+ "sha256": "7810719248d2aa17b4aefdc838bf7ea5ad90a08ae0882c7f96f158bf01696302",
+ "bytes": 1763547,
  "positive_pixels": 172974,
  "value_range": [
   0.0,

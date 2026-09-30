@@ -17,14 +17,14 @@ exact bytes you are about to upload.</p>
 
 <ol class="steps">
 <li><h3>Download the file</h3>
-<p><a class="btn" href="downloads/17GEMSDOE_A-verified-01563-support_e88f7ceb_20260930T013440Z.tif" download>Download the submission GeoTIFF</a></p>
-<p class="tiny">or <a href="downloads/17GEMSDOE_A-verified-01563-support_e88f7ceb_20260930T013440Z.zip" download>the .zip</a>, which contains the
+<p><a class="btn" href="downloads/17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.tif" download>Download the submission GeoTIFF</a></p>
+<p class="tiny">or <a href="downloads/17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.zip" download>the .zip</a>, which contains the
 same single GeoTIFF. The competition accepts either form.</p></li>
 
 <li><h3>Name it and describe it</h3>
 <p>Use the name and comment already recorded in the sidecar, so that the entry on the
 leaderboard can be traced back to this build:</p>
-<pre>17GEMSDOE_A-verified-01563-support_e88f7ceb_20260930T013440Z</pre>
+<pre>17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z</pre>
 <pre>A-verified-01563-support: reference ens12 support (public 0.1563), format-verified float32 [0,1], 172,974 px</pre></li>
 
 <li><h3>Upload it</h3>
@@ -33,9 +33,11 @@ comment into the two fields the form provides. Nothing else is required.</p></li
 
 <li><h3>If the form rejects it, do not guess</h3>
 <p>Run the gate locally and read which check failed:</p>
-<pre>python scripts/validate_submission.py downloads/17GEMSDOE_A-verified-01563-support_e88f7ceb_20260930T013440Z.tif</pre>
+<pre>python scripts/validate_submission.py downloads/17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.tif</pre>
 <p>It exits non-zero on the first failing check and prints the measured value and the
-required value side by side.</p></li>
+required value side by side. If the failure is the <code>[0, 1]</code> range check itself,
+upload the fallback file named in the sidecar instead: it is the same prediction with no
+NaN anywhere, so a validator that does not honour nodata has nothing to object to.</p></li>
 </ol>
 
 <h2>The format the competition requires</h2>
@@ -75,7 +77,7 @@ nothing except that it is verified to be accepted.</p>
 channel the current model has never seen.</p>
 
 <footer>
-<p class="tiny">Built 2026-09-30 01:36 UTC from
+<p class="tiny">Built 2026-09-30 01:41 UTC from
 <code>evidence/*.json</code> by <code>scripts/build_site.py</code>. Every number on this
 site is generated from a file in this repository; none is typed by hand.
 Source: <a href="https://github.com/buffedlizard55-lab/17GEMSDOE">github.com/buffedlizard55-lab/17GEMSDOE</a>.</p>

@@ -96,6 +96,7 @@ def index_page():
 <p class="tiny">or <a href="downloads/{esc(zipf)}" download>the same file as a .zip</a>
 &middot; {meta.get('bytes', 0):,} bytes &middot; sha256
 <code>{esc(meta.get('sha256', ''))}</code></p>
+{_fallback_row(meta)}
 <div class="fields">
 <h3>Two fields to paste into the competition form</h3>
 <label>Submission name</label>
@@ -179,6 +180,19 @@ official; the source and the paper that uses them this way are on the sources pa
     return page("index.html", "Download the submission", body)
 
 
+def _fallback_row(meta):
+    """The NaN-free twin, offered only as a fallback and labelled as such."""
+    fb = meta.get("downloads", {}).get("fallback_tif")
+    if not fb:
+        return ""
+    return (f'<p class="tiny">If the form ever rejects that file, upload '
+            f'<a href="downloads/{esc(fb)}" download>the identical prediction with no '
+            f'NaN anywhere</a> instead &mdash; same pixels, every cell finite. '
+            f'Use the primary file first: the competition\'s own sample submission '
+            f'uses NaN outside the data footprint, and so does the raster that '
+            f'already scores 0.1563.</p>')
+
+
 def _fmt(v):
     return f"{v:.4f}" if isinstance(v, (int, float)) else "n/a"
 
@@ -230,7 +244,9 @@ comment into the two fields the form provides. Nothing else is required.</p></li
 <p>Run the gate locally and read which check failed:</p>
 <pre>python scripts/validate_submission.py downloads/{esc(tif)}</pre>
 <p>It exits non-zero on the first failing check and prints the measured value and the
-required value side by side.</p></li>
+required value side by side. If the failure is the <code>[0, 1]</code> range check itself,
+upload the fallback file named in the sidecar instead: it is the same prediction with no
+NaN anywhere, so a validator that does not honour nodata has nothing to object to.</p></li>
 </ol>
 
 <h2>The format the competition requires</h2>

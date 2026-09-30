@@ -1,5 +1,5 @@
 {
- "verified_utc": "2026-09-30T01:37:11Z",
+ "verified_utc": "2026-09-30T01:38:54Z",
  "files": {},
  "verification": {
   "training_features.tif": {
@@ -87,8 +87,7 @@
   "components_ge_20px": 911,
   "components_ge_30px": 506,
   "largest_component_px": 360,
-  "median_component_px": 12.0,
-  "px_in_components_le_12px": 11940
+  "median_component_px": 12.0
  },
  "sample_submission": {
   "finite_px": 5167373,

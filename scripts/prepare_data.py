@@ -26,7 +26,7 @@ from __future__ import annotations
 
 import argparse
 import json
-import sys
+
 import time
 from pathlib import Path
 
@@ -84,6 +84,29 @@ def sha256_file(path: Path, chunk: int = 1 << 22) -> str:
         for block in iter(lambda: fh.read(chunk), b""):
             h.update(block)
     return h.hexdigest()
+
+
+def catalogue_components(labels: np.ndarray, min_px: int = 20) -> dict:
+    """Connectivity facts about the catalogue.
+
+    Computed here rather than quoted, because several structural ideas in this
+    project turn out to depend on how fragmented the catalogue is and that number
+    was not written down anywhere until it was measured. An earlier revision of
+    the site said "3,199 components" by hand; it now reads this.
+    """
+    comp, n = ndimage.label(labels, structure=np.ones((3, 3), dtype=bool))
+    if n == 0:
+        return {"components_8conn": 0, "components_ge_20px": 0,
+                "components_ge_30px": 0, "largest_component_px": 0,
+                "median_component_px": 0.0}
+    sizes = np.bincount(comp.ravel())[1:]
+    return {
+        "components_8conn": int(n),
+        "components_ge_20px": int((sizes >= min_px).sum()),
+        "components_ge_30px": int((sizes >= 30).sum()),
+        "largest_component_px": int(sizes.max()),
+        "median_component_px": float(np.median(sizes)),
+    }
 
 
 def main() -> int:
@@ -161,17 +184,7 @@ def main() -> int:
     # because several structural ideas in this project turned out to depend on
     # how fragmented the catalogue is, and that number was not written down
     # anywhere until this script computed it.
-    comp, n = ndimage.label(lab == 1, structure=np.ones((3, 3), bool))
-    sizes = np.bincount(comp.ravel())[1:] if n else np.zeros(0, np.int64)
-    manifest["catalogue"] = {
-        "components_8conn": int(n),
-        "components_ge_20px": int((sizes >= 20).sum()),
-        "components_ge_30px": int((sizes >= 30).sum()),
-        "largest_component_px": int(sizes.max()) if sizes.size else 0,
-        "median_component_px": float(np.median(sizes)) if sizes.size else 0.0,
-        "px_in_components_le_12px": int(sizes[sizes <= 12].sum()) if sizes.size else 0,
-    }
-    c = manifest["catalogue"]
+    c = manifest["catalogue"] = catalogue_components(lab == 1)
     print(f"Catalogue: {c['components_8conn']:,} components, median "
           f"{c['median_component_px']:.0f} px, largest {c['largest_component_px']} px")
 

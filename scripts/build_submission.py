@@ -136,10 +136,9 @@ def main() -> int:
                 "Recorded as a negative result in docs/EXPERIMENTS.md.")
         provenance = "validated-union"
 
-    field = np.where(support, 1.0, np.nan).astype(np.float32)
-    # Cells inside the footprint with no prediction are written as 0.0, not NaN:
-    # NaN inside the footprint is a rejection even though it is not out of range.
-    field = np.where(valid & ~support, 0.0, field).astype(np.float32)
+    # One prediction surface, built so that its finite footprint is the sample
+    # submission's footprint and nothing else.
+    field = np.where(support, 1.0, 0.0).astype(np.float32)
 
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     # One timestamp for the whole build. An earlier revision read the clock again
@@ -153,13 +152,14 @@ def main() -> int:
             print(f"  - {e}")
         return 1
 
-    name = f"17GEMSDOE_{provenance}_{rep['sha256'][:8]}_{stamp}"
-    tif = out_dir / f"{name}.tif"
     out_dir.mkdir(parents=True, exist_ok=True)
     # Replace the previous build rather than accumulating stale downloads that a
     # visitor could click by mistake.
     for old in list(out_dir.glob(f"17GEMSDOE_{provenance}_*")):
         old.unlink()
+
+    name = f"17GEMSDOE_{provenance}_{rep['sha256'][:8]}_{stamp}"
+    tif = out_dir / f"{name}.tif"
     shutil.copy2(tmp, tif)
     # verify the copy, not the original: a truncated copy must not be published
     rep2 = io.validate_submission(tif, sample)
@@ -169,6 +169,23 @@ def main() -> int:
         tif.unlink(missing_ok=True)
         print("published copy failed re-validation; removed")
         return 1
+
+    # A second copy with no non-finite value anywhere. Kept because the operator
+    # was rejected once with "Predicted values must be in range [0, 1]" and a
+    # validator that does not honour nodata would reject a NaN
+    # out-of-footprint cell even though the sample submission uses exactly that.
+    alt_tmp = build / "candidate_allfinite.tif"
+    io.write_submission(alt_tmp, field, sample, all_finite=True)
+    alt_name = f"17GEMSDOE_{provenance}_allfinite_{stamp}"
+    alt_tif = out_dir / f"{alt_name}.tif"
+    shutil.copy2(alt_tmp, alt_tif)
+    rep_alt = io.validate_submission(alt_tif, sample)
+    rep_alt["sha256"] = io.sha256_file(alt_tif)
+    rep_alt["bytes"] = alt_tif.stat().st_size
+    if not rep_alt["ok"]:
+        alt_tif.unlink(missing_ok=True)
+        rep_alt = None
+        print("note: the all-finite variant failed the gate and was not published")
 
     comment = args.comment or (
         f"{provenance}: reference ens12 support (public 0.1563), format-verified "
@@ -186,6 +203,12 @@ def main() -> int:
         "holdout_score": args.holdout_score,
         "format_checks_passed": [k for k, v in rep2["checks"].items() if v["ok"]],
         "format_checks_failed": [k for k, v in rep2["checks"].items() if not v["ok"]],
+        "fallback": (None if rep_alt is None else {
+            "file": alt_tif.name, "sha256": rep_alt["sha256"],
+            "bytes": rep_alt["bytes"], "note":
+                "Identical prediction with no non-finite value anywhere, for a "
+                "form that does not honour nodata. Upload the primary file first; "
+                "use this one only if the primary is rejected."}),
         "anchor_sha256": ANCHOR_SHA256,
         "built_utc": stamp,
         "how_to_submit": [
@@ -207,7 +230,10 @@ def main() -> int:
         "generated_utc": stamp,
         "latest": name,
         "downloads": {
-            "tif": tif.name, "zip": zip_path.name, "sidecar": f"{name}.json"},
+            "tif": tif.name, "zip": zip_path.name, "sidecar": f"{name}.json",
+            "fallback_tif": (alt_tif.name if rep_alt is not None else None),
+            "fallback_sha256": (rep_alt["sha256"] if rep_alt is not None else None),
+        },
         "comment": comment,
         "sha256": rep2["sha256"],
         "bytes": rep2["bytes"],
@@ -228,6 +254,11 @@ def main() -> int:
           f"{len(sidecar['format_checks_failed'])} failed")
     print(f"  comment       {comment}")
     print(f"  zip           {zip_path.name}")
+    if rep_alt is not None:
+        print(f"  fallback      {alt_tif.name}")
+        print(f"                {rep_alt['bytes']:,} bytes, "
+              f"{len([k for k,v in rep_alt['checks'].items() if v['ok']])} checks passed, "
+              f"{len(rep_alt['checks'])} total, no NaN anywhere")
     return 0
 
 
