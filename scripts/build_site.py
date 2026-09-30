@@ -693,6 +693,15 @@ def main() -> int:
         print(f"copied evidence/{f.name} -> docs/data/")
 
     (DOCS / ".nojekyll").write_text("")
+    # GitHub Pages for this repository serves the repository ROOT, and the
+    # available token cannot change that setting. A root entry point is written
+    # so a visitor still lands on a download button. See build_root_page.py.
+    import sys as _sys
+    _sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from build_root_page import build as build_root          # noqa: E402
+    (REPO / "index.html").write_text(build_root())
+    (REPO / ".nojekyll").write_text("")
+    print("wrote index.html and .nojekyll at the repository root")
     print("done")
     return 0
 
