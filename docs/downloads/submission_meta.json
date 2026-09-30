@@ -1,6 +1,6 @@
 {
  "generated_utc": "20260930T021105Z",
- "latest": "17GEMSDOE_A-verified-01563-support_c5ea501e_20260930T021105Z",
+ "latest": "17GEMSDOE_F-ensemble-2pct_20260930T050626Z",
  "downloads": {
   "tif": "17GEMSDOE_A-verified-01563-support_c5ea501e_20260930T021105Z.tif",
   "zip": "17GEMSDOE_A-verified-01563-support_c5ea501e_20260930T021105Z.zip",
@@ -9,7 +9,11 @@
   "fallback_sha256": "7810719248d2aa17b4aefdc838bf7ea5ad90a08ae0882c7f96f158bf01696302",
   "candidate_tif": "17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.tif",
   "candidate_zip": "17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.zip",
-  "candidate_sidecar": "17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.json"
+  "candidate_sidecar": "17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.json",
+  "E_tif": "17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+  "E_zip": "17GEMSDOE_E-proba-multiscale_20260930T044527Z.zip",
+  "F_tif": "17GEMSDOE_F-ensemble-2pct_20260930T050626Z.tif",
+  "F_zip": "17GEMSDOE_F-ensemble-2pct_20260930T050626Z.zip"
  },
  "comment": "A-verified 0.1563-support rebuild (all-finite [0,1], 172,974 px, c5ea501e, 20260930)",
  "sha256": "c5ea501eba0ab840d26f0c017d01074c4bd9040ec5e2c5ac19bde8655d150e64",
@@ -35,5 +39,9 @@
   "values_in_0_1",
   "nan_only_outside_footprint",
   "non_empty_prediction"
- ]
+ ],
+ "E_comment": "E-proba-multiscale: HistGB 59feats, dilated-labels(3px), soft-proba, acc=0.8083, ab0a0a62",
+ "E_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+ "F_comment": "F-ensemble-2pct: mean(D-supervised + E-multiscale-proba), binary top-k at 2% density (103,347px), holdout_DTII=0.1524, 0210da43",
+ "F_sha256": "0210da4395b209450e52e9efc780ab3ca6aceffd60c26d6f623da2b8fe76b691"
 }

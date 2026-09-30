@@ -1,0 +1,21 @@
+{
+ "submission_name": "17GEMSDOE_E-proba-multiscale_20260930T044527Z",
+ "comment": "E-proba-multiscale: HistGB 59feats, dilated-labels(3px), soft-proba, acc=0.8083, ab0a0a62",
+ "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+ "bytes": 25065181,
+ "positive_pixels_gt50": 728137,
+ "positive_pixels_gt10": 3858179,
+ "value_range": [
+  0.0004625781439244747,
+  0.984115719795227
+ ],
+ "training_accuracy": 0.8082898451686308,
+ "n_features": 59,
+ "key_differences": [
+  "soft probability output",
+  "multi-scale gradient + |Laplacian| features",
+  "dilated labels (3px buffer) matching 300m kernel",
+  "NaN outside footprint matching sample"
+ ],
+ "built_utc": "20260930T044527Z"
+}

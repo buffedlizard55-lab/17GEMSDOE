@@ -1,0 +1,22 @@
+{
+ "submission_name": "17GEMSDOE_F-ensemble-2pct_20260930T050626Z",
+ "comment": "F-ensemble-2pct: mean(D-supervised + E-multiscale-proba), binary top-k at 2% density (103,347px), holdout_DTII=0.1524, 0210da43",
+ "sha256": "0210da4395b209450e52e9efc780ab3ca6aceffd60c26d6f623da2b8fe76b691",
+ "bytes": 1597278,
+ "positive_pixels": 103347,
+ "density_fraction": 0.02,
+ "budget": 103347,
+ "value_range": [
+  0.0,
+  1.0
+ ],
+ "holdout_mean_DTII": 0.1524,
+ "method": "ensemble of D-supervised (per-fold HistGB on 16 expression features) + E-multiscale (HistGB on 19 bands + 40 gradient/Laplacian features, dilated labels)",
+ "key_differences": [
+  "ensemble of two independently trained models",
+  "binary at 2% density (vs 3.3% for reference)",
+  "uses multi-scale edge features + expression learning",
+  "NaN outside footprint matching sample"
+ ],
+ "built_utc": "20260930T050626Z"
+}
