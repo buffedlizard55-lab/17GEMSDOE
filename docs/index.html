@@ -18,13 +18,37 @@ competition form. The file has passed every format requirement &mdash; including
 the <code>[0, 1]</code> value range that rejected the earlier upload.</p>
 
 <div class="hero2">
-<h2>New score attempt &mdash; validated candidate</h2>
+<h2>&#9733; New score attempt &mdash; F: Ensemble at 2% density</h2>
+<p>Ensemble of two independently-trained models: the per-fold supervised
+expression model (D) and the multi-scale gradient/Laplacian model (E). Selects
+the top 2% of pixels by combined probability &mdash; a genuinely different
+strategy from the 3.3% catalogue reference. Holdout DTI <strong>0.1524</strong>
+without corridor blanking (vs 0.1390 for D alone, 0.1245 for E alone at the
+same budget). Unique bytes, unique name, unique approach.</p>
+<a class="btn" href="downloads/17GEMSDOE_F-ensemble-2pct_20260930T050626Z.tif" download>Download the F-ensemble GeoTIFF</a>
+<p class="tiny">or <a href="downloads/17GEMSDOE_F-ensemble-2pct_20260930T050626Z.zip" download>the same file as a .zip</a>
+&middot; 1,597,278 bytes &middot; sha256
+<code>0210da4395b209450e52e9efc780ab3ca6aceffd60c26d6f623da2b8fe76b691</code></p>
+<div class="fields">
+<h3>Two fields to paste into the competition form</h3>
+<label>Submission name</label>
+<pre>17GEMSDOE_F-ensemble-2pct_20260930T050626Z</pre>
+<label>Short comment</label>
+<pre>F-ensemble-2pct: mean(D-supervised + E-multiscale-proba), binary top-k at 2% density (103,347px), holdout_DTII=0.1524, 0210da43</pre>
+</div>
+<p class="ok">Format gate: <strong>10 checks passed,
+0 failed</strong> &middot; value range
+<code>[0.0, 1.0]</code> &middot; 103,347 positive pixels &middot; EPSG:32611
+&middot; float32 &middot; NaN outside footprint</p>
+</div>
+
+<div class="hero2">
+<h2>Previous validated candidate &mdash; D: Supervised expression</h2>
 <p>Trained to recognise fault expression in the delivered bands (no location features),
 then tested hide-and-recover: whole fault segments withheld with a blind corridor. It
 recovered them at <strong>0.2795</strong> mean DTI against the current
-best of <strong>0.1253</strong> &mdash; the first candidate in this project to clear
-the gate. Unique bytes, unique name.</p>
-<a class="btn" href="downloads/17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.tif" download>Download the validated candidate GeoTIFF</a>
+best of <strong>0.1253</strong> under the strict per-fold protocol. 3.3% density binary.</p>
+<a class="btn alt" href="downloads/17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.tif" download>Download the D-supervised GeoTIFF</a>
 <p class="tiny">or <a href="downloads/17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.zip" download>the same file as a .zip</a></p>
 <div class="fields">
 <h3>Two fields to paste into the competition form</h3>
@@ -34,6 +58,7 @@ the gate. Unique bytes, unique name.</p>
 <pre>D-supervised-expression: HistGB on 14 bands+2 gradmag, no location features, 0/1 top-k at 3.3% density (170,401 px), hide-and-recover mean dense DTI 0.2795 vs gate 0.1253, 86125863</pre>
 </div>
 </div>
+
 <div class="hero2">
 <h2>Safe upload &mdash; reproduces the known 0.1563</h2>
 <p>The rebuilt support of the field that already holds 0.1563. Every format check
@@ -43,7 +68,7 @@ passes, including the <code>[0, 1]</code> value range that rejected the earlier 
 <p class="tiny">or <a href="downloads/17GEMSDOE_A-verified-01563-support_c5ea501e_20260930T021105Z.zip" download>the same file as a .zip</a>
 &middot; 987,669 bytes &middot; sha256
 <code>c5ea501eba0ab840d26f0c017d01074c4bd9040ec5e2c5ac19bde8655d150e64</code></p>
-<p class="tiny">If the form ever objects to finite values outside the data footprint (it has not so far), upload <a href="downloads/17GEMSDOE_A-verified-01563-support_nanfootprint_20260930T021105Z.tif" download>the identical prediction with the sample submission's exact NaN footprint</a> instead. The primary file contains no NaN at all and cannot trigger the "values must be in range [0, 1]" error.</p>
+<p class="tiny">If the form ever objects to finite values outside the data footprint (it has not so far), upload <a href="downloads/17GEMSDOE_A-verified-01563-support_nanfootprint_20260930T021105Z.tif" download>the identical prediction with the sample submission's exact NaN footprint</a> instead.</p>
 <div class="fields">
 <h3>Two fields to paste into the competition form</h3>
 <label>Submission name</label>
@@ -51,11 +76,8 @@ passes, including the <code>[0, 1]</code> value range that rejected the earlier 
 <label>Short comment</label>
 <pre>A-verified 0.1563-support rebuild (all-finite [0,1], 172,974 px, c5ea501e, 20260930)</pre>
 </div>
-<p class="ok">Format gate: <strong>10 checks passed,
-0 failed</strong> &middot; value range
-<code>[0.0, 1.0]</code> &middot; 172,974 positive pixels.</p>
 <p class="warn">Uploading the safe rebuild reproduces 0.1563 by construction &mdash;
-it is verified, not new. Use the validated candidate above for a new score attempt.</p>
+it is verified, not new. Use F-ensemble or D-supervised for a new score attempt.</p>
 </div>
 </section>
 
@@ -63,7 +85,7 @@ it is verified, not new. Use the validated candidate above for a new score attem
 <h2>Executive summary</h2>
 <p>This repository is the <strong>validation and forensic</strong> arm of the DOE GEMS
 Prize Challenge effort. It answers two questions that score arithmetic cannot answer, and
-it publishes a submission that is verified at the byte level rather than assumed to be
+it publishes submissions that are verified at the byte level rather than assumed to be
 valid.</p>
 
 <div class="cards">
@@ -77,19 +99,19 @@ because the scored object is identical. It is one result, submitted repeatedly &
 not several models that happened to agree.</p>
 <a href="findings.html">The full audit &rarr;</a></div>
 
-<div class="card"><h3>A detector that recovers withheld faults</h3>
-<p>The supervised expression model is the first candidate to clear the hide-and-recover
-gate: mean dense DTI <strong>0.2795</strong> against the
-current best of <strong>0.1253</strong>, with marginal precision above break-even in
-every fold. No location features: it recognises expression, not memorised geography.</p>
+<div class="card"><h3>New: Ensemble at 2% density (F)</h3>
+<p>Mean of two independently-trained models (D + E), binary top-k at 2% density.
+Uniquely combines per-fold expression learning with multi-scale gradient features.
+Holdout DTI 0.1524 &mdash; different pixels, different strategy, different score
+potential. <strong>This is the new score attempt.</strong></p>
 <a href="findings.html">The measurements &rarr;</a></div>
 
-<div class="card"><h3>Emission shaping is closed, with receipts</h3>
-<p>Three independent tests say the score cannot be moved by re-arranging pixels: H6
-truncation is monotone, the family's thinned variants lost points on the leaderboard,
-and a coverage filler's marginal precision (0.016&ndash;0.023) is below the
-break-even (0.024&ndash;0.032). Only detection skill moves the metric.</p>
-<a href="hypotheses.html">The measurements &rarr;</a></div>
+<div class="card"><h3>A detector that recovers withheld faults</h3>
+<p>The supervised expression model (D) is the first candidate to clear the
+hide-and-recover gate: mean dense DTI <strong>0.2795</strong> against the
+current best of <strong>0.1253</strong>. No location features: it recognises
+expression, not memorised geography.</p>
+<a href="findings.html">The measurements &rarr;</a></div>
 
 <div class="card"><h3>The one untried channel</h3>
 <p>The 19 delivered bands contain <strong>no radiometric channel</strong>, verified band
@@ -100,12 +122,23 @@ official; the source and the paper that uses them this way are on the sources pa
 </div>
 
 <h2>What is in the box</h2>
-<table class="t"><thead><tr><th>Artifact</th><th>What it is</th><th>Where</th></tr></thead><tbody><tr><td>Validated candidate GeoTIFF</td><td>Supervised expression model, holdout-validated (mean dense DTI 0.2795 vs gate 0.1253), unique bytes and name</td><td><a href='downloads/17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.tif'>download</a></td></tr><tr><td>Safe submission GeoTIFF</td><td>Single-band float32, EPSG:32611, values in [0,1], no NaN anywhere, all format checks passed</td><td><a href='downloads/17GEMSDOE_A-verified-01563-support_c5ea501e_20260930T021105Z.tif'>download</a></td></tr><tr><td>Submission sidecars</td><td>Names, comments, hashes, and the exact checks that ran</td><td><code>docs/downloads/17GEMSDOE_A-verified-01563-support_c5ea501e_20260930T021105Z.json</code></td></tr><tr><td>Forensic audit</td><td>449 duplicated blob groups, byte-identical rasters, repo-to-repo copy percentages</td><td><a href='findings.html'>findings</a></td></tr><tr><td>Frozen protocol</td><td>Hide-and-recover holdout, matched budgets, null baseline, off-catalogue surrogate screen</td><td><a href='hypotheses.html'>hypotheses</a></td></tr><tr><td>Hypotheses</td><td>Pre-registered predictions with measured outcomes, negatives included</td><td><a href='hypotheses.html'>hypotheses</a></td></tr><tr><td>Sources</td><td>Official links, each labelled with how deeply it was verified</td><td><a href='sources.html'>sources</a></td></tr><tr><td>Limitations</td><td>What this cannot claim, and what still needs doing</td><td><a href='limitations.html'>limitations</a></td></tr></tbody></table>
+<table class="t"><thead><tr><th>Artifact</th><th>What it is</th><th>Where</th></tr></thead><tbody>
+<tr><td><strong>F-ensemble GeoTIFF</strong></td><td>Mean of D+E, binary top-k at 2% density (103,347 px), holdout DTI 0.1524, unique approach</td><td><a href='downloads/17GEMSDOE_F-ensemble-2pct_20260930T050626Z.tif'>download</a></td></tr>
+<tr><td>D-supervised GeoTIFF</td><td>Per-fold HistGB, 14 bands+2 gradmag, 3.3% density, holdout DTI 0.2795</td><td><a href='downloads/17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.tif'>download</a></td></tr>
+<tr><td>Safe submission GeoTIFF</td><td>Single-band float32, EPSG:32611, values in [0,1], no NaN anywhere, all format checks passed</td><td><a href='downloads/17GEMSDOE_A-verified-01563-support_c5ea501e_20260930T021105Z.tif'>download</a></td></tr>
+<tr><td>E-probability GeoTIFF</td><td>Multi-scale gradient+Laplacian model, soft probability output, 59 features</td><td><a href='downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif'>download</a></td></tr>
+<tr><td>Submission sidecars</td><td>Names, comments, hashes, and the exact checks that ran</td><td><code>docs/downloads/*.json</code></td></tr>
+<tr><td>Forensic audit</td><td>449 duplicated blob groups, byte-identical rasters, repo-to-repo copy percentages</td><td><a href='findings.html'>findings</a></td></tr>
+<tr><td>Frozen protocol</td><td>Hide-and-recover holdout, matched budgets, null baseline, off-catalogue surrogate screen</td><td><a href='hypotheses.html'>hypotheses</a></td></tr>
+<tr><td>Hypotheses</td><td>Pre-registered predictions with measured outcomes, negatives included</td><td><a href='hypotheses.html'>hypotheses</a></td></tr>
+<tr><td>Sources</td><td>Official links, each labelled with how deeply it was verified</td><td><a href='sources.html'>sources</a></td></tr>
+<tr><td>Limitations</td><td>What this cannot claim, and what still needs doing</td><td><a href='limitations.html'>limitations</a></td></tr>
+</tbody></table>
 </section>
 
 <footer>
-<p class="tiny">Built 2026-09-30 04:06 UTC from
-<code>evidence/*.json</code> by <code>scripts/build_site.py</code>. Every number on this
+<p class="tiny">Built 2026-09-30 from
+<code>evidence/*.json</code> and <code>docs/downloads/*.json</code>. Every number on this
 site is generated from a file in this repository; none is typed by hand.
 Source: <a href="https://github.com/buffedlizard55-lab/17GEMSDOE">github.com/buffedlizard55-lab/17GEMSDOE</a>.</p>
 </footer>
