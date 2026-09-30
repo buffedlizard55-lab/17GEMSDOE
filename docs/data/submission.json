@@ -1,0 +1,20 @@
+{
+ "generated_utc": "20260930T013440Z",
+ "latest": "17GEMSDOE_A-verified-01563-support_e88f7ceb_20260930T013440Z",
+ "downloads": {
+  "tif": "17GEMSDOE_A-verified-01563-support_e88f7ceb_20260930T013440Z.tif",
+  "zip": "17GEMSDOE_A-verified-01563-support_e88f7ceb_20260930T013440Z.zip",
+  "sidecar": "17GEMSDOE_A-verified-01563-support_e88f7ceb_20260930T013440Z.json"
+ },
+ "comment": "A-verified-01563-support: reference ens12 support (public 0.1563), format-verified float32 [0,1], 172,974 px",
+ "sha256": "e88f7ceba8075fbb164f6b13edc091bfdfb7fad384bbd1ad592f5baaeae77f8e",
+ "bytes": 558806,
+ "positive_pixels": 172974,
+ "value_range": [
+  0.0,
+  1.0
+ ],
+ "format_checks_failed": [],
+ "holdout_score": 0.0793,
+ "reference_anchor_sha256": "7f00890a62878d612fb5eef67a9a364a2df819433dde74b6762ce4fc0fc4fe15"
+}

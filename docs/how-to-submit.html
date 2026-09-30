@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to submit &middot; 17GEMSDOE</title>
+<meta name="description" content="DOE GEMS Prize Challenge: verified submission download, forensic audit and pre-registered hypotheses.">
+<link rel="stylesheet" href="assets/style.css">
+</head><body>
+<header class="bar"><div class="wrap">
+<span class="brand">17GEMSDOE</span>
+<nav><a href="index.html">Download</a><a href="how-to-submit.html" class='on'>How to submit</a><a href="findings.html">Findings</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="limitations.html">Limitations</a></nav>
+</div></header>
+<main class="wrap">
+
+<h1>How to submit, exactly</h1>
+<p class="lede">Four steps. The format checks in step 4 were already run against the
+exact bytes you are about to upload.</p>
+
+<ol class="steps">
+<li><h3>Download the file</h3>
+<p><a class="btn" href="downloads/17GEMSDOE_A-verified-01563-support_e88f7ceb_20260930T013440Z.tif" download>Download the submission GeoTIFF</a></p>
+<p class="tiny">or <a href="downloads/17GEMSDOE_A-verified-01563-support_e88f7ceb_20260930T013440Z.zip" download>the .zip</a>, which contains the
+same single GeoTIFF. The competition accepts either form.</p></li>
+
+<li><h3>Name it and describe it</h3>
+<p>Use the name and comment already recorded in the sidecar, so that the entry on the
+leaderboard can be traced back to this build:</p>
+<pre>17GEMSDOE_A-verified-01563-support_e88f7ceb_20260930T013440Z</pre>
+<pre>A-verified-01563-support: reference ens12 support (public 0.1563), format-verified float32 [0,1], 172,974 px</pre></li>
+
+<li><h3>Upload it</h3>
+<p>Go to the competition's submission page and upload the file, pasting the name and the
+comment into the two fields the form provides. Nothing else is required.</p></li>
+
+<li><h3>If the form rejects it, do not guess</h3>
+<p>Run the gate locally and read which check failed:</p>
+<pre>python scripts/validate_submission.py downloads/17GEMSDOE_A-verified-01563-support_e88f7ceb_20260930T013440Z.tif</pre>
+<p>It exits non-zero on the first failing check and prints the measured value and the
+required value side by side.</p></li>
+</ol>
+
+<h2>The format the competition requires</h2>
+<table class="t"><thead><tr><th>Requirement</th><th>Value</th><th>Where this comes from</th></tr></thead><tbody><tr><td>File</td><td>one GeoTIFF, or a .zip containing one GeoTIFF</td><td>probability of fault at each pixel, 0 to 1</td></tr><tr><td>Bands</td><td>exactly 1</td><td>single-band prediction surface</td></tr><tr><td>Data type</td><td>float32</td><td>the sample submission's dtype</td></tr><tr><td>CRS</td><td>EPSG:32611</td><td>the sample submission's CRS</td></tr><tr><td>Grid</td><td>same width, height and geotransform as the sample submission</td><td>required by the metric</td></tr><tr><td>Values</td><td>finite values inside [0, 1]</td><td>predicted probabilities</td></tr><tr><td>Outside the data footprint</td><td>NaN or null</td><td>the sample submission uses NaN</td></tr><tr><td>Missing cells inside the footprint</td><td>0.0, never NaN</td><td>NaN inside the footprint is a rejection even though it is not out of range</td></tr></tbody></table>
+
+<h2>Why the earlier upload failed, and what is different now</h2>
+<p>The operator's upload was rejected with <em>"Predicted values must be in range
+[0, 1]"</em>. That message names one of several distinct failure modes, so the gate
+checks all of them rather than only the one in the message:</p>
+<ul>
+<li>a finite value below 0 or above 1 &mdash; the reported failure;</li>
+<li>a NaN <em>inside</em> the data footprint, which is not out of range but is still
+invalid, and which a range-only check would pass;</li>
+<li>a nodata sentinel such as <code>-9999</code> written inside the footprint, which is
+simultaneously out of range and a missing-value marker;</li>
+<li>the wrong dtype, the wrong band count, the wrong CRS, or a shifted geotransform.</li>
+</ul>
+<p>An audit of <strong>31</strong> GeoTIFFs published across
+the project family found <strong>0</strong>
+with an out-of-range value and
+<strong>0</strong> with a NaN inside the
+footprint, so the exact file that produced the rejection is not identifiable from the
+published artifacts. It is recorded as an open irregularity rather than guessed at. What
+this build changes is that the failure cannot recur silently: the writer repairs out-of-
+range and non-finite values, and the gate refuses to publish a file that fails.
+
+<h2>What this file is, and what it is not</h2>
+<p>It carries the support of the raster that already holds 0.1563 on the public
+leaderboard, rebuilt and re-verified, with a unique name so it can be told apart from
+every other upload in the family. On the frozen hide-and-recover protocol that field
+scores <strong>0.1253</strong>. It is
+<strong>not</strong> a new high score, and this repository does not claim it is: no
+hypothesis tested here beat the bar, so none was promoted. Uploading this file changes
+nothing except that it is verified to be accepted.</p>
+<p>If the goal is a new score rather than a safe upload, the ranked candidates on the
+<a href="hypotheses.html">hypotheses page</a> are the path, and the top one needs a data
+channel the current model has never seen.</p>
+
+<footer>
+<p class="tiny">Built 2026-09-30 01:36 UTC from
+<code>evidence/*.json</code> by <code>scripts/build_site.py</code>. Every number on this
+site is generated from a file in this repository; none is typed by hand.
+Source: <a href="https://github.com/buffedlizard55-lab/17GEMSDOE">github.com/buffedlizard55-lab/17GEMSDOE</a>.</p>
+</footer>
+</main></body></html>

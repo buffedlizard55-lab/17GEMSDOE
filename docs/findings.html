@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Findings &middot; 17GEMSDOE</title>
+<meta name="description" content="DOE GEMS Prize Challenge: verified submission download, forensic audit and pre-registered hypotheses.">
+<link rel="stylesheet" href="assets/style.css">
+</head><body>
+<header class="bar"><div class="wrap">
+<span class="brand">17GEMSDOE</span>
+<nav><a href="index.html">Download</a><a href="how-to-submit.html">How to submit</a><a href="findings.html" class='on'>Findings</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="limitations.html">Limitations</a></nav>
+</div></header>
+<main class="wrap">
+
+<h1>Findings</h1>
+<p class="lede">Everything on this page is produced by
+<code>scripts/forensic_audit.py</code>, <code>scripts/audit_ranges.py</code>,
+<code>scripts/run_hypotheses.py</code> and <code>scripts/score_reference_holdout.py</code>,
+and written to <code>evidence/</code>. The raw JSON is linked at the bottom.</p>
+
+<h2>F-1 &mdash; Are we uploading the same work over and over? Yes.</h2>
+<p>A file's git blob SHA is a hash of its bytes, so two files sharing one cannot be a
+coincidence. Comparing them across the project family:</p>
+<table class="t"><thead><tr><th>Repository pair</th><th>Shared work files</th><th>Byte-identical</th><th>Percentage</th></tr></thead><tbody><tr><td>GEMSDOE</td><td>GEMSDOE4</td><td>374</td><td>323</td><td><strong>86.4 %</strong></td></tr><tr><td>GEMSDOE</td><td>GEMSDOE2</td><td>385</td><td>328</td><td><strong>85.2 %</strong></td></tr><tr><td>GEMSDOE</td><td>5GEMSDOE</td><td>378</td><td>321</td><td><strong>84.9 %</strong></td></tr><tr><td>5GEMSDOE</td><td>GEMSDOE2</td><td>378</td><td>311</td><td><strong>82.3 %</strong></td></tr><tr><td>GEMSDOE2</td><td>GEMSDOE4</td><td>374</td><td>302</td><td><strong>80.7 %</strong></td></tr><tr><td>5GEMSDOE</td><td>GEMSDOE4</td><td>367</td><td>286</td><td><strong>77.9 %</strong></td></tr></tbody></table>
+<p>Three of the sibling repositories are, by bytes, mostly copies of <code>GEMSDOE</code>.
+This is not an inference from similar scores: it is a hash comparison of the source trees.</p>
+
+<h2>F-2 &mdash; The identical-score question, answered from the bytes</h2>
+<p>The raster with SHA-256 beginning <code>7f00890a</code>
+appears at <strong>15</strong> paths in
+<strong>4</strong> different repositories:</p>
+<table class="t"><thead><tr><th>Location</th></tr></thead><tbody><tr><td><code>GEMSDOE:data/evidence/baseline/submission.tif</code></td></tr><tr><td><code>GEMSDOE:data/evidence/baseline_rerun/submission.tif</code></td></tr><tr><td><code>GEMSDOE:data/evidence/runs/35042805806-experiment/submission.tif</code></td></tr><tr><td><code>GEMSDOE:data/evidence/runs/35042805806/submission.tif</code></td></tr><tr><td><code>GEMSDOE:data/evidence/runs/ens12-adopted-floor0.1-w0/submission.tif</code></td></tr><tr><td><code>GEMSDOE:data/evidence/runs/local-sandbox-smoke/submission.tif</code></td></tr><tr><td><code>5GEMSDOE:data/evidence/baseline/submission.tif</code></td></tr><tr><td><code>5GEMSDOE:data/evidence/baseline_rerun/submission.tif</code></td></tr><tr><td><code>5GEMSDOE:data/evidence/leaderboard_anchor/gemsdoe-ens12-adopted-7f00890a.tif</code></td></tr><tr><td><code>5GEMSDOE:data/evidence/runs/35042805806-experiment/submission.tif</code></td></tr><tr><td><code>5GEMSDOE:data/evidence/runs/35042805806/submission.tif</code></td></tr><tr><td><code>5GEMSDOE:data/evidence/runs/ens12-adopted-floor0.1-w0/submission.tif</code></td></tr><tr><td><code>5GEMSDOE:data/evidence/runs/local-sandbox-smoke/submission.tif</code></td></tr><tr><td><code>GEMSDOE2:docs/gemsdoe2-recall-arm-7f00890a.tif</code></td></tr><tr><td><code>7GEMSDOE:external/scored/gemsdoe1-ens12-7f00890a.tif</code></td></tr></tbody></table>
+<p>Two accounts submitting that file would receive the same score <em>by construction</em>,
+because the scored object is byte-identical. Nothing about model agreement is required to
+explain it. This is the answer to "why do 5GEMSDOE and GEMSDOE1 have the same score": it
+is one file, published twice.</p>
+
+<h2>F-3 &mdash; Support overlap between distinct predictions</h2>
+<p>Two submissions can differ in bytes and still be the same map. The Jaccard overlap of
+their positive pixels settles it:</p>
+<table class="t"><thead><tr><th>Overlap</th><th>File A</th><th>File B</th></tr></thead><tbody><tr><td><strong>1.0000</strong></td><td>8GEMSDOE:8GEMSDOE_Hedge-v2_submission.tif</td><td>5GEMSDOE:candidate_s5_catalogue_hedge.tif</td></tr><tr><td><strong>1.0000</strong></td><td>12GEMSDOE:12GEMSDOE_r5-nms3-trace_055e9aac96b8.tif</td><td>12GEMSDOE:12GEMSDOE_r5-nms3-trace_055e9aac96b8_allfinite.tif</td></tr><tr><td><strong>1.0000</strong></td><td>12GEMSDOE:12GEMSDOE_r7-nms3-dem10-scarp_0c9199f14e62.tif</td><td>12GEMSDOE:12GEMSDOE_r7-nms3-dem10-scarp_0c9199f14e62_allfinite.tif</td></tr><tr><td><strong>1.0000</strong></td><td>GEMSDOE4:prob_raw.tif</td><td>GEMSDOE2:gemsdoe2_turbo_submission.tif</td></tr><tr><td><strong>1.0000</strong></td><td>GEMSDOE3:example_submission.tif</td><td>GEMSDOE3:existing_faults.tif</td></tr><tr><td><strong>1.0000</strong></td><td>13GEMSDOE:13gems-composite-plus-20260929T183249Z_allfinite.tif</td><td>13GEMSDOE:13gems-composite-plus-20260929T183249Z.tif</td></tr><tr><td><strong>1.0000</strong></td><td>13GEMSDOE:13gems-composite-20260929T183221Z_allfinite.tif</td><td>13GEMSDOE:13gems-composite-20260929T183221Z.tif</td></tr><tr><td><strong>1.0000</strong></td><td>13GEMSDOE:13gems-composite-20260928T040920Z.tif</td><td>13GEMSDOE:13gems-composite-20260928T040920Z_allfinite.tif</td></tr></tbody></table>
+<p><code>8GEMSDOE_Hedge-v2_submission.tif</code> and
+<code>5GEMSDOE/candidate_s5_catalogue_hedge.tif</code> are the same prediction under two
+names in two repositories.</p>
+
+<h2>F-4 &mdash; The range audit, and the upload error</h2>
+<p>Reproduce with <code>python scripts/audit_ranges.py</code>:
+<strong>31 files audited,
+0 with an out-of-range value,
+0 with a NaN inside the official
+footprint</strong>. The rejection the operator saw is therefore <em>not</em> reproducible
+from any currently published artifact, which is recorded as an open irregularity rather
+than resolved by guessing. The gate that prevents a recurrence is in
+<code>src/gems/io.py</code>.</p>
+
+<h2>F-5 &mdash; Why the local validation kept mis-ranking candidates</h2>
+<p>This is the most important finding of the session, and it is a property of the
+measurement rather than of any model.</p>
+<table class="t"><thead><tr><th>Candidate</th><th>Dense-budget DTI</th><th>Sparse-budget DTI</th></tr></thead><tbody><tr><td>NULL_random</td><td><strong>0.1199</strong></td><td>0.0465</td></tr><tr><td>H3_relay_bridge</td><td><strong>0.0045</strong></td><td>0.0012</td></tr><tr><td>H2_tilt_lineament</td><td><strong>0.0013</strong></td><td>0.0000</td></tr><tr><td>BASE_distance_to_catalogue</td><td><strong>0.0000</strong></td><td>0.0000</td></tr><tr><td>H2b_supplied_tmi_hg</td><td><strong>0.0000</strong></td><td>0.0000</td></tr><tr><td>H4_strain_jog</td><td><strong>0.0000</strong></td><td>0.0000</td></tr><tr><td>CTRL_det_elev_slope</td><td><strong>0.0000</strong></td><td>0.0000</td></tr></tbody></table>
+<p><strong>Uniform random noise scores 0.1199
+and beats every physically motivated detector</strong>, including the supplied magnetic
+edge band and a fresh tilt-angle edge operator, at both budgets. The reference field that
+holds 0.1563 on the public leaderboard scores
+<strong>0.1253</strong> on the same test &mdash;
+barely above noise.</p>
+<p>The reason is geometrical. The metric credits a prediction anywhere within 300 m of a
+truth pixel, the catalogue is spread across the whole map, and a real submission emits
+only about 3 % of the valid area. A detector that concentrates its budget on the strongest
+anomaly leaves most of the map uncovered; noise covers everything evenly and collects the
+credit. <strong>The catalogue-recovery holdout at competition density is dominated by
+coverage, not by detection</strong>, which is exactly why a leave-one-fault-system-out
+proxy correlated &minus;0.20 with the public leaderboard in the sibling audit.</p>
+<p>The consequence for the next iteration is concrete: a local score computed this way
+cannot rank candidates, and an improvement in marginal precision must be demonstrated
+<em>at the emission density the leaderboard actually uses</em>. Anything measured only at a
+sparse budget is uninformative, and re-tuning parameters against it is wasted effort.</p>
+
+<h2>F-6 &mdash; The catalogue is more fragmented than a fault map suggests</h2>
+<p>Reading the supplied labels raster directly: <strong>3199
+8-connected components</strong>, median size
+<strong>12.0 pixels</strong>,
+largest <strong>360 pixels</strong>.
+Most mapped "faults" in this raster are 1&ndash;2 km segments. Any structural inference
+built on the catalogue's topology &mdash; bridging, linking, ordering &mdash; is operating on
+a heavily segmented version of the real network, and that must be accounted for before the
+result is interpreted geologically.</p>
+
+<h2>Raw evidence</h2>
+<p class="tiny"><a href='data/_raw_fold_scores.json'>_raw_fold_scores.json</a> &middot; <a href='data/candidate_hypotheses.json'>candidate_hypotheses.json</a> &middot; <a href='data/data_manifest.json'>data_manifest.json</a> &middot; <a href='data/forensic_audit.json'>forensic_audit.json</a> &middot; <a href='data/h1_gap_diagnostic.json'>h1_gap_diagnostic.json</a> &middot; <a href='data/h6_budget.json'>h6_budget.json</a> &middot; <a href='data/holdout_results.json'>holdout_results.json</a> &middot; <a href='data/hypotheses.json'>hypotheses.json</a> &middot; <a href='data/range_audit.json'>range_audit.json</a> &middot; <a href='data/reference_holdout.json'>reference_holdout.json</a> &middot; <a href='data/sources.json'>sources.json</a> &middot; <a href='data/submission.json'>submission.json</a></p>
+
+<footer>
+<p class="tiny">Built 2026-09-30 01:36 UTC from
+<code>evidence/*.json</code> by <code>scripts/build_site.py</code>. Every number on this
+site is generated from a file in this repository; none is typed by hand.
+Source: <a href="https://github.com/buffedlizard55-lab/17GEMSDOE">github.com/buffedlizard55-lab/17GEMSDOE</a>.</p>
+</footer>
+</main></body></html>

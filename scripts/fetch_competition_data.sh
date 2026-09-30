@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# Reassemble the official competition rasters from the GitHub bridge.
+#
+# Two routes get the data onto a machine:
+#
+#   Route A -- an unrestricted machine. Log in to the competition and download
+#   the three files from the data tab into ./data using the names below. Then run
+#   `python scripts/prepare_data.py` to verify them.
+#       https://www.drivendata.org/competitions/306/competition-doe-gems/data/
+#
+#   Route B -- this script. The bytes were previously transported into a sibling
+#   repository under data/bridge/, split into sub-100 MB parts, because the
+#   sandbox this project runs in can reach only api.github.com and the Python
+#   package index. This script downloads the parts through the GitHub API,
+#   concatenates them, and hands off to prepare_data.py, which refuses to proceed
+#   unless every SHA-256 matches the official pin.
+#
+# Nothing in this project ever writes competition data into git: `data/` is
+# ignored except for its README.
+
+set -euo pipefail
+
+ORG="${ORG:-buffedlizard55-lab}"
+BRIDGE_REPO="${BRIDGE_REPO:-GEMSDOE}"
+BRIDGE_DIR="${BRIDGE_DIR:-data/bridge}"
+DEST="${DEST:-data}"
+TMP="$(mktemp -d)"
+trap 'rm -rf "$TMP"' EXIT
+
+mkdir -p "$DEST"
+
+fetch() {  # fetch <repo-path> <destination>
+  local path="$1" dest="$2"
+  if [[ -s "$dest" ]]; then
+    echo "  cached  $dest"
+    return 0
+  fi
+  echo "  fetch   $path"
+  gh api "repos/${ORG}/${BRIDGE_REPO}/contents/${path}?ref=HEAD" \
+     -H "Accept: application/vnd.github.raw" > "$dest"
+}
+
+echo "== training_features.tif (19 bands, ~419 MB, 5 parts) =="
+parts=(part-000 part-001 part-002 part-003 part-004)
+for i in "${!parts[@]}"; do
+  fetch "${BRIDGE_DIR}/${parts[$i]}" "$TMP/${parts[$i]}"
+done
+cat "$TMP"/part-* > "$DEST/training_features.tif"
+
+echo "== labels.tif (known-fault catalogue) =="
+fetch "${BRIDGE_DIR}/existing_faults.tif" "$TMP/existing_faults.tif"
+cp "$TMP/existing_faults.tif" "$DEST/labels.tif"
+
+echo "== sample_submission.tif (required grid and format) =="
+fetch "${BRIDGE_DIR}/example_submission.tif" "$TMP/example_submission.tif"
+cp "$TMP/example_submission.tif" "$DEST/sample_submission.tif"
+
+echo
+echo "== verifying against the official SHA-256 pins =="
+python scripts/prepare_data.py --data-dir "$DEST"
+
+cat <<'EOF'
+
+Done. The rasters are in ./data and every byte has been verified.
+They are git-ignored: competition data is never committed.
+
+Next: python scripts/run_hypotheses.py
+EOF

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Limitations &middot; 17GEMSDOE</title>
+<meta name="description" content="DOE GEMS Prize Challenge: verified submission download, forensic audit and pre-registered hypotheses.">
+<link rel="stylesheet" href="assets/style.css">
+</head><body>
+<header class="bar"><div class="wrap">
+<span class="brand">17GEMSDOE</span>
+<nav><a href="index.html">Download</a><a href="how-to-submit.html">How to submit</a><a href="findings.html">Findings</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="limitations.html" class='on'>Limitations</a></nav>
+</div></header>
+<main class="wrap">
+
+<h1>Limitations</h1>
+<p class="lede">Read this before trusting any number on the site.</p>
+
+<h2>What this repository cannot claim</h2>
+<ul>
+<li><strong>No new leaderboard score.</strong> No hypothesis tested here beat the bar
+under the frozen protocol, so none was promoted and no score improvement is asserted. The
+published file is a verified rebuild of the support that already holds 0.1563.</li>
+<li><strong>The holdout's truth is the catalogue, not the test set.</strong> The
+leaderboard scores faults that are in no catalogue. A catalogue-recovery holdout measures
+geographic generalisation; it does not measure discovery. The two are not on the same
+scale and this site never compares them directly.</li>
+<li><strong>The reference field's holdout score leaks.</strong> It was trained on the
+whole catalogue, including the withheld segments. Its
+0.1253 is an upper bound, not a
+valid estimate of generalisation.</li>
+<li><strong>The local instrument is coverage-dominated.</strong> Uniform noise reaches
+0.1199
+at competition density. Until the off-catalogue arm exists, no local number can rank a
+discovery hypothesis.</li>
+<li><strong>The band label for <code>tc</code> is ambiguous in the file itself</strong>,
+which calls it "tilt angle or total curvature". This repository computes its own tilt
+angle from <code>tmi</code> rather than trusting that label.</li>
+</ul>
+
+<h2>Environment constraints that shaped the result</h2>
+<ul>
+<li>Two CPU cores, 3 GB of RAM, <strong>no GPU</strong>, and no scikit-learn, PyTorch or
+LightGBM available. A CNN ensemble of the kind that produced the family's best result
+could not be retrained here, so the work was directed at measurement, audit and
+deterministic detectors.</li>
+<li>Outbound network access is limited to <code>api.github.com</code> and the Python
+package index, so the two highest-value external datasets (airborne radiometrics, 1 m
+lidar) could not be fetched in this environment. Both are confirmed to exist and are
+nameable to a machine that can reach them.</li>
+<li>No DrivenData authentication, so no leaderboard submission was made and no
+leaderboard movement is claimed.</li>
+</ul>
+
+<h2>What still needs doing, in priority order</h2>
+<ol>
+<li><strong>Build the off-catalogue validation arm</strong> from an independent official
+fault compilation, and re-rank every candidate on it. This is the highest-value fix
+because it unblocks everything else.</li>
+<li><strong>Add the radiometric channel and retrain.</strong> The only new information
+available, aimed at the class of fault the catalogue cannot contain.</li>
+<li><strong>Add 1 m lidar scarp morphology</strong> at the resolution the catalogue was
+drawn at.</li>
+<li><strong>Re-derive the emission rule from the metric's coverage structure</strong>,
+because concentration is currently costing more than the models are gaining.</li>
+<li><strong>Make every submission unique.</strong> At least
+21 byte-identical
+raster groups are currently published across the family, and the same file ascending under
+several accounts is the single largest source of redundant leaderboard entries.</li>
+</ol>
+
+<h2>Open irregularities flagged for review</h2>
+<ul>
+<li>The <code>[0, 1]</code> upload rejection is not reproducible from any of the
+31 published GeoTIFFs audited.</li>
+<li>At least 21
+raster files are published byte-identically in more than one repository, and three
+repositories are 50&ndash;86 % byte-identical copies of another.</li>
+<li>The problem description advertises a top-of-crustal magnetic source-depth estimate
+that the delivered 19-band raster does not contain, verified band by band.</li>
+</ul>
+
+<footer>
+<p class="tiny">Built 2026-09-30 01:36 UTC from
+<code>evidence/*.json</code> by <code>scripts/build_site.py</code>. Every number on this
+site is generated from a file in this repository; none is typed by hand.
+Source: <a href="https://github.com/buffedlizard55-lab/17GEMSDOE">github.com/buffedlizard55-lab/17GEMSDOE</a>.</p>
+</footer>
+</main></body></html>

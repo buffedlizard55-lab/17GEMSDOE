@@ -1,0 +1,117 @@
+{
+ "purpose": "Candidate hypotheses for the next iteration, each naming the layers used, the physical signature targeted, why it should catch a fault that is missing from the USGS/INGENIOUS catalogue rather than one already in it, and how it differs from everything already implemented in this repository or in the sibling projects.",
+ "ranking_rule": "Ordered by expected DTI improvement, with implementation cost and the evidence for that expectation recorded alongside. A candidate that needs external data names the specific free official source and is marked viable only if that source was confirmed to exist and be obtainable.",
+ "candidates": [
+  {
+   "rank": 1,
+   "id": "H-RAD",
+   "name": "Airborne radiometric alteration lineaments (K, eU, eTh, K/eTh)",
+   "layers": [
+    "NEW: GeoDAWN airborne gamma-ray grids - potassium, equivalent uranium, equivalent thorium",
+    "derived: K/eTh ratio, Th-normalised K anomaly, potassium-deviation (Kd)",
+    "existing: tc, tmi, rtp used only to co-locate the alteration anomaly with a magnetic edge"
+   ],
+   "physical_signature": "Potassium enrichment with thorium depletion along a linear damage zone. Hydrothermal fluids concentrate K in illite/adularia and strip Th, so the K/eTh ratio rises along the altered corridor. The target signature is a positive ridge in K/eTh, 200-600 m wide (the damage zone), that is linear rather than areal, and that coincides with a magnetic or gravity edge.",
+   "why_it_catches_a_fault_missing_from_the_catalogue": "The catalogue is a SCARP inventory - it records faults that broke the surface recently enough to leave a topographic step. A concealed or poorly expressed fault has no scarp, so no catalogue entry, but its alteration halo persists in the upper half metre of soil, which is exactly the depth window an airborne gamma-ray spectrometer measures. The method is therefore sensitive to the class of fault the catalogue is structurally blind to, rather than to the class it already contains.",
+   "how_it_differs": "The 19 delivered bands contain NO radiometric channel - verified by reading the band descriptions of the official training_features.tif, band by band. Every feature in this repository and in the sibling projects (analytic signal, tilt, TDR, horizontal and vertical gradients, curvature family, lineament energy and coherence, multi-scale HGM, family ranks and agreement counts) is a function of those 19 bands. A radiometric channel is therefore genuinely new information, not a new transform of existing information.",
+   "expected_dti_improvement": "Highest available. The gap from 0.1563 to 0.3049 needs roughly twice the true-positive weight per emitted pixel; a transform of the existing bands cannot supply information that is not already there, whereas a new channel can.",
+   "implementation_cost": "High. Fetch the grids, reproject to EPSG:32611 on the 100 m grid, compute ratios, then retrain the proven ensemble. Two to three days including validation.",
+   "external_data": {
+    "source": "USGS GeoDAWN airborne geophysical survey",
+    "sciencebase_item": "https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7",
+    "doi": "https://doi.org/10.5066/P93LGLVQ",
+    "contents": "Airborne magnetic and radiometric grids, geophysical GeoTIFFs, a radiometric ternary PDF and flight-line CSVs",
+    "licence": "US public domain, no credentials",
+    "obtainable_confirmed": "yes - the catalogue record lists the radiometric GeoTIFFs as downloadable assets",
+    "reachable_from_this_sandbox": "no - the sandbox can reach only api.github.com and pypi.org; the sibling projects already carry a partially built radiometric_u8 channel, so the file is believed to exist inside the project family"
+   },
+   "supporting_source": {
+    "citation": "Glen & Earney, New High Resolution Airborne Geophysical Surveys (Geothermal Resources Council)",
+    "url": "https://publications.mygeoenergynow.org/grc/1034804.pdf",
+    "what_it_supports": "Shows a potassium concentration grid derived from GeoDAWN aeroradiometric data over the Fish Creek Mountains, and states the target explicitly as magnetic and radiometric signatures associated with young basin faults that displace weakly magnetic basin fill. Confirms both that the data exist and that they are used for exactly this purpose in this region.",
+    "verification": "opened"
+   },
+   "preregistered_prediction": "Adding the radiometric ratio channels to the existing ensemble raises the hide-and-recover DTI by at least +0.010 over the reference at the same emission density, and raises marginal precision above the break-even of 0.0257 measured for the reference field."
+  },
+  {
+   "rank": 2,
+   "id": "H-LIDAR",
+   "name": "Lidar scarp morphology at the scale the catalogue was actually drawn at",
+   "layers": [
+    "NEW: 1 m DEM from the organisers' own link list",
+    "derived: free-face height, scarp-base break, along-strike continuity, hanging-wall depression depth",
+    "existing: det_elev and det_elev_slope used only as a coarse regional context"
+   ],
+   "physical_signature": "A fault scarp is a metre-scale step. The supplied detrended elevation is on a 100 m grid, where a 2-5 m scarp is a fraction of one cell - it cannot be resolved. On a 1 m DEM the same scarp has a sharp base, a measurable free face and along-strike continuity over hundreds of metres.",
+   "why_it_catches_a_fault_missing_from_the_catalogue": "The catalogue was drawn by geologists interpreting topography, so the faults it contains are the ones that were recognisable at their working scale. A fault they missed is by construction the subtle one - short, eroded, or buried at its ends. Detecting it requires the resolution they used, and a slightly different morphological criterion (scarp base and free-face geometry rather than a thresholded ridge-top line).",
+   "how_it_differs": "The sibling attempts on lidar used a ridge-top criterion and a 10 m DEM scarp-thinning arm. This candidate targets the scarp BASE and hanging-wall geometry, and would be scored on the off-catalogue validation arm rather than on catalogue recall.",
+   "expected_dti_improvement": "High but uncertain; resolution is necessary rather than sufficient. The failure mode is that a 1 m scarp detector produces very many candidates and the false-positive cost at 0.2 per pixel erases the gain - which is itself worth measuring.",
+   "implementation_cost": "Medium-high: the 1 m DEM tiles must be mosaicked and processed in windows; the single-tile volume is far larger than the 100 m stack.",
+   "external_data": {
+    "source": "The competition's own data download page offers a 1 m DEM link list",
+    "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/data/",
+    "licence": "US public domain",
+    "obtainable_confirmed": "yes - the page lists a 1m_DEM_links.csv asset",
+    "reachable_from_this_sandbox": "no"
+   },
+   "supporting_source": {
+    "citation": "DOE GEMS Prize Challenge problem description and data page",
+    "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/",
+    "what_it_supports": "Confirms the organisers distribute the high-resolution elevation source themselves.",
+    "verification": "opened"
+   },
+   "preregistered_prediction": "A scarp-base detector on 1 m lidar recovers at least 15 % of withheld catalogue pixels at the matched sparse budget, which is more than any 100 m detector tested here managed."
+  },
+  {
+   "rank": 3,
+   "id": "H-COVER",
+   "name": "Coverage-optimal emission instead of anomaly-ranked emission",
+   "layers": [
+    "no new layers - this is an emission rule, applied to any existing score field"
+   ],
+   "physical_signature": "None. This candidate follows from the metric and from this repository's own measurement, not from geology: the metric credits a prediction anywhere within 300 m of a truth pixel, so two emissions closer than about 300 m compete for the same truth pixel while two emissions 300 m apart each have their own catchment. A ranked field concentrates its budget on the strongest anomaly and leaves most of the map uncovered.",
+   "why_it_catches_a_fault_missing_from_the_catalogue": "It does not catch anything by itself. It corrects a systematic loss: this repository measured that under the frozen protocol uniform random noise scored 0.1199 on the dense budget while the reference field - the best real submission in the family - scored 0.1253. Almost the entire advantage of a trained model over noise is being spent on concentration rather than on coverage.",
+   "how_it_differs": "Every sibling arm ranks pixels by a score and takes a threshold or a top-k. This candidate keeps the score only to order candidates and then decimates them so that retained pixels are at least one kernel radius apart, maximising the number of distinct truth pixels covered per emitted pixel.",
+   "expected_dti_improvement": "Moderate and immediate, and cheap to measure. Its value is bounded by the fact that the real test-set truth is a sparse set of new faults and is not spatially uniform, so the catalogue-holdout gain will overstate the leaderboard gain.",
+   "implementation_cost": "Low: a non-maximum-suppression sweep over the existing probability field, a few hours.",
+   "external_data": null,
+   "preregistered_prediction": "Decimating the reference field's support to enforce a 3 px minimum separation, at equal emitted pixel count, raises dense-budget holdout DTI by at least +0.005 over the undecimated field.",
+   "note": "This candidate is the direct consequence of the coverage-dominance finding recorded in evidence/reference_holdout.json and evidence/hypotheses.json."
+  },
+  {
+   "rank": 4,
+   "id": "H-WORM",
+   "name": "Multi-scale magnetic worm skeleton with strike-matched orientation",
+   "layers": ["tmi", "rtp", "mag_anom", "tc", "mag_asa", "mag_tilt"],
+   "physical_signature": "A fault that offsets a magnetised unit produces a linear maximum in the analytic signal that persists across smoothing scales. Tracking the same lineament through two or three scales, and requiring its orientation to stay within the regional N-to-NNE Basin-and-Range fabric, removes single-scale artefacts without discarding real structure.",
+   "why_it_catches_a_fault_missing_from_the_catalogue": "A concealed fault still offsets the magnetic basement even where it has no surface expression, so a magnetic lineament can exist with no scarp and no catalogue entry.",
+   "how_it_differs": "The sibling feature stacks contain many single-scale magnetic products and several multi-scale horizontal-gradient families, but no arm requires a lineament to be continuously present across scales and simultaneously aligned with the regional strike before it is accepted. That conjunction is the hypothesis.",
+   "expected_dti_improvement": "Modest, and the honest expectation is low: this repository measured the supplied magnetic edge product (tmi_hg) and a fresh tilt-angle edge detector at 0.0000 on the matched sparse budget, i.e. worse than noise. The evidence says that re-transforming the existing bands is the least promising direction of the four.",
+   "implementation_cost": "Medium: scales x orientations with numerical skeleton tracking.",
+   "external_data": null,
+   "preregistered_prediction": "Strike-gated multi-scale tracking beats the single-scale tilt detector but does not reach the random-noise baseline at the dense budget. If that is what happens, the magnetic-only line of work should be closed rather than re-parameterised.",
+   "note": "Listed at rank 4 rather than dropped, because a documented negative result closes a line of work and this is the line most likely to be re-tried."
+  },
+  {
+   "rank": 5,
+   "id": "H-COVER-2",
+   "name": "Conductivity-and-cover targeting for faults under basin fill",
+   "layers": ["cond_surf", "depth_to_base_surf", "iso_grav_anom", "iso_grav_anom_hg", "tmi_hg"],
+   "physical_signature": "Where the sedimentary cover is thick, a fault is invisible to every surface method that the catalogue depends on. It remains visible in two ways: as a lateral discontinuity in the conductivity surface, and as a lineament in the isostatic gravity horizontal gradient because the basement offset still has a mass contrast.",
+   "why_it_catches_a_fault_missing_from_the_catalogue": "It targets precisely the population a scarp-based catalogue cannot contain - faults whose only surface trace is buried - and it uses a cover-thickness layer to restrict the search to where that situation actually holds, instead of applying the detector everywhere.",
+   "how_it_differs": "The sibling arms use cond_surf and depth_to_base_surf as generic inputs to a pixel classifier. Here the cover thickness is used as a spatial GATE that defines the only region where the hypothesis applies, which changes the false-positive economics rather than the score field.",
+   "expected_dti_improvement": "Low to moderate. The supplied conductivity and cover surfaces are smooth regional products, so their spatial resolution may not support 100 m targeting; that is the specific thing to measure first.",
+   "implementation_cost": "Low: no new data, an afternoon.",
+   "external_data": null,
+   "preregistered_prediction": "Gating the reference field to the thickest-cover tercile raises marginal precision inside the gate above the global break-even, demonstrating that the cover gate is informative even if the conductivity channel is too smooth to localise on its own."
+  }
+ ],
+ "not_viable_yet": [
+  {
+   "id": "H-SEIS",
+   "name": "Seismicity-lineament gap detection",
+   "reason": "Rejected on physical grounds before implementation, not by test. The supplied seismicity layers ieq_n100a15 and deq_n100a15 are smoothed with a 100 km radius, so they are constant over any area small enough to contain a 1-5 km fault. No detector built on them can localise at the required scale. Recorded here so it is not proposed again.",
+   "evidence": "band descriptions of the official training_features.tif, read directly"
+  }
+ ]
+}

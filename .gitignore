@@ -1,0 +1,9 @@
+# Competition data is never committed. Only data/README.md is.
+data/*
+!data/README.md
+*.part-*
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/

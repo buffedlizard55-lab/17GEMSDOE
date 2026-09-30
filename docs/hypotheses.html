@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hypotheses &middot; 17GEMSDOE</title>
+<meta name="description" content="DOE GEMS Prize Challenge: verified submission download, forensic audit and pre-registered hypotheses.">
+<link rel="stylesheet" href="assets/style.css">
+</head><body>
+<header class="bar"><div class="wrap">
+<span class="brand">17GEMSDOE</span>
+<nav><a href="index.html">Download</a><a href="how-to-submit.html">How to submit</a><a href="findings.html">Findings</a><a href="hypotheses.html" class='on'>Hypotheses</a><a href="sources.html">Sources</a><a href="limitations.html">Limitations</a></nav>
+</div></header>
+<main class="wrap">
+
+<h1>Hypotheses</h1>
+<p class="lede">Predictions were written down before the measurements were taken, on a
+protocol frozen in advance. Failures are published in the same table as successes.</p>
+
+<h2>The frozen protocol</h2>
+<ul>
+<li><strong>Hide and recover.</strong> Whole 8-connected catalogue components of 20 pixels
+or more are withheld, in four spatially disjoint block folds. Isolated pixels would be
+recoverable by any smoothing operator, so they would test interpolation rather than
+detection.</li>
+<li><strong>A blind corridor.</strong> A 3-pixel buffer around every withheld segment is
+removed from the detector's inputs, so a trace cannot simply be extended from where it
+stops.</li>
+<li><strong>Pixel-exact masking.</strong> At scoring time the remaining catalogue is
+removed from both prediction and truth, mirroring the organisers' rule. A prediction that
+lands on a known fault gains nothing.</li>
+<li><strong>Two budgets.</strong> Every candidate emits exactly as many pixels as the fold
+contains truth pixels (a pure localisation test), and separately the 3.3 % of valid area
+that real submissions in this family emit (the density at which the leaderboard actually
+judges).</li>
+<li><strong>A null.</strong> Uniform random noise at the same budget, so "does this know
+anything?" has an answer.</li>
+</ul>
+<table class="t"><thead><tr><th>Candidate</th><th>Dense DTI</th><th>Sparse DTI</th><th>Marginal TP per emitted px</th><th>Verdict</th></tr></thead><tbody><tr><td><code>NULL_random</code></td><td>0.1199</td><td>0.0465</td><td>0.0302</td><td>baseline</td></tr><tr><td><code>H3_relay_bridge</code></td><td>0.0045</td><td>0.0012</td><td>0.0011</td><td>rejected</td></tr><tr><td><code>H2_tilt_lineament</code></td><td>0.0013</td><td>0.0000</td><td>0.0003</td><td>rejected</td></tr><tr><td><code>BASE_distance_to_catalogue</code></td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>rejected</td></tr><tr><td><code>H2b_supplied_tmi_hg</code></td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>rejected</td></tr><tr><td><code>H4_strain_jog</code></td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>rejected</td></tr><tr><td><code>CTRL_det_elev_slope</code></td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>rejected</td></tr></tbody></table>
+<p class="warn">The verdicts follow from the numbers and are not softened: at the density
+that matters, <strong>no detector here beats uniform noise</strong>. The best physical
+candidate scores 0.0045 against a null of 0.1199. Section F-5 on the
+<a href="findings.html">findings page</a> explains why, and why that result invalidates
+this class of local score rather than these particular detectors.</p>
+
+<h2>The reference field under the same protocol</h2>
+<table class="t"><thead><tr><th>Measure</th><th>Value</th><th>Reading</th></tr></thead><tbody><tr><td>As published, own support</td><td>0.1272</td><td>the file exactly as it would be uploaded</td></tr><tr><td>Dense budget</td><td>0.1253</td><td>against the null's 0.1199</td></tr><tr><td>Marginal TP per emitted px</td><td>0.0315</td><td>vs its own break-even of 0.0257</td></tr></tbody></table>
+<p class="tiny">Caveat carried with the number: the reference field was trained on the
+whole catalogue, including the segments this protocol withholds, so its score leaks and is
+an upper bound rather than an estimate of generalisation.</p>
+
+<h2>Was the zero a detector bug? Checked, and no</h2>
+<p>H3's bridges scored 0.0045.
+Two explanations fit a zero and they demand opposite responses: the detector might be
+bridging rasterisation splits inside single faults, or the test simply cannot see a bridge.
+<code>scripts/diagnose_h1_gaps.py</code> separates them:</p>
+<table class="t"><thead><tr><th>Gap window</th><th>Bridges</th><th>Share</th></tr></thead><tbody><tr><td>&lt;= 1.2 km: probably a rasterisation split</td><td>121</td><td>11.4 %</td></tr><tr><td>1.3-1.6 km: shorter than the published range</td><td>76</td><td>7.1 %</td></tr><tr><td>1.7-3.2 km: inside the published relay-ramp range</td><td>326</td><td>30.7 %</td></tr><tr><td>3.3-5.0 km: longer than the published range</td><td>489</td><td>46.0 %</td></tr></tbody></table>
+<p>Median selected gap <strong>31.0 px
+(3.1 km)</strong>, and
+<strong>32.3 %</strong> fall inside the
+published 1.6&ndash;3.2 km relay-ramp width range. The detector is finding the right kind of
+structure; the zero is a property of the test.</p>
+
+<h2>Next candidates, ranked by expected gain and cost</h2>
+<p>Each names the layers, the physical signature, why it should catch a fault that is
+<em>missing</em> from the catalogue rather than one already in it, and how it differs from
+everything already built in this family. Sources for the external data are on the
+<a href="sources.html">sources page</a>.</p>
+<table class="t wide"><thead><tr><th>#</th><th>Candidate</th><th>Layers</th><th>Physical signature</th><th>Why it finds a missing fault</th><th>How it differs</th><th>Expected gain</th><th>Cost</th></tr></thead><tbody><tr><td>1</td><td><strong>Airborne radiometric alteration lineaments (K, eU, eTh, K/eTh)</strong><br><span class='tiny'>H-RAD</span></td><td><ul class='tight'><li>NEW: GeoDAWN airborne gamma-ray grids - potassium, equivalent uranium, equivalent thorium</li><li>derived: K/eTh ratio, Th-normalised K anomaly, potassium-deviation (Kd)</li><li>existing: tc, tmi, rtp used only to co-locate the alteration anomaly with a magnetic edge</li></ul></td><td>Potassium enrichment with thorium depletion along a linear damage zone. Hydrothermal fluids concentrate K in illite/adularia and strip Th, so the K/eTh ratio rises along the altered corridor. The target signature is a positive ridge in K/eTh, 200-600 m wide (the damage zone), that is linear rather than areal, and that coincides with a magnetic or gravity edge.</td><td>The catalogue is a SCARP inventory - it records faults that broke the surface recently enough to leave a topographic step. A concealed or poorly expressed fault has no scarp, so no catalogue entry, but its alteration halo persists in the upper half metre of soil, which is exactly the depth window an airborne gamma-ray spectrometer measures. The method is therefore sensitive to the class of fault the catalogue is structurally blind to, rather than to the class it already contains.</td><td>The 19 delivered bands contain NO radiometric channel - verified by reading the band descriptions of the official training_features.tif, band by band. Every feature in this repository and in the sibling projects (analytic signal, tilt, TDR, horizontal and vertical gradients, curvature family, lineament energy and coherence, multi-scale HGM, family ranks and agreement counts) is a function of those 19 bands. A radiometric channel is therefore genuinely new information, not a new transform of existing information.</td><td>Highest available. The gap from 0.1563 to 0.3049 needs roughly twice the true-positive weight per emitted pixel; a transform of the existing bands cannot supply information that is not already there, whereas a new channel can.</td><td>High. Fetch the grids, reproject to EPSG:32611 on the 100 m grid, compute ratios, then retrain the proven ensemble. Two to three days including validation.</td></tr><tr><td>2</td><td><strong>Lidar scarp morphology at the scale the catalogue was actually drawn at</strong><br><span class='tiny'>H-LIDAR</span></td><td><ul class='tight'><li>NEW: 1 m DEM from the organisers&#x27; own link list</li><li>derived: free-face height, scarp-base break, along-strike continuity, hanging-wall depression depth</li><li>existing: det_elev and det_elev_slope used only as a coarse regional context</li></ul></td><td>A fault scarp is a metre-scale step. The supplied detrended elevation is on a 100 m grid, where a 2-5 m scarp is a fraction of one cell - it cannot be resolved. On a 1 m DEM the same scarp has a sharp base, a measurable free face and along-strike continuity over hundreds of metres.</td><td>The catalogue was drawn by geologists interpreting topography, so the faults it contains are the ones that were recognisable at their working scale. A fault they missed is by construction the subtle one - short, eroded, or buried at its ends. Detecting it requires the resolution they used, and a slightly different morphological criterion (scarp base and free-face geometry rather than a thresholded ridge-top line).</td><td>The sibling attempts on lidar used a ridge-top criterion and a 10 m DEM scarp-thinning arm. This candidate targets the scarp BASE and hanging-wall geometry, and would be scored on the off-catalogue validation arm rather than on catalogue recall.</td><td>High but uncertain; resolution is necessary rather than sufficient. The failure mode is that a 1 m scarp detector produces very many candidates and the false-positive cost at 0.2 per pixel erases the gain - which is itself worth measuring.</td><td>Medium-high: the 1 m DEM tiles must be mosaicked and processed in windows; the single-tile volume is far larger than the 100 m stack.</td></tr><tr><td>3</td><td><strong>Coverage-optimal emission instead of anomaly-ranked emission</strong><br><span class='tiny'>H-COVER</span></td><td><ul class='tight'><li>no new layers - this is an emission rule, applied to any existing score field</li></ul></td><td>None. This candidate follows from the metric and from this repository&#x27;s own measurement, not from geology: the metric credits a prediction anywhere within 300 m of a truth pixel, so two emissions closer than about 300 m compete for the same truth pixel while two emissions 300 m apart each have their own catchment. A ranked field concentrates its budget on the strongest anomaly and leaves most of the map uncovered.</td><td>It does not catch anything by itself. It corrects a systematic loss: this repository measured that under the frozen protocol uniform random noise scored 0.1199 on the dense budget while the reference field - the best real submission in the family - scored 0.1253. Almost the entire advantage of a trained model over noise is being spent on concentration rather than on coverage.</td><td>Every sibling arm ranks pixels by a score and takes a threshold or a top-k. This candidate keeps the score only to order candidates and then decimates them so that retained pixels are at least one kernel radius apart, maximising the number of distinct truth pixels covered per emitted pixel.</td><td>Moderate and immediate, and cheap to measure. Its value is bounded by the fact that the real test-set truth is a sparse set of new faults and is not spatially uniform, so the catalogue-holdout gain will overstate the leaderboard gain.</td><td>Low: a non-maximum-suppression sweep over the existing probability field, a few hours.</td></tr><tr><td>4</td><td><strong>Multi-scale magnetic worm skeleton with strike-matched orientation</strong><br><span class='tiny'>H-WORM</span></td><td><ul class='tight'><li>tmi</li><li>rtp</li><li>mag_anom</li><li>tc</li><li>mag_asa</li><li>mag_tilt</li></ul></td><td>A fault that offsets a magnetised unit produces a linear maximum in the analytic signal that persists across smoothing scales. Tracking the same lineament through two or three scales, and requiring its orientation to stay within the regional N-to-NNE Basin-and-Range fabric, removes single-scale artefacts without discarding real structure.</td><td>A concealed fault still offsets the magnetic basement even where it has no surface expression, so a magnetic lineament can exist with no scarp and no catalogue entry.</td><td>The sibling feature stacks contain many single-scale magnetic products and several multi-scale horizontal-gradient families, but no arm requires a lineament to be continuously present across scales and simultaneously aligned with the regional strike before it is accepted. That conjunction is the hypothesis.</td><td>Modest, and the honest expectation is low: this repository measured the supplied magnetic edge product (tmi_hg) and a fresh tilt-angle edge detector at 0.0000 on the matched sparse budget, i.e. worse than noise. The evidence says that re-transforming the existing bands is the least promising direction of the four.</td><td>Medium: scales x orientations with numerical skeleton tracking.</td></tr><tr><td>5</td><td><strong>Conductivity-and-cover targeting for faults under basin fill</strong><br><span class='tiny'>H-COVER-2</span></td><td><ul class='tight'><li>cond_surf</li><li>depth_to_base_surf</li><li>iso_grav_anom</li><li>iso_grav_anom_hg</li><li>tmi_hg</li></ul></td><td>Where the sedimentary cover is thick, a fault is invisible to every surface method that the catalogue depends on. It remains visible in two ways: as a lateral discontinuity in the conductivity surface, and as a lineament in the isostatic gravity horizontal gradient because the basement offset still has a mass contrast.</td><td>It targets precisely the population a scarp-based catalogue cannot contain - faults whose only surface trace is buried - and it uses a cover-thickness layer to restrict the search to where that situation actually holds, instead of applying the detector everywhere.</td><td>The sibling arms use cond_surf and depth_to_base_surf as generic inputs to a pixel classifier. Here the cover thickness is used as a spatial GATE that defines the only region where the hypothesis applies, which changes the false-positive economics rather than the score field.</td><td>Low to moderate. The supplied conductivity and cover surfaces are smooth regional products, so their spatial resolution may not support 100 m targeting; that is the specific thing to measure first.</td><td>Low: no new data, an afternoon.</td></tr></tbody></table>
+
+<h3>Rejected before implementation, on physical grounds</h3>
+<p><strong>Seismicity-lineament gap detection</strong> &mdash; Rejected on physical grounds before implementation, not by test. The supplied seismicity layers ieq_n100a15 and deq_n100a15 are smoothed with a 100 km radius, so they are constant over any area small enough to contain a 1-5 km fault. No detector built on them can localise at the required scale. Recorded here so it is not proposed again.</p>
+
+<footer>
+<p class="tiny">Built 2026-09-30 01:36 UTC from
+<code>evidence/*.json</code> by <code>scripts/build_site.py</code>. Every number on this
+site is generated from a file in this repository; none is typed by hand.
+Source: <a href="https://github.com/buffedlizard55-lab/17GEMSDOE">github.com/buffedlizard55-lab/17GEMSDOE</a>.</p>
+</footer>
+</main></body></html>

@@ -1,0 +1,300 @@
+{
+ "protocol": {
+  "metric": "distance-weighted Tversky, alpha=0.2 beta=0.8 R=3px",
+  "masking": "pixel_exact: the remaining catalogue is removed from both prediction and truth before scoring",
+  "budget": "matched: each candidate emits exactly the fold's truth_px",
+  "folds": 4,
+  "seed": 17,
+  "holdout": {
+   "min_component_px": 20,
+   "n_blocks": 4,
+   "buffer_px": 3,
+   "n_components": 911,
+   "total_fault_px": 60988,
+   "folds": [
+    {
+     "index": 0,
+     "truth": "<(3730, 3292) bool, 9,837 True>",
+     "visible": "<(3730, 3292) bool, 50,379 True>",
+     "blinded": "<(3730, 3292) bool, 86,757 True>",
+     "masked": "<(3730, 3292) bool, 51,151 True>",
+     "n_components": 243,
+     "truth_px": 9837,
+     "visible_px": 50379
+    },
+    {
+     "index": 1,
+     "truth": "<(3730, 3292) bool, 8,843 True>",
+     "visible": "<(3730, 3292) bool, 51,849 True>",
+     "blinded": "<(3730, 3292) bool, 78,012 True>",
+     "masked": "<(3730, 3292) bool, 52,145 True>",
+     "n_components": 158,
+     "truth_px": 8843,
+     "visible_px": 51849
+    },
+    {
+     "index": 2,
+     "truth": "<(3730, 3292) bool, 10,145 True>",
+     "visible": "<(3730, 3292) bool, 50,208 True>",
+     "blinded": "<(3730, 3292) bool, 97,551 True>",
+     "masked": "<(3730, 3292) bool, 50,843 True>",
+     "n_components": 243,
+     "truth_px": 10145,
+     "visible_px": 50208
+    },
+    {
+     "index": 3,
+     "truth": "<(3730, 3292) bool, 10,485 True>",
+     "visible": "<(3730, 3292) bool, 49,765 True>",
+     "blinded": "<(3730, 3292) bool, 94,117 True>",
+     "masked": "<(3730, 3292) bool, 50,503 True>",
+     "n_components": 267,
+     "truth_px": 10485,
+     "visible_px": 49765
+    }
+   ]
+  },
+  "reasoning": "see docs/EXPERIMENTS.md; the protocol was fixed before the candidates were run"
+ },
+ "hypotheses": {
+  "NULL_random": {
+   "sparse_matched_truth_px": {
+    "mean_DTI": 0.046532763917442446,
+    "std_DTI": 0.002502897524707317,
+    "fold_DTI": [
+     0.042504,
+     0.046663,
+     0.049261,
+     0.047703
+    ],
+    "mean_tp_per_emitted_px": 0.04726780885683974,
+    "mean_emitted_px": 9735.0,
+    "mean_truth_px": 9827.5,
+    "break_even": 0.009394235956841
+   },
+   "dense_competition_like": {
+    "mean_DTI": 0.11986392395488893,
+    "std_DTI": 0.007107375456950121,
+    "fold_DTI": [
+     0.120109,
+     0.112269,
+     0.115881,
+     0.131197
+    ],
+    "mean_tp_per_emitted_px": 0.030243447619648728,
+    "mean_emitted_px": 165874.0,
+    "mean_truth_px": 9827.5,
+    "break_even": 0.024563769890410637
+   }
+  },
+  "BASE_distance_to_catalogue": {
+   "sparse_matched_truth_px": {
+    "mean_DTI": 0.0,
+    "std_DTI": 0.0,
+    "fold_DTI": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "mean_tp_per_emitted_px": 0.0,
+    "mean_emitted_px": 0.0,
+    "mean_truth_px": 9827.5,
+    "break_even": Infinity
+   },
+   "dense_competition_like": {
+    "mean_DTI": 0.0,
+    "std_DTI": 0.0,
+    "fold_DTI": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "mean_tp_per_emitted_px": 0.0,
+    "mean_emitted_px": 116973.75,
+    "mean_truth_px": 9827.5,
+    "break_even": Infinity
+   }
+  },
+  "H2_tilt_lineament": {
+   "sparse_matched_truth_px": {
+    "mean_DTI": 0.0,
+    "std_DTI": 0.0,
+    "fold_DTI": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "mean_tp_per_emitted_px": 0.0,
+    "mean_emitted_px": 9701.25,
+    "mean_truth_px": 9827.5,
+    "break_even": Infinity
+   },
+   "dense_competition_like": {
+    "mean_DTI": 0.0012572369475384896,
+    "std_DTI": 0.0016798709561864006,
+    "fold_DTI": [
+     0.0,
+     0.00409,
+     0.0,
+     0.000939
+    ],
+    "mean_tp_per_emitted_px": 0.00030648105221953365,
+    "mean_emitted_px": 165567.75,
+    "mean_truth_px": 9827.5,
+    "break_even": Infinity
+   }
+  },
+  "H2b_supplied_tmi_hg": {
+   "sparse_matched_truth_px": {
+    "mean_DTI": 0.0,
+    "std_DTI": 0.0,
+    "fold_DTI": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "mean_tp_per_emitted_px": 0.0,
+    "mean_emitted_px": 9761.0,
+    "mean_truth_px": 9827.5,
+    "break_even": Infinity
+   },
+   "dense_competition_like": {
+    "mean_DTI": 0.0,
+    "std_DTI": 0.0,
+    "fold_DTI": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "mean_tp_per_emitted_px": 0.0,
+    "mean_emitted_px": 165473.5,
+    "mean_truth_px": 9827.5,
+    "break_even": Infinity
+   }
+  },
+  "H3_relay_bridge": {
+   "sparse_matched_truth_px": {
+    "mean_DTI": 0.0011681350740141631,
+    "std_DTI": 0.0015171227137151192,
+    "fold_DTI": [
+     0.0,
+     0.003705,
+     0.0,
+     0.000967
+    ],
+    "mean_tp_per_emitted_px": 0.0012545908207194784,
+    "mean_emitted_px": 9089.0,
+    "mean_truth_px": 9827.5,
+    "break_even": Infinity
+   },
+   "dense_competition_like": {
+    "mean_DTI": 0.004459709332622715,
+    "std_DTI": 0.0040993810749521365,
+    "fold_DTI": [
+     0.0,
+     0.010525,
+     0.001506,
+     0.005808
+    ],
+    "mean_tp_per_emitted_px": 0.0010921305108564803,
+    "mean_emitted_px": 165914.75,
+    "mean_truth_px": 9827.5,
+    "break_even": Infinity
+   }
+  },
+  "H4_strain_jog": {
+   "sparse_matched_truth_px": {
+    "mean_DTI": 0.0,
+    "std_DTI": 0.0,
+    "fold_DTI": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "mean_tp_per_emitted_px": 0.0,
+    "mean_emitted_px": 9756.25,
+    "mean_truth_px": 9827.5,
+    "break_even": Infinity
+   },
+   "dense_competition_like": {
+    "mean_DTI": 0.0,
+    "std_DTI": 0.0,
+    "fold_DTI": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "mean_tp_per_emitted_px": 0.0,
+    "mean_emitted_px": 165961.0,
+    "mean_truth_px": 9827.5,
+    "break_even": Infinity
+   }
+  },
+  "CTRL_det_elev_slope": {
+   "sparse_matched_truth_px": {
+    "mean_DTI": 0.0,
+    "std_DTI": 0.0,
+    "fold_DTI": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "mean_tp_per_emitted_px": 0.0,
+    "mean_emitted_px": 9793.75,
+    "mean_truth_px": 9827.5,
+    "break_even": Infinity
+   },
+   "dense_competition_like": {
+    "mean_DTI": 0.0,
+    "std_DTI": 0.0,
+    "fold_DTI": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "mean_tp_per_emitted_px": 0.0,
+    "mean_emitted_px": 166682.75,
+    "mean_truth_px": 9827.5,
+    "break_even": Infinity
+   }
+  }
+ },
+ "relay_bridge_geometry": {
+  "n_bridges": 228,
+  "bridge_px": 5169,
+  "median_gap_px": 28.89618004888797,
+  "median_gap_km": 2.8896180048887974,
+  "median_strike_mismatch_deg": 9.9296535721247
+ },
+ "ranked_by_mean_DTI": [
+  "NULL_random",
+  "H3_relay_bridge",
+  "H2_tilt_lineament",
+  "BASE_distance_to_catalogue",
+  "H2b_supplied_tmi_hg",
+  "H4_strain_jog",
+  "CTRL_det_elev_slope"
+ ],
+ "decision": {
+  "primary_regime": "dense_competition_like",
+  "best_candidate": "NULL_random",
+  "best_mean_DTI": 0.11986392395488893,
+  "break_even_marginal_tp_at_best": 0.024561594612752542,
+  "null_mean_DTI_dense": 0.11986392395488893,
+  "null_mean_DTI_sparse": 0.046532763917442446,
+  "reference_field": null,
+  "beats_null": false,
+  "verdict": "Every hypothesis scored at or below uniform random at the matched budget. No candidate earned a submission slot, and this is recorded as a negative result rather than re-run with new parameters."
+ },
+ "runtime_seconds": 277.6,
+ "generated_utc": "2026-09-30T01:30:47Z"
+}
