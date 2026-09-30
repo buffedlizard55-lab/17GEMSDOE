@@ -1,0 +1,724 @@
+{
+ "purpose": "determine whether any published artifact could have produced the 'Predicted values must be in range [0, 1]' rejection",
+ "files_audited": 31,
+ "files_with_out_of_range_values": 0,
+ "files_with_nan_inside_footprint": 0,
+ "footprint_available": true,
+ "files": [
+  {
+   "repo": "GEMSDOE",
+   "path": "data/evidence/runs/ens12-adopted-floor0.1-w0/submission.tif",
+   "file": "GEMSDOE__submission.tif",
+   "bytes": 570890,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "GEMSDOE",
+   "path": "data/evidence/baseline/submission.tif",
+   "file": "GEMSDOE__submission.tif",
+   "bytes": 570890,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "GEMSDOE",
+   "path": "data/evidence/runs/local-sandbox-smoke/submission.tif",
+   "file": "GEMSDOE__submission.tif",
+   "bytes": 570890,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "5GEMSDOE",
+   "path": "docs/downloads/candidate_s5_dilational_top10k.tif",
+   "file": "5GEMSDOE__candidate_s5_dilational_top10k.tif",
+   "bytes": 627566,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "5GEMSDOE",
+   "path": "docs/downloads/candidate_s5_dilational_top25k.tif",
+   "file": "5GEMSDOE__candidate_s5_dilational_top25k.tif",
+   "bytes": 632252,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "5GEMSDOE",
+   "path": "docs/downloads/candidate_s5_dilational_top50k.tif",
+   "file": "5GEMSDOE__candidate_s5_dilational_top50k.tif",
+   "bytes": 637066,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "5GEMSDOE",
+   "path": "docs/downloads/candidate_s5_dilational_annulus.tif",
+   "file": "5GEMSDOE__candidate_s5_dilational_annulus.tif",
+   "bytes": 626178,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "5GEMSDOE",
+   "path": "docs/downloads/candidate_s5_catalogue_hedge.tif",
+   "file": "5GEMSDOE__candidate_s5_catalogue_hedge.tif",
+   "bytes": 624814,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "5GEMSDOE",
+   "path": "docs/downloads/candidate_s5d_gdr_corridor.tif",
+   "file": "5GEMSDOE__candidate_s5d_gdr_corridor.tif",
+   "bytes": 628232,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "5GEMSDOE",
+   "path": "docs/downloads/candidate_s5f_flagship.tif",
+   "file": "5GEMSDOE__candidate_s5f_flagship.tif",
+   "bytes": 627793,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "7GEMSDOE",
+   "path": "downloads/gems7-lidarscarp-ridge-top2pct-36c3a3f341c8.tif",
+   "file": "7GEMSDOE__gems7-lidarscarp-ridge-top2pct-36c3a3f341c8.tif",
+   "bytes": 548401,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "7GEMSDOE",
+   "path": "downloads/gems7-strike30x3-v2-2b06d45c5b57.tif",
+   "file": "7GEMSDOE__gems7-strike30x3-v2-2b06d45c5b57.tif",
+   "bytes": 2347236,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 0.949999988079071,
+   "out_of_range_px": 0,
+   "distinct_values": 73087,
+   "binary": false,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "7GEMSDOE",
+   "path": "downloads/gems7-halo15-gbt-v1-90fb7dc0fc1f.tif",
+   "file": "7GEMSDOE__gems7-halo15-gbt-v1-90fb7dc0fc1f.tif",
+   "bytes": 3036264,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 0.949999988079071,
+   "out_of_range_px": 0,
+   "distinct_values": 644,
+   "binary": false,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "GEMSDOE10",
+   "path": "docs/downloads/gems10-h16-continuation-20260927T065521077735Z-3431b83c7c.tif",
+   "file": "GEMSDOE10__gems10-h16-continuation-20260927T065521077735Z-3431b83c7c.tif",
+   "bytes": 1765159,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "GEMSDOE10",
+   "path": "docs/downloads/gems10-h20-dem10-scarp-thin-20260927T155223039488Z-ffc91a1686.tif",
+   "file": "GEMSDOE10__gems10-h20-dem10-scarp-thin-20260927T155223039488Z-ffc91a1686.tif",
+   "bytes": 1717585,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "GEMSDOE10",
+   "path": "docs/downloads/gems10-h25-ctx-ridge-20260927T232947704150Z-6452ae1d00.tif",
+   "file": "GEMSDOE10__gems10-h25-ctx-ridge-20260927T232947704150Z-6452ae1d00.tif",
+   "bytes": 1772935,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "GEMSDOE10",
+   "path": "docs/downloads/gems10-h28-dotted-ridge-20260928T020256236880Z-6452ae1d00.tif",
+   "file": "GEMSDOE10__gems10-h28-dotted-ridge-20260928T020256236880Z-6452ae1d00.tif",
+   "bytes": 1620739,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "12GEMSDOE",
+   "path": "docs/downloads/12GEMSDOE_r7-nms3-dem10-scarp_0c9199f14e62.tif",
+   "file": "12GEMSDOE__12GEMSDOE_r7-nms3-dem10-scarp_0c9199f14e62.tif",
+   "bytes": 469858,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "12GEMSDOE",
+   "path": "docs/downloads/12GEMSDOE_r7-nms3-dem10-scarp_0c9199f14e62_allfinite.tif",
+   "file": "12GEMSDOE__12GEMSDOE_r7-nms3-dem10-scarp_0c9199f14e62_allfinite.tif",
+   "bytes": 412700,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 12279160,
+   "nan_px": 0,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "12GEMSDOE",
+   "path": "docs/downloads/12GEMSDOE_multiphysics_submission_06ca61e5.tif",
+   "file": "12GEMSDOE__12GEMSDOE_multiphysics_submission_06ca61e5.tif",
+   "bytes": 1205044,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 0.949999988079071,
+   "out_of_range_px": 0,
+   "distinct_values": 134225,
+   "binary": false,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "12GEMSDOE",
+   "path": "docs/downloads/12GEMSDOE_r6-nms3-h28-texture_8721329b55c7.tif",
+   "file": "12GEMSDOE__12GEMSDOE_r6-nms3-h28-texture_8721329b55c7.tif",
+   "bytes": 463877,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "12GEMSDOE",
+   "path": "docs/downloads/12GEMSDOE_r5-nms3-trace_055e9aac96b8.tif",
+   "file": "12GEMSDOE__12GEMSDOE_r5-nms3-trace_055e9aac96b8.tif",
+   "bytes": 463577,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "13GEMSDOE",
+   "path": "docs/downloads/latest.tif",
+   "file": "13GEMSDOE__latest.tif",
+   "bytes": 606648,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 12279160,
+   "nan_px": 0,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "13GEMSDOE",
+   "path": "docs/downloads/latest_nan.tif",
+   "file": "13GEMSDOE__latest_nan.tif",
+   "bytes": 671438,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "13GEMSDOE",
+   "path": "docs/downloads/13gems-composite-20260929T183221Z.tif",
+   "file": "13GEMSDOE__13gems-composite-20260929T183221Z.tif",
+   "bytes": 698842,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "13GEMSDOE",
+   "path": "docs/downloads/13gems-composite-20260929T183221Z_allfinite.tif",
+   "file": "13GEMSDOE__13gems-composite-20260929T183221Z_allfinite.tif",
+   "bytes": 635926,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 12279160,
+   "nan_px": 0,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "16GEMSDOE",
+   "path": "docs/downloads/gems16-h16-1-seamfree-multiscale-ridge-nanmask-20260929-b16f02.tif",
+   "file": "16GEMSDOE__gems16-h16-1-seamfree-multiscale-ridge-nanmask-20260929-b16f02.tif",
+   "bytes": 849871,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "16GEMSDOE",
+   "path": "docs/downloads/gems16-h16-1-seamfree-multiscale-ridge-allfinite-20260929-a16f01.tif",
+   "file": "16GEMSDOE__gems16-h16-1-seamfree-multiscale-ridge-allfinite-20260929-a16f01.tif",
+   "bytes": 778668,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 12279160,
+   "nan_px": 0,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "16GEMSDOE",
+   "path": "docs/downloads/gems16-h16-1-pure-physical-scarp-worm-allfinite-20260929-c16f03.tif",
+   "file": "16GEMSDOE__gems16-h16-1-pure-physical-scarp-worm-allfinite-20260929-c16f03.tif",
+   "bytes": 564499,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 12279160,
+   "nan_px": 0,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "8GEMSDOE",
+   "path": "docs/downloads/submission.tif",
+   "file": "8GEMSDOE__submission.tif",
+   "bytes": 1285731,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 0.949999988079071,
+   "out_of_range_px": 0,
+   "distinct_values": 72782,
+   "binary": false,
+   "nan_inside_footprint": 0
+  },
+  {
+   "repo": "8GEMSDOE",
+   "path": "docs/downloads/8GEMSDOE_Hedge-v2_submission.tif",
+   "file": "8GEMSDOE__8GEMSDOE_Hedge-v2_submission.tif",
+   "bytes": 736494,
+   "meta": {
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+     3730,
+     3292
+    ]
+   },
+   "finite_px": 5167373,
+   "nan_px": 7111787,
+   "min": 0.0,
+   "max": 1.0,
+   "out_of_range_px": 0,
+   "distinct_values": 2,
+   "binary": true,
+   "nan_inside_footprint": 0
+  }
+ ],
+ "failures": [],
+ "conclusion": "All 31 published GeoTIFFs audited have finite values inside [0, 1] and 0 of them contain an out-of-range value. The rejection is therefore not reproducible from the published artifacts; the offending file was either never published or has since been replaced. Recorded as an open irregularity (I-6) rather than resolved by guessing."
+}

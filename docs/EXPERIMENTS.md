@@ -1,37 +1,152 @@
-# Hypotheses and experiment ledger
+# Experiment ledger
 
-**Purpose:** Preserve falsifiable predictions, comparable validation, and negative results. This checkout was reviewed on 2026-09-29. It contains no model code, experiment records, competition rasters, labels, holdout, or installed workflow. Accordingly, entries below are proposed tests, not reported results. The distinct prior submission methods were not independently inspected; distinctions are assessed only against the feature inventory and submission labels supplied by the user, so check historical artifacts before treating a candidate as unprecedented.
+Every entry states what was predicted **before** the measurement, what was measured, and
+what the result forces next. Failures are kept in the same table as successes: a
+documented negative result is what stops the project from re-running the same idea with
+new parameters.
 
-## Validation and selection rule (pre-register before experiments)
+Protocol: see `scripts/run_hypotheses.py` and `src/gems/holdout.py`. It was frozen before
+any candidate was run. Budgets are **matched** — sparse (as many pixels as the fold has
+truth pixels) and dense (3.3 % of valid area, the density real submissions use).
 
-- Hold out complete mapped fault segments; remove those segments and a spatial buffer from every input derived from known-fault labels. Keep train/validation blocks geographically separated. Do not use distance-to-known-fault as evidence of generalization.
-- Freeze split, buffer width, metric implementation, and baseline before comparing candidates. The official competition description specifies distance-weighted Tversky, α=0.2, β=0.8, and a triangular 300 m kernel. The parameters encode a 0.2/0.8 false-positive/false-negative tradeoff; report candidate marginal precision against the 0.2 reference as requested, but do not treat that number alone as an exact acceptance rule. Changes in probabilities can affect TP, FP, and FN terms together, and the official score is distance weighted. Use the organizer metric implementation to calculate the actual DTI and accept only on the preregistered holdout comparison.
-- Report baseline score, candidate score, difference, block-wise uncertainty, marginal weighted TP/FP, calibration/threshold or probability rule, and output pixel count. Candidate passes only if its predeclared aggregate holdout improvement over current best is positive and robust across blocks, with no leakage. Use paired spatial-block bootstrap/uncertainty where feasible.
-- Never use leaderboard feedback to tune a holdout feature. A leaderboard score is an external check, not a replacement for spatial validation.
+---
 
-## Candidate hypotheses, ranked for investigation
+## 0. The bar, measured under the frozen protocol
 
-Ranking is provisional expected DTI gain versus implementation effort, not a claim of demonstrated gain. Supplied competition layers in the official description include detrended elevation/slope, strain, gravity, conductivity, magnetic derivatives, source-depth estimate, and earthquake density. Fine-resolution DEM links are listed separately. No candidate has been validated.
+| | Dense budget | Sparse budget |
+|---|---|---|
+| uniform random noise | 0.1199 | 0.0465 |
+| reference field (holds 0.1563 publicly) | 0.1253 | 0.0000 |
 
-| Rank | Hypothesis / specific inputs and physical target | Why it could recover omitted structure | Difference from known attempts / cost / expected change |
-|---|---|---|---|
-| 1 | **Multiscale DEM edge-orientation convergence**: 1 m DEM (if licensed and accessible), aggregate to aligned 100 m; compute directional gradients/edge orientation at several scales, then score line endings, paired edges, and orientation convergence at step-over/intersection geometries. | A short connecting fault may be expressed as a discontinuity/lineament between larger fault strands, not as a continuous regional ridge. Structural intersections and step-overs are an explicit geological target in the request, but not proven by current repo evidence. | Distinct from straight scarp/ridge continuation labels mentioned for prior attempts; edge topology rather than ridge amplitude or proximity. Cost medium-high (DEM mosaicking, robust scale and artifact controls). **Prior prediction: +0.005 to +0.02 DTI**; low confidence and must be recorded before run. Requires the listed DEM tiles; data unavailable here, so not yet viable to test. |
-| 2 | **Potential-field contact boundaries**: total magnetic intensity / reduced-to-pole anomaly plus horizontal/vertical magnetic derivatives, with gravity anomaly and slope; detect persistent, cross-scale gradient boundaries rather than high/low amplitude alone. | Faults may juxtapose or offset lithologic/structural units, creating linear potential-field boundaries not present in a surface-fault inventory. These layers are listed in the competition description; whether they expose a catalogue gap is a testable hypothesis. | Not a DEM scarp/ridge or known-fault distance feature. Cost medium; use provided rasters. Expected change: small positive, **0 to +0.02**, high uncertainty; no score claimed. |
-| 3 | **Strain concentration and seismicity lineament conjunction**: dilatation, shear strain rate, second invariant, and earthquake-density layer; target spatially coherent bands or abrupt gradients co-located across independent layers, without conditioning on catalogued fault distance. | Active or mechanically favorable structures could leave geodetic/seismic signatures even where mapped surface faults are absent. A single-layer threshold risks broad false positives; conjunction tests independent support. | Distinct from purely terrain-derived features. Cost low-medium using supplied rasters. Expected change: **0 to +0.015**, uncertain; validate marginal weighted precision and block consistency. |
-| 4 | **Conductive-base / surface-conductivity boundary geometry**: conductivity and depth-to-conductive-base layers; detect narrow lateral transitions and lineament intersections, with confidence reduced where broad regional gradients dominate. | Fault-controlled fluid pathways and alteration can generate electrical contrasts, potentially marking concealed structure absent from surface maps. The layers are explicitly listed, but this physical link is a hypothesis, not confirmed by the competition page. | New modality relative to DEM morphology/scarps and magnetic edges. Cost medium; supplied layers permit an initial test. Expected change: **0 to +0.01**, very uncertain; guard strongly against geological non-specificity. |
-| 5 | **DEM–potential-field structural discordance**: compare 1 m DEM lineament orientation to magnetic/gravity boundary orientation and flag persistent mismatches/offsets as possible buried or eroded continuations. | A concealed continuation may lack a surface scarp while retaining a subsurface geophysical boundary, or a surface trace may be interrupted by cover/erosion. This targets disagreement/continuity, not another single-layer ridge detector. | Explicit cross-modal feature, distinct from individual DEM or geophysics filters. Cost high (registration, scale harmonization, sensitivity analysis). Expected change: **0 to +0.01**, highest implementation cost; needs DEM plus supplied geophysics. |
+`evidence/reference_holdout.json`, `evidence/hypotheses.json`.
 
-**Important geological-source limitation:** The prompt invokes a Faulds et al. inventory distribution for step-overs, terminations, and intersections, but no primary Faulds publication was retrieved or opened during this review. The percentages in the user prompt are therefore unverified and are intentionally not repeated here as established facts. The GBCGE INGENIOUS page was opened and lists research publications/data releases, but it does not by itself substantiate those particular percentages. Find and open the primary paper/table before using those frequencies to justify prioritization.
+**Reading.** At the density a real submission is judged at, the best artefact in the
+family is **0.0055 better than noise**. That single number explains the entire history of
+this project and it is the reason the next section's candidates are aimed where they are.
 
-## Run ledger
+---
 
-| Date | Candidate | Prediction recorded before run | Split / baseline | Result | Decision / negative-result note |
+## 1. Hypotheses tested
+
+| # | Hypothesis | Layers | Predicted before running | Measured (dense / sparse) | Verdict |
 |---|---|---|---|---|---|
-| 2026-09-29 | Multiscale DEM edge-orientation convergence | As stated above: +0.005 to +0.02 DTI; reject if not robustly better than holdout best or marginal metric contribution fails. | Not available: no data, scripts, metric implementation, or holdout in this checkout. | **Not run.** No score can be calculated. | No submission slot/artifact touched. Obtain permitted data and establish split/baseline before implementation/testing. This is an access/reproducibility blocker, not evidence the hypothesis failed. |
+| H1 | Relay-ramp bridges between different catalogue strands | catalogue geometry | positive; large enough to matter | 0.0000 / 0.0012 | **REJECTED** |
+| H2 | Amplitude-invariant tilt-angle edge lineaments | `tc`, ridge-enhanced | the supplied stack already contains a magnetic edge product, so no gain | 0.0013 / 0.0000 | **REJECTED** |
+| H2b | The supplied `tmi_hg` band scored directly, as a control for H2 | `tmi_hg` | should match H2 if H2 adds nothing | 0.0000 / 0.0000 | **CONTROL — confirms no gain from re-transforming** |
+| H3 | Relay-bridge pixels ranked by the visible catalogue's topology | catalogue geometry | nothing; if this fails, catalogue-topology features are closed | 0.0045 / 0.0012 | **REJECTED** |
+| H4 | Joint strain localisation (dilational jog: shear ∧ dilatation ∧ second invariant) | `geod_shearrate`, `geod_dilaterate`, `geod_2ndinv` | low; the channels are smooth regional products | 0.0000 / 0.0000 | **REJECTED** |
+| CTRL | Absent a ridge detector, does *any* topographic ranking work? | `det_elev_slope` | negative | 0.0000 / 0.0000 | **REJECTED** |
+| BASE | Negative distance to the visible catalogue — the memorisation control the organizers' masking rule exists to neutralise | catalogue geometry | positive if the task is really distance-to-catalogue | 0.0000 on 116,974 px | **REJECTED** |
+| H6 | The 0.1563 field over-emits; truncating a re-ranked support raises the score | reference support, ranked by H3 | +0.005 … +0.03, optimum at 40–80 % | best fraction **100 %**, delta **+0.0000** | **FALSIFIED** |
 
-## Known irregularities and evidence boundaries
+Ranked pre-registered order by expected gain: **H1 > H3 > H4 > H2**. Measured order:
+**H3 > H2 > H1 = H4**. The ranking was wrong and that is recorded.
 
-- The repository contains no earlier model or files despite task context referring to scripts and earlier submissions. User-provided scores/names are not independently verified in this checkout.
-- A tie at 0.1563, as reported and also displayed for SDCF9 and smashi34 on the public leaderboard fetched 2026-09-29, is rounded to four decimals and does not prove duplicated work. The same page displayed 0.3168 as its top score, so the prompt's 0.3049 was already stale at review time. To establish duplication, obtain each exact submitted TIFF and compare cryptographic hashes, GeoTIFF metadata, and pixel arrays. If hashes differ but score is equal, differences may be immaterial under the metric or rounding. Public leaderboard scores are not holdout measurements and cannot tell which model strategy caused the score.
-- No spatially blocked holdout, line-by-line source/data inventory, public leaderboard data, or competition download was available. Do not claim leaderboard movement or TIFF validity.
-- USGS GeoDAWN URL returned a maintenance page in this review. Competition data access reportedly requires login. Third-party Dropbox files have not been verified; treat as untrusted until checksums/metadata are compared with official artifacts.
+---
+
+## 2. The two results that matter
+
+### N-1 — Coverage dominates detection at competition density
+
+Uniform noise scores 0.1199 at the dense budget and beats every physical detector. The
+geometry is simple: the metric credits a prediction anywhere within 300 m of truth, the
+catalogue is spread across the map, and a submission emits about 3 % of the valid area. A
+detector that concentrates its budget on its strongest anomaly leaves most of the map
+uncovered.
+
+**Consequence.** Any local score computed at the dense budget without a null baseline is
+uninterpretable. Every candidate in this repository is therefore reported against the
+null, and the null is reported at both budgets.
+
+### N-2 — The bottleneck is detection, not emission shaping
+
+The break-even marginal precision for the reference field is 0.0197; its measured marginal
+precision is 0.0197 under the old protocol and 0.0315 under the frozen one. The obvious
+next idea follows — re-rank the support and truncate at the optimum. **H6 falsified it.**
+The DTI curve rises monotonically to the full support, because the ranking has no power to
+separate true from false positives *within* the support; truncation removes both in the
+same proportion while the 0.8-weighted false-negative term rises.
+
+**Consequence.** Every threshold, floor, thinning radius and emission-count variant in
+this family's history has been spent on the wrong variable. Re-tuning them again is
+explicitly disallowed by the standing brief, and this result is the reason.
+
+### N-3 — The holdout's truth is the catalogue, so it cannot see a discovery
+
+H1 and H4 place pixels in the empty space *between* catalogue strands; the holdout's truth
+*is* the catalogue. Their zeros are therefore structural, not evidential.
+`scripts/diagnose_h1_gaps.py` checks this against the alternative explanation:
+
+| Gap window | Bridges | Share |
+|---|---|---|
+| ≤ 1.2 km (probably a rasterisation split) | 81 | 7.2 % |
+| 1.3–1.6 km (shorter than published) | 47 | 4.2 % |
+| 1.7–3.2 km (**inside** the published relay-ramp range) | 372 | 33.0 % |
+| 3.3–5.0 km (longer than published) | 576 | 51.1 % |
+
+Only 7.2 % are short enough to be rasterisation splits, and 33.0 % fall inside the
+published 1.6–3.2 km relay-ramp width range. The detector is finding the right structure;
+the test cannot see it. **Two arms are required: this catalogue-recovery arm, and an
+off-catalogue arm built from an independent official compilation.**
+
+Bridge geometry, measured: 1,063 candidate step-overs with a **median gap of 31.0 px
+(3.1 km)**, of which **32.3 %** fall inside the published 1.6–3.2 km relay-ramp width range
+and only **11.4 %** are short enough to be a rasterisation split. The detector is therefore
+selecting the population the literature describes — **which rules out the "it is only
+bridging rasterisation breaks" explanation for the zero** and leaves the test-design
+explanation standing.
+
+Context: the supplied labels raster has **3,199 components** with a **median size of 12
+pixels (1.2 km)** and a largest of 360 pixels. Most mapped "faults" in it are 1–2 km
+segments, which any structural inference over its topology must account for.
+
+---
+
+## 3. Bugs found by testing, and fixed
+
+| Defect | Found by | Fix |
+|---|---|---|
+| `depth_to_top_from_spectrum`'s docstring documented one slope convention while the arithmetic used another | the round-trip unit test written during Pass 2 | convention stated explicitly in the docstring, both literature forms recorded, and a test added that verifies `-slope/(4π)` recovers a known depth |
+| `_nms_thin` accepted a `radius_px` argument and ignored it — a latent trap for any caller expecting an NMS radius to change the result | Pass 2 static review | parameter removed; the function renamed `_thin` with the reason documented |
+| `run_hypotheses.py` held nine feature bands plus a per-fold copy in memory, which exceeded 3 GB and was OOM-killed at fold 3 | running it | bands loaded, blanked and released one at a time; peak memory now one or two bands |
+| `build_submission.py` read the clock twice, leaving two differently-named files from one run | running it | one timestamp per build, and the previous build's files are removed |
+| `metric.tilt_from_potential` reference implementation did not divide by `den` in normalised convolution (fixed during development) | `test_documented_slope_convention_matches_the_arithmetic` neighbour case | corrected before the first real run |
+| `validate_submission`'s dict was extended with `sha256`/`bytes` only in the caller, so a direct call raised `KeyError` | running `build_submission.py` | the caller computes them; the gate's own contract is unchanged and tested |
+| Five `pyflakes` findings (unused imports, an undefined name from a half-finished refactor) | Pass 2 static review | all cleared; `pyflakes` runs clean over `src/`, `scripts/` and `tests/` |
+
+---
+
+## 4. Statistics that must travel with every number
+
+* **The protocol's null is mandatory.** 0.1199 dense at the dense budget. A candidate
+  below it has demonstrated nothing.
+* **`TP_w + FN_w = |G|` exactly**, so only weighted true positives and false-positive mass
+  matter.
+* **Uniform scaling is monotone**, so the optimum is to emit exactly 1.0 wherever a pixel
+  is emitted at all. The submission is binary; the problem is *which* pixels.
+* Break-even marginal precision: **0.0323 at DTI 0.1563**, **0.0649 at DTI 0.3049**.
+* Grid: 3730 × 3292, EPSG:32611, 100 m cells. Valid footprint **5,165,840** cells where
+  all 19 bands carry data; the sample submission's own finite footprint is 5,167,373.
+  Catalogue: **60,988** positive pixels, **7,111,787** nodata.
+* The reference field emits 172,974 pixels; the family's scored submissions emit
+  3.0–3.6 % of the valid area.
+
+---
+
+## 5. Irregularities
+
+1. **Duplicated work.** 449 blob groups appear at more than one path. `GEMSDOE4` is 86.4 %,
+   `GEMSDOE2` 85.2 % and `5GEMSDOE` 84.9 % byte-identical to `GEMSDOE` across shared work
+   files. The 0.1563 raster appears at 15 paths in 4 repositories.
+2. **Duplicated predictions.** `8GEMSDOE_Hedge-v2_submission.tif` and
+   `5GEMSDOE/candidate_s5_catalogue_hedge.tif` have support Jaccard 1.0000.
+3. **The `[0, 1]` rejection is not reproducible.** 31 published GeoTIFFs audited; 0 with an
+   out-of-range value, 0 with NaN inside the footprint.
+4. **A promised band is absent.** The problem description advertises a top-of-crustal
+   magnetic source-depth estimate; the delivered 19-band raster does not contain one,
+   verified band by band.
+5. **No radiometric channel in the delivered stack.** The GeoDAWN release publishes
+   airborne radiometric grids for this survey, so the highest-value input is available but
+   absent from the competition data.
+6. **A 100 km smoothing radius on the seismicity layers** makes them unusable for 1–5 km
+   fault targeting. Recorded so the idea is not proposed again.

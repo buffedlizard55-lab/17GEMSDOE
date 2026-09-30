@@ -1,0 +1,100 @@
+{
+ "verified_utc": "2026-09-30T01:38:54Z",
+ "files": {},
+ "verification": {
+  "training_features.tif": {
+   "present": true,
+   "path": "/home/user/17GEMSDOE/data/training_features.tif",
+   "bytes": 418912844,
+   "sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+   "expected_sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+   "match": true,
+   "bytes_match": true
+  },
+  "labels.tif": {
+   "present": true,
+   "path": "/home/user/17GEMSDOE/data/labels.tif",
+   "bytes": 425830,
+   "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+   "expected_sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+   "match": true,
+   "bytes_match": true
+  },
+  "sample_submission.tif": {
+   "present": true,
+   "path": "/home/user/17GEMSDOE/data/sample_submission.tif",
+   "bytes": 1599597,
+   "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+   "expected_sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+   "match": true,
+   "bytes_match": true
+  }
+ },
+ "band_descriptions": [
+  "mag_anom - Magnetic anomaly - deviation from expected Earth's magnetic field",
+  "rtp - Reduced to pole magnetic data - magnetic anomaly corrected for latitude effects",
+  "tmi_hg - Total magnetic intensity horizontal gradient - rate of change in horizontal direction",
+  "geod_2ndinv - Geodetic second invariant - measure of strain rate tensor magnitude",
+  "iso_grav_anom_slope - Isostatic gravity anomaly slope - gradient of gravity after isostatic correction",
+  "tc - Tilt angle or total curvature - magnetic field derivative for edge detection",
+  "geod_shearrate - Geodetic shear rate - rate of angular deformation from GPS/InSAR",
+  "geod_dilaterate - Geodetic dilatation rate - rate of volumetric strain (expansion/contraction)",
+  "tmi_vg - Total magnetic intensity vertical gradient - rate of change in vertical direction",
+  "deq_n100a15 - Distance to earthquake (n=100km radius, a=15\u00b0 azimuth parameters)",
+  "iso_grav_anom_vg - Isostatic gravity anomaly vertical gradient - vertical rate of change",
+  "det_elev - Detrended elevation - topography with regional trends removed",
+  "iso_grav_anom - Isostatic gravity anomaly - gravity after compensating for topographic mass",
+  "tmi - Total magnetic intensity - total strength of magnetic field",
+  "depth_to_base_surf - Depth to basement surface - thickness of sedimentary cover",
+  "ieq_n100a15 - Earthquake intensity or density (n=100km radius, a=15\u00b0 parameters)",
+  "cond_surf - Conductivity surface - electrical conductivity of subsurface",
+  "iso_grav_anom_hg - Isostatic gravity anomaly horizontal gradient - horizontal rate of change",
+  "det_elev_slope - Detrended elevation slope - gradient of elevation after detrending"
+ ],
+ "band_discrepancies": [
+  "Band 6 is described as 'Tilt angle or total curvature' -- ambiguous between two different quantities, so this project refers to it as 'tc' and computes its own tilt angle from tmi rather than trusting the label.",
+  "The problem description advertises a 'top-of-crustal magnetic source depth estimate'. No delivered band matches it: band 15 is depth_to_base_surf, the thickness of sedimentary cover, which is a different quantity.",
+  "There is no radiometric (gamma-ray) band anywhere in the stack, although the GeoDAWN release publishes airborne radiometric grids for the same survey.",
+  "Bands 10 and 16 (deq_n100a15, ieq_n100a15) are smoothed with a 100 km radius, so they cannot localise structure at the 1-5 km scale of a single fault."
+ ],
+ "grid": {
+  "shape": [
+   3730,
+   3292
+  ],
+  "crs": "EPSG:32611",
+  "transform": [
+   100.0,
+   0.0,
+   243350.0,
+   0.0,
+   -100.0,
+   4508550.0
+  ],
+  "count": 19,
+  "dtype": "float32",
+  "nodata": -3.4028234663852886e+38,
+  "cell_size_m": 100.0
+ },
+ "label_values": {
+  "-1": 7111787,
+  "0": 5106385,
+  "1": 60988
+ },
+ "label_positive_px": 60988,
+ "catalogue": {
+  "components_8conn": 3199,
+  "components_ge_20px": 911,
+  "components_ge_30px": 506,
+  "largest_component_px": 360,
+  "median_component_px": 12.0
+ },
+ "sample_submission": {
+  "finite_px": 5167373,
+  "nan_px": 7111787,
+  "nodata": null,
+  "min": 0.0,
+  "max": 1.0
+ },
+ "valid_all_bands_px": 5165840
+}

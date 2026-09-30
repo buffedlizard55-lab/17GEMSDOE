@@ -1,0 +1,167 @@
+{
+ "anchor_sha256": "7f00890a62878d612fb5eef67a9a364a2df819433dde74b6762ce4fc0fc4fe15",
+ "anchor_path": "/tmp/gems_build/anchor_submission.tif",
+ "anchor_support_px": 172974,
+ "caveats": [
+  "The reference field was trained on the whole catalogue, including the segments this protocol withholds: its score is an upper bound that leaks and is not an estimate of generalisation.",
+  "The holdout truth is the supplied catalogue; the leaderboard's truth is faults absent from every catalogue. The numbers are on different scales and must never be compared directly."
+ ],
+ "folds": [
+  {
+   "fold": 0,
+   "anchor_support_px": 172974,
+   "fold_truth_px": 9837,
+   "blinded_px": 86757,
+   "as_published": {
+    "dti": 0.11617185544008105,
+    "tp_w": 4852.80908203125,
+    "fp_w": 164662.5625,
+    "fn_w": 4984.19091796875,
+    "truth_px": 9837,
+    "emitted_px": 167461,
+    "tp_per_emitted_px": 0.028978741808727105,
+    "break_even": 0.023787048192816636
+   },
+   "sparse_matched_truth_px": {
+    "dti": 0.0,
+    "tp_w": 0.0,
+    "fp_w": 4386.0,
+    "fn_w": 9837.0,
+    "truth_px": 9837,
+    "emitted_px": 4386,
+    "tp_per_emitted_px": 0.0,
+    "break_even": Infinity
+   },
+   "dense_competition_like": {
+    "dti": 0.11616415293978327,
+    "tp_w": 4727.359375,
+    "fp_w": 159402.1875,
+    "fn_w": 5109.640625,
+    "truth_px": 9837,
+    "emitted_px": 162100,
+    "tp_per_emitted_px": 0.029163228716841457,
+    "break_even": 0.02378543353575393
+   }
+  },
+  {
+   "fold": 1,
+   "anchor_support_px": 172974,
+   "fold_truth_px": 8843,
+   "blinded_px": 78012,
+   "as_published": {
+    "dti": 0.11823770595700403,
+    "tp_w": 4841.6650390625,
+    "fp_w": 164529.1875,
+    "fn_w": 4001.3349609375,
+    "truth_px": 8843,
+    "emitted_px": 167582,
+    "tp_per_emitted_px": 0.028891319109823847,
+    "break_even": 0.024220291533097463
+   },
+   "sparse_matched_truth_px": {
+    "dti": 0.0,
+    "tp_w": 0.0,
+    "fp_w": 3473.0,
+    "fn_w": 8843.0,
+    "truth_px": 8843,
+    "emitted_px": 3473,
+    "tp_per_emitted_px": 0.0,
+    "break_even": Infinity
+   },
+   "dense_competition_like": {
+    "dti": 0.10700923423568579,
+    "tp_w": 4269.5087890625,
+    "fp_w": 159851.03125,
+    "fn_w": 4573.4912109375,
+    "truth_px": 8843,
+    "emitted_px": 162520,
+    "tp_per_emitted_px": 0.026270666927531997,
+    "break_even": 0.021869903165241376
+   }
+  },
+  {
+   "fold": 2,
+   "anchor_support_px": 172974,
+   "fold_truth_px": 10145,
+   "blinded_px": 97551,
+   "as_published": {
+    "dti": 0.11991533165799277,
+    "tp_w": 5035.857421875,
+    "fp_w": 164359.6875,
+    "fn_w": 5109.142578125,
+    "truth_px": 10145,
+    "emitted_px": 167604,
+    "tp_per_emitted_px": 0.030046164899853227,
+    "break_even": 0.02457238753169699
+   },
+   "sparse_matched_truth_px": {
+    "dti": 0.0,
+    "tp_w": 0.0,
+    "fp_w": 4822.0,
+    "fn_w": 10145.0,
+    "truth_px": 10145,
+    "emitted_px": 4822,
+    "tp_per_emitted_px": 0.0,
+    "break_even": Infinity
+   },
+   "dense_competition_like": {
+    "dti": 0.1225560113280472,
+    "tp_w": 5006.44189453125,
+    "fp_w": 158664.734375,
+    "fn_w": 5138.55810546875,
+    "truth_px": 10145,
+    "emitted_px": 161893,
+    "tp_per_emitted_px": 0.030924387679092055,
+    "break_even": 0.025127097638166253
+   }
+  },
+  {
+   "fold": 3,
+   "anchor_support_px": 172974,
+   "fold_truth_px": 10485,
+   "blinded_px": 94117,
+   "as_published": {
+    "dti": 0.15455761428275192,
+    "tp_w": 6561.0146484375,
+    "fp_w": 163750.40625,
+    "fn_w": 3923.9853515625,
+    "truth_px": 10485,
+    "emitted_px": 167875,
+    "tp_per_emitted_px": 0.03908273803983619,
+    "break_even": 0.031897523895513924
+   },
+   "sparse_matched_truth_px": {
+    "dti": 0.0,
+    "tp_w": 0.0,
+    "fp_w": 5455.0,
+    "fn_w": 10485.0,
+    "truth_px": 10485,
+    "emitted_px": 5455,
+    "tp_per_emitted_px": 0.0,
+    "break_even": Infinity
+   },
+   "dense_competition_like": {
+    "dti": 0.1556485564309145,
+    "tp_w": 6431.76708984375,
+    "fp_w": 158240.078125,
+    "fn_w": 4053.23291015625,
+    "truth_px": 10485,
+    "emitted_px": 162284,
+    "tp_per_emitted_px": 0.03963278628727262,
+    "break_even": 0.03212990598308865
+   }
+  }
+ ],
+ "summary": {
+  "as_published_mean_DTI": 0.12722062683445745,
+  "sparse_mean_DTI": 0.0,
+  "dense_mean_DTI": 0.12534448873360768,
+  "null_dense_mean_DTI": 0.11986392395488893,
+  "null_sparse_mean_DTI": 0.046532763917442446,
+  "reference_beats_null_dense": true,
+  "break_even_marginal_tp": 0.02571350702504192,
+  "mean_marginal_tp_per_emitted_px": 0.031497767402684534
+ },
+ "runtime_seconds": 70.7,
+ "generated_utc": "2026-09-30T01:32:17Z"
+}

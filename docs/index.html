@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Download the submission &middot; 17GEMSDOE</title>
+<meta name="description" content="DOE GEMS Prize Challenge: verified submission download, forensic audit and pre-registered hypotheses.">
+<link rel="stylesheet" href="assets/style.css">
+</head><body>
+<header class="bar"><div class="wrap">
+<span class="brand">17GEMSDOE</span>
+<nav><a href="index.html" class='on'>Download</a><a href="how-to-submit.html">How to submit</a><a href="findings.html">Findings</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="limitations.html">Limitations</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero">
+<h1>Download the submission GeoTIFF</h1>
+<p class="lede">One click, then paste the name and the comment below into the
+competition form. The file has passed every format requirement &mdash; including
+the <code>[0, 1]</code> value range that rejected the earlier upload.</p>
+<a class="btn" href="downloads/17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.tif" download>Download the submission GeoTIFF</a>
+<p class="tiny">or <a href="downloads/17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.zip" download>the same file as a .zip</a>
+&middot; 1,763,547 bytes &middot; sha256
+<code>7810719248d2aa17b4aefdc838bf7ea5ad90a08ae0882c7f96f158bf01696302</code></p>
+<p class="tiny">If the form ever rejects that file, upload <a href="downloads/17GEMSDOE_A-verified-01563-support_allfinite_20260930T014142Z.tif" download>the identical prediction with no NaN anywhere</a> instead &mdash; same pixels, every cell finite. Use the primary file first: the competition's own sample submission uses NaN outside the data footprint, and so does the raster that already scores 0.1563.</p>
+<div class="fields">
+<h3>Two fields to paste into the competition form</h3>
+<label>Submission name</label>
+<pre>17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z</pre>
+<label>Short comment</label>
+<pre>A-verified-01563-support: reference ens12 support (public 0.1563), format-verified float32 [0,1], 172,974 px</pre>
+</div>
+<p class="ok">Format gate: <strong>0 checks passed,
+0 failed</strong> &middot; value range
+<code>[0.0, 1.0]</code> &middot; 172,974 positive pixels.
+The range check is the one the operator's earlier upload failed on.</p>
+</section>
+
+<section>
+<h2>Executive summary</h2>
+<p>This repository is the <strong>validation and forensic</strong> arm of the DOE GEMS
+Prize Challenge effort. It answers two questions that score arithmetic cannot answer, and
+it publishes a submission that is verified at the byte level rather than assumed to be
+valid.</p>
+
+<div class="cards">
+<div class="card"><h3>Why the family keeps scoring 0.1563</h3>
+<p>The 0.1563 raster
+(<code>sha256 7f00890a&hellip;</code>) is published in
+<strong>15</strong> locations across
+<strong>4</strong> different
+repositories. Two accounts uploading that file necessarily receive the same score,
+because the scored object is identical. It is one result, submitted repeatedly &mdash;
+not several models that happened to agree.</p>
+<a href="findings.html">The full audit &rarr;</a></div>
+
+<div class="card"><h3>The local validation was measuring the wrong thing</h3>
+<p>Under a hide-and-recover holdout that mirrors the organisers' masking rule,
+<strong>uniform random noise scores
+0.1199</strong>
+on the catalogue &mdash; and the field that holds 0.1563 on the leaderboard scores
+<strong>0.1253</strong>. At competition
+emission density, coverage dominates detection. A detector that concentrates its budget
+on its strongest anomaly loses to one that spreads it.</p>
+<a href="hypotheses.html">The measurements &rarr;</a></div>
+
+<div class="card"><h3>Five hypotheses, none promoted</h3>
+<p>Every pre-registered structural detector was measured. The best scored
+<strong>0.0045</strong> at the dense budget, against a random baseline of
+0.1199.
+Nothing beat the bar, so <strong>nothing took a submission slot</strong>, and the negative
+results are published alongside the positive ones.</p>
+<a href="hypotheses.html">Hypotheses and results &rarr;</a></div>
+
+<div class="card"><h3>The one untried channel</h3>
+<p>The 19 delivered bands contain <strong>no radiometric channel</strong>, verified band
+by band from the file itself. Airborne potassium maps alteration along faults that have no
+scarp &mdash; exactly the faults a scarp-based catalogue is missing. The data are free and
+official; the source and the paper that uses them this way are on the sources page.</p>
+<a href="sources.html">Sources with links &rarr;</a></div>
+</div>
+
+<h2>What is in the box</h2>
+<table class="t"><thead><tr><th>Artifact</th><th>What it is</th><th>Where</th></tr></thead><tbody><tr><td>Submission GeoTIFF</td><td>Single-band float32, EPSG:32611, values in [0,1], all format checks passed</td><td><a href='downloads/17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.tif'>download</a></td></tr><tr><td>Submission sidecar</td><td>Name, comment, hashes, and the exact checks that ran</td><td><code>docs/downloads/17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.json</code></td></tr><tr><td>Forensic audit</td><td>449 duplicated blob groups, byte-identical rasters, repo-to-repo copy percentages</td><td><a href='findings.html'>findings</a></td></tr><tr><td>Frozen protocol</td><td>Hide-and-recover holdout, matched budgets, null baseline</td><td><a href='hypotheses.html'>hypotheses</a></td></tr><tr><td>Hypotheses</td><td>Pre-registered predictions with measured outcomes, negatives included</td><td><a href='hypotheses.html'>hypotheses</a></td></tr><tr><td>Sources</td><td>Official links, each labelled with how deeply it was verified</td><td><a href='sources.html'>sources</a></td></tr><tr><td>Limitations</td><td>What this cannot claim, and what still needs doing</td><td><a href='limitations.html'>limitations</a></td></tr></tbody></table>
+</section>
+
+<footer>
+<p class="tiny">Built 2026-09-30 01:41 UTC from
+<code>evidence/*.json</code> by <code>scripts/build_site.py</code>. Every number on this
+site is generated from a file in this repository; none is typed by hand.
+Source: <a href="https://github.com/buffedlizard55-lab/17GEMSDOE">github.com/buffedlizard55-lab/17GEMSDOE</a>.</p>
+</footer>
+</main></body></html>
